@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Linux查看访问IP</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style type="text/css">
+/* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
+/* Author: Nicolas Hery - http://nicolashery.com */
+/* Version: b13fe65ca28d2e568c6ed5d7f06581183df8f2ff */
+/* Source: https://github.com/nicolahery/markdownpad-github */
+
+/* RESET
+=============================================================================*/
+
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+/* BODY
+=============================================================================*/
+
+body {
+  font-family: "Microsoft YaHei UI", Helvetica, arial, freesans, clean, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #333;
+  background-color: #fff;
+  padding: 20px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+body>*:first-child {
+  margin-top: 0 !important;
+}
+
+body>*:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* BLOCKS
+=============================================================================*/
+
+p, blockquote, ul, ol, dl, table, pre {
+  margin: 15px 0;
+}
+
+/* HEADERS
+=============================================================================*/
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 20px 0 10px;
+  padding: 0;
+  font-weight: bold;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1 tt, h1 code, h2 tt, h2 code, h3 tt, h3 code, h4 tt, h4 code, h5 tt, h5 code, h6 tt, h6 code {
+  font-size: inherit;
+}
+
+h1 {
+  font-size: 28px;
+  color: #000;
+}
+
+h2 {
+  font-size: 24px;
+  border-bottom: 1px solid #ccc;
+  color: #000;
+}
+
+h3 {
+  font-size: 18px;
+}
+
+h4 {
+  font-size: 16px;
+}
+
+h5 {
+  font-size: 14px;
+}
+
+h6 {
+  color: #777;
+  font-size: 14px;
+}
+
+body>h2:first-child, body>h1:first-child, body>h1:first-child+h2, body>h3:first-child, body>h4:first-child, body>h5:first-child, body>h6:first-child {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6 {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+h1+p, h2+p, h3+p, h4+p, h5+p, h6+p {
+  margin-top: 10px;
+}
+
+/* LINKS
+=============================================================================*/
+
+a {
+  color: #4183C4;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* LISTS
+=============================================================================*/
+
+ul, ol {
+  padding-left: 30px;
+}
+
+ul li > :first-child, 
+ol li > :first-child, 
+ul li ul:first-of-type, 
+ol li ol:first-of-type, 
+ul li ol:first-of-type, 
+ol li ul:first-of-type {
+  margin-top: 0px;
+}
+
+ul ul, ul ol, ol ol, ol ul {
+  margin-bottom: 0;
+}
+
+dl {
+  padding: 0;
+}
+
+dl dt {
+  font-size: 14px;
+  font-weight: bold;
+  font-style: italic;
+  padding: 0;
+  margin: 15px 0 5px;
+}
+
+dl dt:first-child {
+  padding: 0;
+}
+
+dl dt>:first-child {
+  margin-top: 0px;
+}
+
+dl dt>:last-child {
+  margin-bottom: 0px;
+}
+
+dl dd {
+  margin: 0 0 15px;
+  padding: 0 15px;
+}
+
+dl dd>:first-child {
+  margin-top: 0px;
+}
+
+dl dd>:last-child {
+  margin-bottom: 0px;
+}
+
+/* CODE
+=============================================================================*/
+
+pre, code, tt {
+  font-size: 12px;
+  font-family: "Microsoft YaHei UI", Consolas, "Liberation Mono", Courier, monospace;
+}
+
+code, tt {
+  margin: 0 0px;
+  padding: 0px 0px;
+  white-space: nowrap;
+  border: 1px solid #eaeaea;
+  background-color: #f8f8f8;
+  border-radius: 3px;
+}
+
+pre>code {
+  margin: 0;
+  padding: 0;
+  white-space: pre;
+  border: none;
+  background: transparent;
+}
+
+pre {
+  background-color: #f8f8f8;
+  border: 1px solid #ccc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px;
+}
+
+pre code, pre tt {
+  background-color: transparent;
+  border: none;
+}
+
+kbd {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #DDDDDD;
+    background-image: linear-gradient(#F1F1F1, #DDDDDD);
+    background-repeat: repeat-x;
+    border-color: #DDDDDD #CCCCCC #CCCCCC #DDDDDD;
+    border-image: none;
+    border-radius: 2px 2px 2px 2px;
+    border-style: solid;
+    border-width: 1px;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    line-height: 10px;
+    padding: 1px 4px;
+}
+
+/* QUOTES
+=============================================================================*/
+
+blockquote {
+  border-left: 4px solid #DDD;
+  padding: 0 15px;
+  color: #777;
+}
+
+blockquote>:first-child {
+  margin-top: 0px;
+}
+
+blockquote>:last-child {
+  margin-bottom: 0px;
+}
+
+/* HORIZONTAL RULES
+=============================================================================*/
+
+hr {
+  clear: both;
+  margin: 15px 0;
+  height: 0px;
+  overflow: hidden;
+  border: none;
+  background: transparent;
+  border-bottom: 4px solid #ddd;
+  padding: 0;
+}
+
+/* TABLES
+=============================================================================*/
+
+table th {
+  font-weight: bold;
+}
+
+table th, table td {
+  border: 1px solid #ccc;
+  padding: 6px 13px;
+}
+
+table tr {
+  border-top: 1px solid #ccc;
+  background-color: #fff;
+}
+
+table tr:nth-child(2n) {
+  background-color: #f8f8f8;
+}
+
+/* IMAGES
+=============================================================================*/
+
+img {
+  max-width: 100%
+}
+</style>
+</head>
+<body>
+<h1>Linux查看访问IP</h1>
+<hr />
+<p>Linux 系统有很多用于快速处理数据的工具如 <code>grep</code> , <code>awk</code> , <code>cut</code> , <code>sort</code> , <code>uniq</code> , <code>sort</code> 可以帮助我们分析网络情况 , 他们非常非常地好用 , 如果你熟练掌握他们的使用技巧 , 他们则可以帮你快速定位问题 ; 接下来一步步来查看访问系统的 IP 情况</p>
+<p><strong>通过 <code>netstat -ntu</code> , 找出通过 tcp 和 udp 连接服务器的 IP 地址列表 :</strong></p>
+<pre><code># netstat -ntu
+
+Active Internet connections (w/o servers)
+Proto Recv-Q Send-Q Local Address           Foreign Address         State      
+tcp        0      0 23.105.193.199:29631    219.133.170.172:49136   ESTABLISHED
+tcp        0      0 23.105.193.199:59562    172.217.11.67:443       ESTABLISHED
+tcp        0      0 23.105.193.199:29631    219.133.170.172:5493    ESTABLISHED
+tcp        0      0 23.105.193.199:33782    172.217.5.78:443        ESTABLISHED
+tcp        0      0 23.105.193.199:37098    216.58.193.194:443      ESTABLISHED
+tcp        0      0 23.105.193.199:29666    219.133.170.172:10904   ESTABLISHED
+tcp        0      0 23.105.193.199:29631    219.133.170.172:43688   ESTABLISHED
+tcp        0      0 23.105.193.199:46806    74.125.28.188:5228      ESTABLISHED
+tcp        0      0 23.105.193.199:29631    219.133.170.172:52865   ESTABLISHED
+tcp        0      0 23.105.193.199:33780    172.217.5.78:443        ESTABLISHED
+tcp        0      0 23.105.193.199:29631    219.133.170.172:59935   ESTABLISHED
+</code></pre>
+
+<blockquote>
+<p>这是所有与服务器连接的外部 IP 信息列表 , 可以看到第五列是所有的外部 IP 信息 ;</p>
+</blockquote>
+<p><strong>使用 <code>grep</code>将 <code>tcp</code> 过滤出来 :</strong></p>
+<pre><code># netstat -ntu | grep tcp
+
+tcp        0      0 23.105.193.199:29631    219.133.170.172:19386   ESTABLISHED
+tcp        0      0 23.105.193.199:29631    219.133.170.172:43857   ESTABLISHED
+tcp        0      0 23.105.193.199:29631    219.133.170.172:49136   ESTABLISHED
+tcp        0      0 23.105.193.199:29631    219.133.170.172:5493    ESTABLISHED
+tcp        0      0 23.105.193.199:60876    172.217.5.74:443        ESTABLISHED
+tcp        0      0 23.105.193.199:29666    219.133.170.172:10904   ESTABLISHED
+tcp        0      0 23.105.193.199:33790    172.217.5.78:443        ESTABLISHED
+tcp        0      0 23.105.193.199:59566    172.217.11.67:443       ESTABLISHED
+tcp        0      0 23.105.193.199:46806    74.125.28.188:5228      ESTABLISHED
+tcp        0      0 23.105.193.199:33780    172.217.5.78:443        ESTABLISHED
+tcp        0      0 23.105.193.199:29631    219.133.170.172:39416   ESTABLISHED
+</code></pre>
+
+<blockquote>
+<p>也可以使用 <code>egrep</code> 过滤多个条件 <code># netstat -ntu | egrep 'tcp|udp'</code></p>
+</blockquote>
+<p><strong>使用 awk 将第五列单独截出来 :</strong></p>
+<pre><code># netstat -ntu | grep tcp | awk '{print $5}'
+
+219.133.170.172:19386
+219.133.170.172:43857
+219.133.170.172:12527
+172.217.5.77:443
+219.133.170.172:53970
+219.133.170.172:5493
+172.217.5.74:443
+173.194.78.188:5228
+219.133.170.172:10904
+172.217.11.74:443
+172.217.5.78:443
+219.133.170.172:39416
+</code></pre>
+
+<p><strong>使用 cut 将列信息以 <code>:</code> 为分隔符再分成不同的列 , 显示第一个 field :</strong></p>
+<pre><code># netstat -ntu | grep tcp | awk '{print $5}' | cut -d: -f1
+
+219.133.170.172
+219.133.170.172
+219.133.170.172
+219.133.170.172
+173.194.78.188
+219.133.170.172
+172.217.11.74
+172.217.5.78
+172.217.11.67
+219.133.170.172
+</code></pre>
+
+<p><strong>使用 sort 默认字符顺序将字段值排序 :</strong></p>
+<pre><code># netstat -ntu | grep tcp | awk '{print $5}' | cut -d: -f1 | sort
+
+172.217.11.67
+172.217.11.74
+172.217.5.78
+173.194.78.188
+219.133.170.172
+219.133.170.172
+219.133.170.172
+219.133.170.172
+219.133.170.172
+</code></pre>
+
+<p><strong>使用 uniq 将已经排序好的字段计算不同值的数目 :</strong></p>
+<pre><code># netstat -ntu | grep tcp | awk '{print $5}' | cut -d: -f1 | sort | uniq -c
+
+1 172.217.11.67
+1 172.217.11.74
+1 172.217.5.78
+1 173.194.78.188
+5 219.133.170.172
+</code></pre>
+
+<blockquote>
+<p><code>uniq -c</code> 根据相近的值计算和 , 因此之前需要排序好</p>
+</blockquote>
+<p><strong>使用 sort -nr 数字降序方式再排一下结果 :</strong></p>
+<pre><code># netstat -ntu | grep tcp | awk '{print $5}' | cut -d: -f1 | sort | uniq -c | sort -nr
+
+4 219.133.170.172
+1 173.194.202.188
+1 172.217.2.238
+1 172.217.11.67
+</code></pre>
+
+<blockquote>
+<p>使用 <code>sort -n</code> , 可以按照数字升序排</p>
+</blockquote>
+<p><strong>使用 head 或 tail 取头部几行或尾部几行 :</strong></p>
+<pre><code># netstat -ntu | grep tcp | awk '{print $5}' | cut -d: -f1 | sort | uniq -c | sort -nr | head -2
+
+4 219.133.170.172
+1 173.194.202.188
+</code></pre>
+
+
+</body>
+</html>
+<!-- This document was created with MarkdownPad, the Markdown editor for Windows (http://markdownpad.com) -->

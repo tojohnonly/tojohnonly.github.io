@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>深入浅出一致性Hash原理</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style type="text/css">
+/* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
+/* Author: Nicolas Hery - http://nicolashery.com */
+/* Version: b13fe65ca28d2e568c6ed5d7f06581183df8f2ff */
+/* Source: https://github.com/nicolahery/markdownpad-github */
+
+/* RESET
+=============================================================================*/
+
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+/* BODY
+=============================================================================*/
+
+body {
+  font-family: 'Microsoft YaHei UI', Helvetica, arial, freesans, clean, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #333;
+  background-color: #fff;
+  padding: 20px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+body>*:first-child {
+  margin-top: 0 !important;
+}
+
+body>*:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* BLOCKS
+=============================================================================*/
+
+p, blockquote, ul, ol, dl, table, pre {
+  margin: 15px 0;
+}
+
+/* HEADERS
+=============================================================================*/
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 20px 0 10px;
+  padding: 0;
+  font-weight: bold;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1 tt, h1 code, h2 tt, h2 code, h3 tt, h3 code, h4 tt, h4 code, h5 tt, h5 code, h6 tt, h6 code {
+  font-size: inherit;
+}
+
+h1 {
+  font-size: 28px;
+  color: #000;
+}
+
+h2 {
+  font-size: 24px;
+  border-bottom: 1px solid #ccc;
+  color: #000;
+}
+
+h3 {
+  font-size: 18px;
+}
+
+h4 {
+  font-size: 16px;
+}
+
+h5 {
+  font-size: 14px;
+}
+
+h6 {
+  color: #777;
+  font-size: 14px;
+}
+
+body>h2:first-child, body>h1:first-child, body>h1:first-child+h2, body>h3:first-child, body>h4:first-child, body>h5:first-child, body>h6:first-child {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6 {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+h1+p, h2+p, h3+p, h4+p, h5+p, h6+p {
+  margin-top: 10px;
+}
+
+/* LINKS
+=============================================================================*/
+
+a {
+  color: #4183C4;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* LISTS
+=============================================================================*/
+
+ul, ol {
+  padding-left: 30px;
+}
+
+ul li > :first-child, 
+ol li > :first-child, 
+ul li ul:first-of-type, 
+ol li ol:first-of-type, 
+ul li ol:first-of-type, 
+ol li ul:first-of-type {
+  margin-top: 0px;
+}
+
+ul ul, ul ol, ol ol, ol ul {
+  margin-bottom: 0;
+}
+
+dl {
+  padding: 0;
+}
+
+dl dt {
+  font-size: 14px;
+  font-weight: bold;
+  font-style: italic;
+  padding: 0;
+  margin: 15px 0 5px;
+}
+
+dl dt:first-child {
+  padding: 0;
+}
+
+dl dt>:first-child {
+  margin-top: 0px;
+}
+
+dl dt>:last-child {
+  margin-bottom: 0px;
+}
+
+dl dd {
+  margin: 0 0 15px;
+  padding: 0 15px;
+}
+
+dl dd>:first-child {
+  margin-top: 0px;
+}
+
+dl dd>:last-child {
+  margin-bottom: 0px;
+}
+
+/* CODE
+=============================================================================*/
+
+pre, code, tt {
+  font-size: 12px;
+  font-family: Consolas, "Liberation Mono", Courier, monospace;
+}
+
+code, tt {
+  margin: 0 0px;
+  padding: 0px 0px;
+  white-space: nowrap;
+  border: 1px solid #eaeaea;
+  background-color: #f8f8f8;
+  border-radius: 3px;
+}
+
+pre>code {
+  margin: 0;
+  padding: 0;
+  white-space: pre;
+  border: none;
+  background: transparent;
+}
+
+pre {
+  background-color: #f8f8f8;
+  border: 1px solid #ccc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px;
+}
+
+pre code, pre tt {
+  background-color: transparent;
+  border: none;
+}
+
+kbd {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #DDDDDD;
+    background-image: linear-gradient(#F1F1F1, #DDDDDD);
+    background-repeat: repeat-x;
+    border-color: #DDDDDD #CCCCCC #CCCCCC #DDDDDD;
+    border-image: none;
+    border-radius: 2px 2px 2px 2px;
+    border-style: solid;
+    border-width: 1px;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    line-height: 10px;
+    padding: 1px 4px;
+}
+
+/* QUOTES
+=============================================================================*/
+
+blockquote {
+  border-left: 4px solid #DDD;
+  padding: 0 15px;
+  color: #777;
+}
+
+blockquote>:first-child {
+  margin-top: 0px;
+}
+
+blockquote>:last-child {
+  margin-bottom: 0px;
+}
+
+/* HORIZONTAL RULES
+=============================================================================*/
+
+hr {
+  clear: both;
+  margin: 15px 0;
+  height: 0px;
+  overflow: hidden;
+  border: none;
+  background: transparent;
+  border-bottom: 4px solid #ddd;
+  padding: 0;
+}
+
+/* TABLES
+=============================================================================*/
+
+table th {
+  font-weight: bold;
+}
+
+table th, table td {
+  border: 1px solid #ccc;
+  padding: 6px 13px;
+}
+
+table tr {
+  border-top: 1px solid #ccc;
+  background-color: #fff;
+}
+
+table tr:nth-child(2n) {
+  background-color: #f8f8f8;
+}
+
+/* IMAGES
+=============================================================================*/
+
+img {
+  max-width: 100%
+}
+</style>
+</head>
+<body>
+<h1>深入浅出一致性 Hash 原理</h1>
+<hr />
+<h3>1. 前言</h3>
+<p>在解决分布式系统中负载均衡的问题时候可以使用 Hash 算法让固定的一部分请求落到同一台服务器上 , 这样每台服务器固定处理一部分请求 (并维护这些请求的信息) , 起到负载均衡的作用</p>
+<p>但是普通的 <strong>余数 Hash</strong> (比如用户 id% 服务器机器数) 算法伸缩性很差 , 当新增或者下线服务器机器时候 , 用户 id 与服务器的映射关系会大量失效 ; 一致性 Hash 则利用 Hash 环对其进行了改进</p>
+<h3>2. 一致性 Hash 概述</h3>
+<p>为了能直观的理解一致性 Hash 原理 , 这里结合一个简单的例子来讲解 , 假设有4台服务器 , 地址为ip1,ip2,ip3,ip4</p>
+<p>一致性 Hash 是首先计算四个ip地址对应的 Hash 值 , Hash (ip1) , Hash (ip2) , Hash (ip3) , Hash (ip4) , 计算出来的 Hash 值是 <strong>0~最大正整数</strong> 之间的一个值 , 这四个值在一致性 Hash 环上呈现如下图 :</p>
+<p><img src="images/119-深入浅出一致性Hash原理/Hash-1.png" alt="Hash" /></p>
+<p>Hash 环上顺时针从整数 0 开始 , 一直到最大正整数 , 我们根据四个ip计算的 Hash 值肯定会落到这个 Hash 环上的某一个点 , 至此我们把服务器的四个ip映射到了一致性 Hash 环</p>
+<p>当用户在客户端进行请求时候 , 首先根据 Hash (用户id) 计算路由规则 (Hash 值) , 然后看 Hash 值落到了 Hash 环的那个地方 , 根据 Hash 值在 Hash 环上的位置顺时针找距离最近的 ip 作为路由 ip</p>
+<p><img src="images/119-深入浅出一致性Hash原理/Hash-2.png" alt="Hash" /></p>
+<p>如上图可知 user1 , user2 的请求会落到服务器 ip2 进行处理 , User3 的请求会落到服务器 ip3 进行处理 , user4 的请求会落到服务器 ip4 进行处理 , user5 , user6 的请求会落到服务器 ip1 进行处理</p>
+<p>下面考虑当 ip2 的服务器挂了的时候会出现什么情况 ?<br />
+当 ip2 的服务器挂了的时候 , 一致性 Hash 环大致如下图 :</p>
+<p><img src="images/119-深入浅出一致性Hash原理/Hash-3.png" alt="Hash" /></p>
+<p>根据顺时针规则可知 user1 , user2 的请求会被服务器 ip3 进行处理 , 而其它用户的请求对应的处理服务器不变 , 也就是只有之前被 ip2 处理的一部分用户的映射关系被破坏了 , 并且其负责处理的请求被顺时针下一个节点委托处理</p>
+<p>下面考虑当新增机器的时候会出现什么情况 ?<br />
+当新增一个 ip5 的服务器后 , 一致性 Hash 环大致如下图 :</p>
+<p><img src="images/119-深入浅出一致性Hash原理/Hash-4.png" alt="Hash" /></p>
+<p>根据顺时针规则可知之前 user5 的请求应该被 ip1 服务器处理 , 现在被新增的 ip5 服务器处理 , 其他用户的请求处理服务器不变 , 也就是新增的服务器顺时针最近的服务器的一部分请求会被新增的服务器所替代</p>
+<h3>3. 一致性 Hash 的特性</h3>
+<ul>
+<li>
+<p>单调性(Monotonicity) , 单调性是指如果已经有一些请求通过哈希分派到了相应的服务器进行处理 , 又有新的服务器加入到系统中时候 , 应保证原有的请求可以被映射到原有的或者新的服务器中去 , 而不会被映射到原来的其它服务器上去 ;  这个通过上面新增服务器ip5可以证明 , 新增ip5后 , 原来被ip1处理的user6现在还是被ip1处理 , 原来被ip1处理的user5现在被新增的ip5处理</p>
+</li>
+<li>
+<p>分散性(Spread) : 分布式环境中 , 客户端请求时候可能不知道所有服务器的存在 , 可能只知道其中一部分服务器 , 在客户端看来他看到的部分服务器会形成一个完整的 Hash 环 ; 如果多个客户端都把部分服务器作为一个完整 Hash 环 , 那么可能会导致 , 同一个用户的请求被路由到不同的服务器进行处理 ; 这种情况显然是应该避免的 , 因为它不能保证同一个用户的请求落到同一个服务器 ; 所谓分散性是指上述情况发生的严重程度 ; 好的哈希算法应尽量避免尽量降低分散性 ,  一致性 Hash 具有很低的分散性</p>
+</li>
+<li>
+<p>平衡性(Balance) : 平衡性也就是说负载均衡 , 是指客户端 Hash 后的请求应该能够分散到不同的服务器上去 ; 一致性 Hash 可以做到每个服务器都进行处理请求 , 但是不能保证每个服务器处理的请求的数量大致相同 , 如下图</p>
+</li>
+</ul>
+<p><img src="images/119-深入浅出一致性Hash原理/Hash-5.png" alt="Hash" /></p>
+<p>服务器 ip1 , ip2 , ip3 经过 Hash 后落到了一致性 Hash 环上 , 从图中 Hash 值分布可知 ip1 会负责处理大概80%的请求 , 而 ip2 和 ip3 则只会负责处理大概 20% 的请求 , 虽然三个机器都在处理请求 , 但是明显每个机器的负载不均衡 , 这样称为一致性 Hash 的倾斜 , 虚拟节点的出现就是为了解决这个问题</p>
+<h3>4. 虚拟节点</h3>
+<p>当服务器节点比较少的时候会出现上节所说的一致性 Hash 倾斜的问题 , 一个解决方法是多加机器 , 但是加机器是有成本的 , 那么就加虚拟节点 , 比如上面三个机器 , 每个机器引入 1 个虚拟节点后的一致性 Hash 环的图如下 :</p>
+<p><img src="images/119-深入浅出一致性Hash原理/Hash-6.png" alt="Hash" /></p>
+<p>其中 ip1-1 是 ip1 的虚拟节点 , ip2-1 是 ip2 的虚拟节点 , ip3-1 是 ip3 的虚拟节点</p>
+<p>可知当物理机器数目为 M , 虚拟节点为 N 的时候 , 实际 Hash 环上节点个数为 M*N ; 比如当客户端计算的 Hash 值处于 ip2 和 ip3 或者处于 ip2-1 和 ip3-1 之间时候使用 ip3 服务器进行处理</p>
+<h3>5. 总结</h3>
+<p>在分布式系统中一致性 Hash 起着不可忽略的地位 , 无论是分布式缓存 , 还是分布式 RPC 框架的负载均衡策略都有所使用</p>
+
+</body>
+</html>
+<!-- This document was created with MarkdownPad, the Markdown editor for Windows (http://markdownpad.com) -->

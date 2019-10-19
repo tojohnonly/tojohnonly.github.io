@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Tomcat安装配置详解</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style type="text/css">
+/* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
+/* Author: Nicolas Hery - http://nicolashery.com */
+/* Version: b13fe65ca28d2e568c6ed5d7f06581183df8f2ff */
+/* Source: https://github.com/nicolahery/markdownpad-github */
+
+/* RESET
+=============================================================================*/
+
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+/* BODY
+=============================================================================*/
+
+body {
+  font-family: "Microsoft YaHei UI", Helvetica, arial, freesans, clean, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #333;
+  background-color: #fff;
+  padding: 20px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+body>*:first-child {
+  margin-top: 0 !important;
+}
+
+body>*:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* BLOCKS
+=============================================================================*/
+
+p, blockquote, ul, ol, dl, table, pre {
+  margin: 15px 0;
+}
+
+/* HEADERS
+=============================================================================*/
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 20px 0 10px;
+  padding: 0;
+  font-weight: bold;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1 tt, h1 code, h2 tt, h2 code, h3 tt, h3 code, h4 tt, h4 code, h5 tt, h5 code, h6 tt, h6 code {
+  font-size: inherit;
+}
+
+h1 {
+  font-size: 28px;
+  color: #000;
+}
+
+h2 {
+  font-size: 24px;
+  border-bottom: 1px solid #ccc;
+  color: #000;
+}
+
+h3 {
+  font-size: 18px;
+}
+
+h4 {
+  font-size: 16px;
+}
+
+h5 {
+  font-size: 14px;
+}
+
+h6 {
+  color: #777;
+  font-size: 14px;
+}
+
+body>h2:first-child, body>h1:first-child, body>h1:first-child+h2, body>h3:first-child, body>h4:first-child, body>h5:first-child, body>h6:first-child {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6 {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+h1+p, h2+p, h3+p, h4+p, h5+p, h6+p {
+  margin-top: 10px;
+}
+
+/* LINKS
+=============================================================================*/
+
+a {
+  color: #4183C4;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* LISTS
+=============================================================================*/
+
+ul, ol {
+  padding-left: 30px;
+}
+
+ul li > :first-child, 
+ol li > :first-child, 
+ul li ul:first-of-type, 
+ol li ol:first-of-type, 
+ul li ol:first-of-type, 
+ol li ul:first-of-type {
+  margin-top: 0px;
+}
+
+ul ul, ul ol, ol ol, ol ul {
+  margin-bottom: 0;
+}
+
+dl {
+  padding: 0;
+}
+
+dl dt {
+  font-size: 14px;
+  font-weight: bold;
+  font-style: italic;
+  padding: 0;
+  margin: 15px 0 5px;
+}
+
+dl dt:first-child {
+  padding: 0;
+}
+
+dl dt>:first-child {
+  margin-top: 0px;
+}
+
+dl dt>:last-child {
+  margin-bottom: 0px;
+}
+
+dl dd {
+  margin: 0 0 15px;
+  padding: 0 15px;
+}
+
+dl dd>:first-child {
+  margin-top: 0px;
+}
+
+dl dd>:last-child {
+  margin-bottom: 0px;
+}
+
+/* CODE
+=============================================================================*/
+
+pre, code, tt {
+  font-size: 12px;
+  font-family: "Microsoft YaHei UI", Consolas, "Liberation Mono", Courier, monospace;
+}
+
+code, tt {
+  margin: 0 0px;
+  padding: 0px 0px;
+  white-space: nowrap;
+  border: 1px solid #eaeaea;
+  background-color: #f8f8f8;
+  border-radius: 3px;
+}
+
+pre>code {
+  margin: 0;
+  padding: 0;
+  white-space: pre;
+  border: none;
+  background: transparent;
+}
+
+pre {
+  background-color: #f8f8f8;
+  border: 1px solid #ccc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px;
+}
+
+pre code, pre tt {
+  background-color: transparent;
+  border: none;
+}
+
+kbd {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #DDDDDD;
+    background-image: linear-gradient(#F1F1F1, #DDDDDD);
+    background-repeat: repeat-x;
+    border-color: #DDDDDD #CCCCCC #CCCCCC #DDDDDD;
+    border-image: none;
+    border-radius: 2px 2px 2px 2px;
+    border-style: solid;
+    border-width: 1px;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    line-height: 10px;
+    padding: 1px 4px;
+}
+
+/* QUOTES
+=============================================================================*/
+
+blockquote {
+  border-left: 4px solid #DDD;
+  padding: 0 15px;
+  color: #777;
+}
+
+blockquote>:first-child {
+  margin-top: 0px;
+}
+
+blockquote>:last-child {
+  margin-bottom: 0px;
+}
+
+/* HORIZONTAL RULES
+=============================================================================*/
+
+hr {
+  clear: both;
+  margin: 15px 0;
+  height: 0px;
+  overflow: hidden;
+  border: none;
+  background: transparent;
+  border-bottom: 4px solid #ddd;
+  padding: 0;
+}
+
+/* TABLES
+=============================================================================*/
+
+table th {
+  font-weight: bold;
+}
+
+table th, table td {
+  border: 1px solid #ccc;
+  padding: 6px 13px;
+}
+
+table tr {
+  border-top: 1px solid #ccc;
+  background-color: #fff;
+}
+
+table tr:nth-child(2n) {
+  background-color: #f8f8f8;
+}
+
+/* IMAGES
+=============================================================================*/
+
+img {
+  max-width: 100%;
+  box-shadow: 0px 0px 5px #888888;
+}
+</style>
+</head>
+<body>
+<h1>Tomcat 安装配置详解</h1>
+<hr />
+<h3>常见 JavaWeb 服务器</h3>
+<ol>
+<li>
+<p>WebLogic : BEA 公司的产品 ; WebSphereAS : 是IBM公司的产品 ; JBossAS : 红帽公司的产品</p>
+</li>
+<li>
+<p><strong>Tomcat服务器</strong> : Sun 公司在推出的小型 Servlet/JSP 调试工具的基础上发展起来的一个优秀的 Servlet 容器 , Tomcat 本身完全用 Java 语言编写 , 所以 Tomcat 的运行需要 Java 的支持 , 所以要先安装 JDK , 才能运行 ; 目前是 Apache 开源软件组织的一个软件项目 , 它的官网 <a href="http://tomcat.apache.org">http://tomcat.apache.org</a> 得到了广大开源代码志愿者的大力支持 , 且可以和目前大部分的主流 Web 服务器  (IIS , Apache 服务器) 一起工作 , 它运行稳定 , 可靠且高效 , 已成为目前开发企业 JavaWeb 应用的最佳 Servlet 容器选择之一 , 目前最新版本 8.0</p>
+</li>
+</ol>
+<p><br /></p>
+<h3>Tomcat 的目录结构及常用配置</h3>
+<ol>
+<li>
+<p>Tomcat 的目录层次结构</p>
+<pre><code>bin : 存放启动和关闭 Tomcat 的脚本文件
+conf : 存放 Tomcat 服务器的各种配置文件
+lib : 存放 Tomcat 服务器支撑的 jar 包
+logs : 存放 Tomcat 的日志文件
+temp : 存放 Tomcat 运行时产生的临时文件
+webapps : web 应用虽在目录 , 即供外界访问的 web 资源的存放目录
+work : Tomcat 的工作目录
+</code></pre>
+
+</li>
+<li>
+<p>JavaWeb 应用的组成结构</p>
+<pre><code>webapp --------------------------- Web 应用所在目录
+| ---- html , jsp , css , js等文件 , 根目录下的文件外界可以直接访问
+| ---- WEB-INF 目录
+  | --------- classes 目录 (Java 类)
+  | --------- lib目录(Java 类运行所需的 jar 包)
+  | --------- web.xml (web 应用的配置文件)
+WEB-INF 这个目录下的文件外界无法直接访问 , 由 Web 服务器负责调用
+</code></pre>
+
+</li>
+<li>
+<p>Tomcat 的组成结构</p>
+<p>Tomcat 本身由一系列可配置的组件构成 , 其中核心组件是 Servlet 容器组件 , 它是所有其他 Tomcat 组件的顶层容器 ; 每个组件都可以在 Tomcat 安装目录 <code>/conf/server.xml</code> 文件中进行配置 , 每个 Tomcat 组件在 server.xml 文件中对应一种配置元素 ; 下面用 XML 的形式展示各种 Tomcat 组件之间的关系  
+</p>
+<pre><code>&lt;Server&gt; 代表整个 Servlet 容器组件 , 是最顶层元素 , 可以包含一个或多个 &lt;Service&gt; 元素
+    &lt;Service&gt; 包含一个 &lt;Engine&gt; 元素以及一个或多个 &lt;Connector&gt; 元素 , 这些 &lt;Connector&gt; 共享一个 &lt;Engine&gt;
+      &lt;Connector/&gt; 代表和客户程序实际交互的组件 , 负责接收客户请求 , 以及向客户返回响应
+      &lt;Engine&gt; 每个 &lt;Service&gt; 元素只能包含一个 &lt;Engine&gt; 元素 , 它处理在同一个 &lt;Service&gt; 中所有 &lt;Connector&gt; 接收到的客户请求
+           &lt;Host&gt; 在一个 &lt;Engine&gt; 中可以包含多个 &lt;Host&gt; ,它代表一个虚拟主机 (即一个服务器程序可以部署在多个有不同 IP 的服务器主机上) , 它可以包含一个或多个应用
+               &lt;Context&gt; 使用最频繁的元素 , 代表了运行在虚拟主机上的单个 Web 应用
+           &lt;/Host&gt;
+      &lt;/Engine&gt;
+   &lt;/Service&gt;
+&lt;/Server&gt;
+</code></pre>
+
+</li>
+<li>
+<p>Tomcat 体系结构</p>
+<p><img src="images/104-Tomcat安装配置详解/tomcat.jpg" alt="tomcat" /></p>
+</li>
+<li>
+<p>虚拟目录的映射方式</p>
+<p>从 Tomcat6 开始 , Tomcat 支持自动映射 , 即 Tomcat 服务器会自动管理 webapps 目录下的所有 Web 应用 , 并把它映射成虚拟目录 , 换句话说 , 只需把 Web 应用放在 webapps 目录下 , 不需要配置 Context , 外界可以直接访问 (如果放置在 webapps 目录下又配置了 Context , Tomcat 会实例化两次项目)<br />
+ 但是如果你不想讲项目放在 webapps 下 , 而是放在其他地方 , 还是需要配置 Context , 比如我的 Tomcat 在 C 盘 , 我的项目在 D 盘 , 则需要在 Host 下增加如下虚拟目录映射语句
+	&lt;Contextpath=&quot;/myapp&quot;docBase=&quot;D:/work/myapp&quot;&gt;</Context></p>
+</li>
+<li>
+<p>Context 元素配置</p>
+<p>Tomcat 在加载一个 Web 应用时 , 会一次按照以下五种方式查找 Web 应用中的 <Context> 元素 , 优先级一次降低 , 直到找到为</p>
+<ol>
+<li>到 Tomcat 安装目录 <code>/conf/Context.xml</code> 文件中查找 <Context> 元素  
+</li>
+<li>
+到 Tomcat 安装目录 <code>/conf/[enginename]/[hostname]/context.xml.default</code> 文件中查找 <Context> 元素 
+</li>
+<li>
+到 Tomcat 安装目录 <code>/conf/[enginename]/[hostname]/[contextpath].xml</code> 文件中查找 <Context> 元素<br />
+[contextpath]:表示单个Web 应用的URL入口
+</li>
+<li>到 Web 应用的 <code>META-INF/context.xml</code> 文件中查找 <Context> 元素  
+</li>
+<li>到 Tomcat 安装目录 <code>/conf/server.xml</code> 文件中查找 <Context> 元素 , 只适用于单个Web 应用</li>
+</ol>
+</li>
+<li>
+<p>Context 元素的属性</p>
+<p><strong>path</strong> :  指定访问该 Web 应用的 URL 入口<br />
+<strong>docBase</strong> : 指定 Web 应用的文件路径 , 可以写绝对路径 , 也可以写相对于 appBase 属性的相对路径<br />
+<strong>className</strong> : 指定实现 Context 组件的 Java 类的名字 , 这个类必须实现 org.apache.catalina.Contex 接口 , 该属性默认值为org.apache.catalina.core.StandardContext (不建议大家改动)<br />
+<strong>reloadable</strong> : 如果为 true , Tomcat 服务器在运行状态下回监视在 <code>WEB-INF/classes</code> 和 <code>WEB-INF/lib</code> 目录下的 class 文件的改动 , 以及监视 Web 应用的 <code>WEB-INF/web.xml</code> 文件的改动 , 如果检测到有更新 , 服务器会自动更新加载 Web 应用 ; 其默认值为false ; 在开发和调试阶段 , 将其改为true , 一般像 Eclipse 等开发环境都会默认改为 true ; 在正式发布阶段 , 应将其该为false , 可以降低 Tomcat 的运行负荷 , 提高 Tomcat 的运行性能  
+</p>
+<p>在一般情况下 , <Context> 元素都会使用默认的标准 Context 组件 , 即 className 属性采用默认值org.apache.catalina.core.StandardContext , 它除了拥有上面介绍到的属性外 , 还有自身专有的属性 </p>
+<p><strong>cachingAllowed</strong> : 是否允许启用静态资源 (HTML , 图片 , 声音等) 的缓存 ; 默认值为 true<br />
+<strong>cacheMaxSize</strong> : 设置静态资源缓存的最大值 , 单位为 K<br />
+<strong>workDir</strong> : 指定 Web 应用的工作目录<br />
+<strong>uppackWAR</strong> : 如果为 true , 会把 war 文件展开为开放目录后再运行 ; 为false , 直接运行 war 文件 ; 默认值为 true</p>
+</li>
+<li>
+<p>web.xml 文件</p>
+<p>该文件必须放在 <code>/WEB-INF</code> 目录下 , 但是从 7.0 版本开始 , Tomcat 可以不使用 web.xml 文件 , 而是使用注解方式</p>
+</li>
+</ol>
+<p><br /></p>
+<h3>Tomcat 的优化</h3>
+<ol>
+<li>
+<p>内存使用配置</p>
+<p>Tomcat 是依赖于 JVM 的 , 所以 Tomcat 的使用内存配置实质上是 JVM 的内存配置<br />
+在 /bin 目录下的 catalina.bat 可以直接通过 Tomcat 设置 JVM 内存参数<br />
+Windows 下打开 catalina.bat 文件 , 在大概中间的位置 , 找到<br />
+<code>set &quot;Java_OPTS=%Java_OPT% -server -Xms2048m -Xmx2048m -XX:PermSize=256m -XX:MaxPermSize=512m -DJava.awt.headless=true&quot;</code><br />
+通过内存设置充分利用服务器内存<br />
+-server : 模式启动应用慢 , 但是极大程度提高运行性能
+-Xms2048m -Xmx2048m : 设置的是堆内存<br />
+Java8 开始 , PermSize 被 MetaspaceSize 代替 , MetaspaceSize 共享 heap , 不会再有 Java.lang.OutOfMemoryError : PermGen space , 可以不设置<br />
+Headless=true : 适用于Linux系统 , 与图形操作有关 , 如生成验证码含义是当前的是无显示器的服务器 , 应用中如果获取系统显示有关的参数会抛出异常 , Windows系统可不用设置<br />
+可通过 jmap -heap process_id 查看设置是否成功</p>
+</li>
+<li>
+<p>最大连接数配置 (并发能力) </p>
+<p>在 <code>/conf/server.xml</code> 里进行配置<br />
+在 <Connector> 属性中<br />
+将 protocol 属性改为 <code>org.apache.coyote.http11.Http11NioProtocol</code> , NIO 模型的效率更高
+加入<br />
+maxThreads=&quot;500&quot;   // 当前可以同时处理的最大用户访问数<br />
+minSpareThreads=&quot;100&quot;   // 最小空闲线程连接数 , 用于优化线程池<br />
+maxSpareThreads=&quot;200&quot;<br />
+acceptCount=&quot;200&quot;   // 当所有的线程以分配 , 仍然允许连接进来 , 但是出于等待状态的用户数 ; 等待线程数+工作线程数=总的可最大连接数 , 如果超过此数 , 新的连接将不会被接受 , 就会产生一个 http 错误<br />
+enableLookups=&quot;false&quot;   // 是否允许 DNS 反查 , 如果为 true , request.getRemoteHost 会执行 DNS 查找 , 反向解析 ip 对应域名或主机名 , 当没有这样需要的时候 , 可以将这个功能关闭 , 在一定程度上提高了 Tomcat 服务器的性能</p>
+</li>
+</ol>
+
+</body>
+</html>
+<!-- This document was created with MarkdownPad, the Markdown editor for Windows (http://markdownpad.com) -->

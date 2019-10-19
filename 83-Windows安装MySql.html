@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Windows安装MySql</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style type="text/css">
+/* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
+/* Author: Nicolas Hery - http://nicolashery.com */
+/* Version: b13fe65ca28d2e568c6ed5d7f06581183df8f2ff */
+/* Source: https://github.com/nicolahery/markdownpad-github */
+
+/* RESET
+=============================================================================*/
+
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+/* BODY
+=============================================================================*/
+
+body {
+  font-family: 'Microsoft YaHei UI', Helvetica, arial, freesans, clean, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #333;
+  background-color: #fff;
+  padding: 20px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+body>*:first-child {
+  margin-top: 0 !important;
+}
+
+body>*:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* BLOCKS
+=============================================================================*/
+
+p, blockquote, ul, ol, dl, table, pre {
+  margin: 15px 0;
+}
+
+/* HEADERS
+=============================================================================*/
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 20px 0 10px;
+  padding: 0;
+  font-weight: bold;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1 tt, h1 code, h2 tt, h2 code, h3 tt, h3 code, h4 tt, h4 code, h5 tt, h5 code, h6 tt, h6 code {
+  font-size: inherit;
+}
+
+h1 {
+  font-size: 28px;
+  color: #000;
+}
+
+h2 {
+  font-size: 24px;
+  border-bottom: 1px solid #ccc;
+  color: #000;
+}
+
+h3 {
+  font-size: 18px;
+}
+
+h4 {
+  font-size: 16px;
+}
+
+h5 {
+  font-size: 14px;
+}
+
+h6 {
+  color: #777;
+  font-size: 14px;
+}
+
+body>h2:first-child, body>h1:first-child, body>h1:first-child+h2, body>h3:first-child, body>h4:first-child, body>h5:first-child, body>h6:first-child {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6 {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+h1+p, h2+p, h3+p, h4+p, h5+p, h6+p {
+  margin-top: 10px;
+}
+
+/* LINKS
+=============================================================================*/
+
+a {
+  color: #4183C4;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* LISTS
+=============================================================================*/
+
+ul, ol {
+  padding-left: 30px;
+}
+
+ul li > :first-child, 
+ol li > :first-child, 
+ul li ul:first-of-type, 
+ol li ol:first-of-type, 
+ul li ol:first-of-type, 
+ol li ul:first-of-type {
+  margin-top: 0px;
+}
+
+ul ul, ul ol, ol ol, ol ul {
+  margin-bottom: 0;
+}
+
+dl {
+  padding: 0;
+}
+
+dl dt {
+  font-size: 14px;
+  font-weight: bold;
+  font-style: italic;
+  padding: 0;
+  margin: 15px 0 5px;
+}
+
+dl dt:first-child {
+  padding: 0;
+}
+
+dl dt>:first-child {
+  margin-top: 0px;
+}
+
+dl dt>:last-child {
+  margin-bottom: 0px;
+}
+
+dl dd {
+  margin: 0 0 15px;
+  padding: 0 15px;
+}
+
+dl dd>:first-child {
+  margin-top: 0px;
+}
+
+dl dd>:last-child {
+  margin-bottom: 0px;
+}
+
+/* CODE
+=============================================================================*/
+
+pre, code, tt {
+  font-size: 12px;
+  font-family: Consolas, "Liberation Mono", Courier, monospace;
+}
+
+code, tt {
+  margin: 0 0px;
+  padding: 0px 0px;
+  white-space: nowrap;
+  border: 1px solid #eaeaea;
+  background-color: #f8f8f8;
+  border-radius: 3px;
+}
+
+pre>code {
+  margin: 0;
+  padding: 0;
+  white-space: pre;
+  border: none;
+  background: transparent;
+}
+
+pre {
+  background-color: #f8f8f8;
+  border: 1px solid #ccc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px;
+}
+
+pre code, pre tt {
+  background-color: transparent;
+  border: none;
+}
+
+kbd {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #DDDDDD;
+    background-image: linear-gradient(#F1F1F1, #DDDDDD);
+    background-repeat: repeat-x;
+    border-color: #DDDDDD #CCCCCC #CCCCCC #DDDDDD;
+    border-image: none;
+    border-radius: 2px 2px 2px 2px;
+    border-style: solid;
+    border-width: 1px;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    line-height: 10px;
+    padding: 1px 4px;
+}
+
+/* QUOTES
+=============================================================================*/
+
+blockquote {
+  border-left: 4px solid #DDD;
+  padding: 0 15px;
+  color: #777;
+}
+
+blockquote>:first-child {
+  margin-top: 0px;
+}
+
+blockquote>:last-child {
+  margin-bottom: 0px;
+}
+
+/* HORIZONTAL RULES
+=============================================================================*/
+
+hr {
+  clear: both;
+  margin: 15px 0;
+  height: 0px;
+  overflow: hidden;
+  border: none;
+  background: transparent;
+  border-bottom: 4px solid #ddd;
+  padding: 0;
+}
+
+/* TABLES
+=============================================================================*/
+
+table th {
+  font-weight: bold;
+}
+
+table th, table td {
+  border: 1px solid #ccc;
+  padding: 6px 13px;
+}
+
+table tr {
+  border-top: 1px solid #ccc;
+  background-color: #fff;
+}
+
+table tr:nth-child(2n) {
+  background-color: #f8f8f8;
+}
+
+/* IMAGES
+=============================================================================*/
+
+img {
+  max-width: 100%
+}
+</style>
+</head>
+<body>
+<h1>Windows安装MySql</h1>
+<hr />
+<h3>1. 下载</h3>
+<p>打开网址 : <a href="https://dev.mysql.com/downloads/mysql/">https://dev.mysql.com/downloads/mysql/</a></p>
+<p>登录进去 , 再选择下载版本对应的 ZIP Archive 文件即可 , 我选的是 <code>MySQL Community Server 5.7.21</code> ;</p>
+<h3>2. 安装</h3>
+<p>压缩包相当于免安装文件 , 要想使用它只需要配置相关的参数 , 再通过通过服务来启动数据库服务就可以了 ;</p>
+<p>把压缩包解压到你喜欢的位置 , 本示例解压到 : <code>D:\Program\MySql</code> 文件夹下 ;</p>
+<h3>3. 创建 my.ini 配置文件</h3>
+<p>在 <code>D:\Program\MySql</code> 根目录中创建 <code>my.ini</code> 文件 , 并添加以下内容 :</p>
+<pre><code>[mysql]
+# 设置mysql客户端默认字符集
+default-character-set=utf8 
+
+[mysqld]
+#设置3306端口
+port = 3306
+# 设置mysql的安装目录
+basedir=D:\Program\MySql
+# 设置mysql数据库的数据的存放目录
+datadir=D:\Program\MySql\data
+# 允许最大连接数
+max_connections=200
+# 服务端使用的字符集默认为8比特编码的latin1字符集
+character-set-server=utf8
+# 创建新表时将使用的默认存储引擎
+default-storage-engine=INNODB
+</code></pre>
+
+<h3>4. 配置环境变量</h3>
+<p>右键 <code>我的电脑</code> -&gt; <code>属性</code> -&gt; <code>高级系统设置</code> -&gt; <code>高级</code> -&gt; <code>环境变量</code> -&gt; <code>系统变量</code> , <br />
+添加一个名叫 <code>MYSQL_HOME</code> 的环境变量 , 值是 <code>D:\Program\MySql</code> ,<br />
+修改 <code>Path</code> 变量 , 在末尾添加 <code>%MYSQL_HOME%\bin</code> ;</p>
+<h3>5. 初始化数据库文件</h3>
+<p>以管理员身份运行 CMD , 进入 MySql 的 <code>bin</code> 目录 , 运行初始化命令 :</p>
+<pre><code># mysqld  --initialize  
+</code></pre>
+
+<p>初始化成功后 , 会在 <code>datadir</code> 目录下生成一些文件 , 其中 <code>xxx.err</code> (xxx 是你电脑用户的名称) 文件里说明了 <code>root</code> 账户的临时密码 , 如 :</p>
+<p><code>2018-04-02T02:40:20.431503Z 1 [Note] A temporary password is generated for root@localhost: aOY&gt;lMdn&lt;2n!</code></p>
+<p><code>aOY&gt;lMdn&lt;2n!</code> 就是 <code>root</code> 账户的临时密码 ;</p>
+<h3>6. 注册 MySql 服务</h3>
+<pre><code># mysqld -install MySQL 
+</code></pre>
+
+<h3>7. 启动 MySql 服务</h3>
+<p>启动 MySql 服务 :</p>
+<pre><code># net start MySQL  
+</code></pre>
+
+<p>关闭 MySql 服务 :</p>
+<pre><code>net stop MySQL
+</code></pre>
+
+<p>移除 MySql 服务 :</p>
+<pre><code>D:\Program\MySql\bin\mysqld --remove
+</code></pre>
+
+<p>或者不安装服务 , 直接运行 :</p>
+<pre><code>D:\Program\MySql\bin\mysqld
+</code></pre>
+
+<h3>8. 修改 root 密码</h3>
+<p>使用 <code>root</code> 账号登录 , 这里的密码为上面提到的 <code>root</code> 账号的临时密码 <code>aOY&gt;lMdn&lt;2n!</code></p>
+<pre><code># mysql -u root -p
+Enter password: ****
+</code></pre>
+
+<p>修改 root 密码 : </p>
+<pre><code># ALTER USER 'root'@'localhost' IDENTIFIED BY 'new_password'; 
+</code></pre>
+
+<p>客户端用 your_user 使用 your_password 从任何主机连接到 MySql 服务器 :</p>
+<pre><code># grant all privileges on *.* to 'your_user'@'%' identified by 'your_password' with grant option;
+</code></pre>
+
+
+</body>
+</html>
+<!-- This document was created with MarkdownPad, the Markdown editor for Windows (http://markdownpad.com) -->

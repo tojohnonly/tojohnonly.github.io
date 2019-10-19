@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>分布式ID生成方案汇总</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style type="text/css">
+/* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
+/* Author: Nicolas Hery - http://nicolashery.com */
+/* Version: b13fe65ca28d2e568c6ed5d7f06581183df8f2ff */
+/* Source: https://github.com/nicolahery/markdownpad-github */
+
+/* RESET
+=============================================================================*/
+
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+/* BODY
+=============================================================================*/
+
+body {
+  font-family: "Microsoft YaHei UI", Helvetica, arial, freesans, clean, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #333;
+  background-color: #fff;
+  padding: 20px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+body>*:first-child {
+  margin-top: 0 !important;
+}
+
+body>*:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* BLOCKS
+=============================================================================*/
+
+p, blockquote, ul, ol, dl, table, pre {
+  margin: 15px 0;
+}
+
+/* HEADERS
+=============================================================================*/
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 20px 0 10px;
+  padding: 0;
+  font-weight: bold;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1 tt, h1 code, h2 tt, h2 code, h3 tt, h3 code, h4 tt, h4 code, h5 tt, h5 code, h6 tt, h6 code {
+  font-size: inherit;
+}
+
+h1 {
+  font-size: 28px;
+  color: #000;
+}
+
+h2 {
+  font-size: 24px;
+  border-bottom: 1px solid #ccc;
+  color: #000;
+}
+
+h3 {
+  font-size: 18px;
+}
+
+h4 {
+  font-size: 16px;
+}
+
+h5 {
+  font-size: 14px;
+}
+
+h6 {
+  color: #777;
+  font-size: 14px;
+}
+
+body>h2:first-child, body>h1:first-child, body>h1:first-child+h2, body>h3:first-child, body>h4:first-child, body>h5:first-child, body>h6:first-child {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6 {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+h1+p, h2+p, h3+p, h4+p, h5+p, h6+p {
+  margin-top: 10px;
+}
+
+/* LINKS
+=============================================================================*/
+
+a {
+  color: #4183C4;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* LISTS
+=============================================================================*/
+
+ul, ol {
+  padding-left: 30px;
+}
+
+ul li > :first-child, 
+ol li > :first-child, 
+ul li ul:first-of-type, 
+ol li ol:first-of-type, 
+ul li ol:first-of-type, 
+ol li ul:first-of-type {
+  margin-top: 0px;
+}
+
+ul ul, ul ol, ol ol, ol ul {
+  margin-bottom: 0;
+}
+
+dl {
+  padding: 0;
+}
+
+dl dt {
+  font-size: 14px;
+  font-weight: bold;
+  font-style: italic;
+  padding: 0;
+  margin: 15px 0 5px;
+}
+
+dl dt:first-child {
+  padding: 0;
+}
+
+dl dt>:first-child {
+  margin-top: 0px;
+}
+
+dl dt>:last-child {
+  margin-bottom: 0px;
+}
+
+dl dd {
+  margin: 0 0 15px;
+  padding: 0 15px;
+}
+
+dl dd>:first-child {
+  margin-top: 0px;
+}
+
+dl dd>:last-child {
+  margin-bottom: 0px;
+}
+
+/* CODE
+=============================================================================*/
+
+pre, code, tt {
+  font-size: 12px;
+  font-family: "Microsoft YaHei UI", Consolas, "Liberation Mono", Courier, monospace;
+}
+
+code, tt {
+  margin: 0 0px;
+  padding: 0px 0px;
+  white-space: nowrap;
+  border: 1px solid #eaeaea;
+  background-color: #f8f8f8;
+  border-radius: 3px;
+}
+
+pre>code {
+  margin: 0;
+  padding: 0;
+  white-space: pre;
+  border: none;
+  background: transparent;
+}
+
+pre {
+  background-color: #f8f8f8;
+  border: 1px solid #ccc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px;
+}
+
+pre code, pre tt {
+  background-color: transparent;
+  border: none;
+}
+
+kbd {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #DDDDDD;
+    background-image: linear-gradient(#F1F1F1, #DDDDDD);
+    background-repeat: repeat-x;
+    border-color: #DDDDDD #CCCCCC #CCCCCC #DDDDDD;
+    border-image: none;
+    border-radius: 2px 2px 2px 2px;
+    border-style: solid;
+    border-width: 1px;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    line-height: 10px;
+    padding: 1px 4px;
+}
+
+/* QUOTES
+=============================================================================*/
+
+blockquote {
+  border-left: 4px solid #DDD;
+  padding: 0 15px;
+  color: #777;
+}
+
+blockquote>:first-child {
+  margin-top: 0px;
+}
+
+blockquote>:last-child {
+  margin-bottom: 0px;
+}
+
+/* HORIZONTAL RULES
+=============================================================================*/
+
+hr {
+  clear: both;
+  margin: 15px 0;
+  height: 0px;
+  overflow: hidden;
+  border: none;
+  background: transparent;
+  border-bottom: 4px solid #ddd;
+  padding: 0;
+}
+
+/* TABLES
+=============================================================================*/
+
+table th {
+  font-weight: bold;
+}
+
+table th, table td {
+  border: 1px solid #ccc;
+  padding: 6px 13px;
+}
+
+table tr {
+  border-top: 1px solid #ccc;
+  background-color: #fff;
+}
+
+table tr:nth-child(2n) {
+  background-color: #f8f8f8;
+}
+
+/* IMAGES
+=============================================================================*/
+
+img {
+  max-width: 100%
+}
+</style>
+</head>
+<body>
+<h1>分布式ID生成方案汇总</h1>
+<hr />
+<h3>1. 数据库自增长序列或字段</h3>
+<p>一般项目中很常见的方式 , 利用数据库 , 全数据库唯一</p>
+<p><strong>优点 :</strong></p>
+<ul>
+<li>简单 , 代码方便 , 性能可以接受 ; </li>
+<li>数字ID天然排序 , 对分页或者需要排序的结果很有帮助 ; </li>
+</ul>
+<p><strong>缺点 :</strong></p>
+<ul>
+<li>不同数据库语法和实现不同 , 数据库迁移的时候或多数据库版本支持的时候需要处理 ; </li>
+<li>在单个数据库或读写分离或一主多从的情况下 , 只有一个主库可以生成 ; 有单点故障的风险 ; </li>
+<li>在性能达不到要求的情况下 , 比较难于扩展 ; </li>
+<li>如果遇见多个系统需要合并或者涉及到数据迁移会相当痛苦 ; </li>
+<li>分表分库的时候会有麻烦 ; </li>
+</ul>
+<p><strong>优化方案 :</strong></p>
+<p>针对主库单点 , 如果有多个 Master 库 , 则每个 Master 库设置的起始数字不一样 , 步长一样 , 可以是 Master 的个数 , 比如 : Master1 生成的是 1 , 4 , 7 , 10 , Master2 生成的是2 , 5 , 8 , 11 Master3 生成的是 3 , 6 , 9 , 12 ,  这样就可以有效生成集群中的唯一 ID , 也可以大大降低 ID 生成数据库操作的负载</p>
+<p><br /></p>
+<h3>2. UUID</h3>
+<p>常见的方式 , 可以利用数据库也可以利用程序生成 , 一般来说全球唯一</p>
+<p><strong>优点 :</strong></p>
+<ul>
+<li>简单 , 代码方便 ; </li>
+<li>生成ID性能非常好 , 基本不会有性能问题 ; </li>
+<li>全球唯一 , 在遇见数据迁移 , 系统数据合并 , 或者数据库变更等情况下 , 可以从容应对 ; </li>
+</ul>
+<p><strong>缺点 :</strong></p>
+<ul>
+<li>没有排序 , 无法保证趋势递增 ; </li>
+<li>UUID 往往是使用字符串存储 , 查询的效率比较低 ; </li>
+<li>存储空间比较大 , 如果是海量数据库 , 就需要考虑存储量的问题 ; </li>
+<li>传输数据量大</li>
+<li>不可读 ; </li>
+</ul>
+<p><br /></p>
+<h3>3. UUID 的变种</h3>
+<ul>
+<li>
+<p>为了解决 UUID 不可读 , 可以使用 UUID to Int64 的方法 ;</p>
+</li>
+<li>
+<p>为了解决 UUID 无序的问题 , NHibernate 在其主键生成方式中提供了 Comb 算法 (combined guid/timestamp) , 保留 GUID 的10个字节 , 用另 6 个字节表示 GUID 生成的时间 (DateTime) ;</p>
+</li>
+</ul>
+<p><br /></p>
+<h3>4. Redis 生成 ID</h3>
+<p>当使用数据库来生成 ID 性能不够要求的时候 , 我们可以尝试使用 Redis 来生成 ID , 这主要依赖于 Redis 是单线程的 , 所以也可以用生成全局唯一的ID , 可以用 Redis 的原子操作 INCR 和 INCRBY 来实现 ;<br />
+可以使用 Redis 集群来获取更高的吞吐量 , 假如一个集群中有 5 台 Redis , 可以初始化每台 Redis 的值分别是1,2,3,4,5 , 然后步长都是5 , 各个Redis生成的ID为 : <code>A : 1,6,11,16,21</code> , <code>B : 2,7,12,17,22</code> , <code>C : 3,8,13,18,23</code> , <code>D : 4,9,14,19,24</code> , <code>E : 5,10,15,20,25</code> ;<br />
+这个 , 随便负载到哪个机确定好 , 未来很难做修改 , 但是 3-5台 服务器基本能够满足器上 , 都可以获得不同的ID ; 但是步长和初始值一定需要事先需要了 ; 使用 Redis 集群也可以方式单点故障的问题 ;<br />
+另外 , 比较适合使用 Redis 来生成每天从 0 开始的流水号 ; 比如订单号=日期+当日自增长号 ; 可以每天在 Redis 中生成一个 Key , 使用 INCR 进行累加 ; </p>
+<p><strong>优点 :</strong></p>
+<ul>
+<li>不依赖于数据库 , 灵活方便 , 且性能优于数据库 ; </li>
+<li>数字ID天然排序 , 对分页或者需要排序的结果很有帮助 ; </li>
+</ul>
+<p><strong>缺点 :</strong></p>
+<ul>
+<li>如果系统中没有Redis , 还需要引入新的组件 , 增加系统复杂度 ; </li>
+<li>需要编码和配置的工作量比较大 ; </li>
+</ul>
+<p><br /></p>
+<h3>5. Snowflake 算法</h3>
+<p>Snowflake 是 Twitter 开源的分布式 ID 生成算法 , 结果是一个 64 bits 的唯一 Long 型的 ID  , 使用其中 41 bits 作为毫秒数 , 10 bits 作为机器编号 (5 个 bit 是数据中心 , 5 个 bit 的机器 ID) , 12 bits作为毫秒内序列号 , 最后还有一个符号位 , 永远是 0</p>
+<pre><code>--------------------------------------------------------------
+| timestamp(ms)42  | worker id(5+5) | sequence(12)  |
+--------------------------------------------------------------
+</code></pre>
+
+<p>id  = timestamp | workerid | sequence (例如 : 1451063443347648410)</p>
+<p>默认采用上图字节分配方式 :</p>
+<ul>
+<li>第一位为未使用 , 接下来的 41 位为毫秒级时间 (41 位的长度可以使用 69 年)</li>
+<li>5 位 datacenterId 和 5 位 workerId (10 位的长度最多支持部署 1024 个节点) </li>
+<li>12 位是毫秒内的计数 (12 位的计数顺序号支持每个节点每毫秒产生 4096 个ID序号)</li>
+</ul>
+<p>Snowflake 生成的 ID 整体上按照时间自增排序 , 并且整个分布式系统内不会产生 ID 碰撞 , 并且效率较高 , 这个算法单机每秒内理论上最多可以生成 1000*(2^12) , 也就是 400W 的 ID</p>
+<p>Snowflake 算法可以根据自身项目的需要进行一定的修改 , 比如估算未来的数据中心个数 , 每个数据中心的机器数以及统一毫秒可以能的并发数来调整在算法中所需要的 bit 数</p>
+<p><strong>优点</strong></p>
+<ul>
+<li>不依赖于数据库 , 灵活方便 , 且性能优于数据库</li>
+<li>ID 按照时间在单机上是递增的</li>
+</ul>
+<p><strong>缺点</strong></p>
+<ul>
+<li>在单机上是递增的 , 但是由于涉及到分布式环境 , 每台机器上的时钟不可能完全同步 , 也许有时候也会出现不是全局递增的情况</li>
+</ul>
+<p><br /></p>
+<h3>6. Snowflake 算法变种</h3>
+<p><strong>Boundaryflake</strong></p>
+<p>Boundaryflake ID 长度扩展到 128 bits :</p>
+<pre><code>------------------------------------------------------------
+| timestamp(ms)64  | worker id(48) | sequence(16)  |
+------------------------------------------------------------
+</code></pre>
+
+<p>id  = timestamp | workerid | sequence</p>
+<ul>
+<li>最高 64 bits 时间戳</li>
+<li>然后是 48 bits 的 Worker 号 (和 Mac 地址一样长)</li>
+<li>最后是 16 bits 的 Seq Number</li>
+</ul>
+<p>由于它用 48 bits 作为 Worker ID , 和 Mac 地址的长度一样 , 这样就做到了完全的去中心化 , 它这样做的目的是用更多的 bits 实现更小的冲突概率 , 这样就支持更多的 Worker 同时工作 , 同时每毫秒能分配出更多的 ID</p>
+<p><strong>Simpleflake</strong></p>
+<p>Simpleflake 取消 Worker 号 , 保留 41 bits 的 Timestamp , 同时把 sequence number 扩展到 22 bits</p>
+<pre><code>-----------------------------------------
+| timestamp(ms)42 | sequence(22) | 
+-----------------------------------------
+</code></pre>
+
+<p>id  = timestamp | sequence</p>
+<p>Simpleflake 的特点 :</p>
+<ul>
+<li>sequence number 完全靠随机产生 (这样也导致了生成的 ID 可能出现重复)</li>
+<li>没有 Worker 号, 也就不需要和 Zookeeper 通讯, 实现了完全去中心化</li>
+<li>Timestamp 保持和 Snowflake 一致, 今后可以无缝升级到 Snowflake</li>
+</ul>
+<p>缺点 : 生成的 ID 重复的可能 , 这个生成 ID 重复的概率随着每秒生成的 ID 数的增长而增长 , 每秒生成的 ID 不能太多 (最好小于 100次/秒, 如果大于 100次/秒的场景 , Simpleflake 就不适用)</p>
+<p><br /></p>
+<h3>7. MongoDB 的 ObjectId</h3>
+<p>MongoDB 的 ObjectId 和 Snowflake 算法类似 , 它设计成轻量型的 , 不同的机器都能用全局唯一的同种方法方便地生成它 ; MongoDB 从一开始就设计用来作为分布式数据库 , 处理多个节点是一个核心要求 , 使其在分片环境中要容易生成得多 ;</p>
+<p>通过 <code>时间+机器码+pid+inc</code> 共 12 个字节 , 通过 <code>4+3+2+3</code> 的方式最终标识成一个 24 长度的十六进制字符 , ObjectId是一个 12 字节 BSON 类型数据 </p>
+<ul>
+<li>4 个字节表示的 Unix timestamp</li>
+<li>3 个字节表示的机器的 ID</li>
+<li>2 个字节表示的进程 ID</li>
+<li>3 个字节表示的计数器</li>
+</ul>
+<p>前 4 个字节是从标准纪元开始的时间戳 , 单位为秒 ; 时间戳与随后的 5 个字节组合起来 , 提供了秒级别的唯一性 ; 由于时间戳在前 , 这意味着 ObjectId 大致会按照插入的顺序排列 , 这对于某些方面很有用 , 如将其作为索引提高效率 , 这4 个字节也隐含了文档创建的时间 , 大多数客户端类库都会公开一个方法从ObjectId 获取这个信息 ;<br />
+接下来的3 字节是所在主机的唯一标识符 ; 通常是机器主机名的散列值 ; 这样就可以确保不同主机生成不同的ObjectId , 不产生冲突 ; <br />
+为了确保在同一台机器上并发的多个进程产生的 ObjectId 是唯一的 , 接下来的两字节来自产生 ObjectId 的进程标识符 (PID) ; <br />
+前 9 字节保证了同一秒钟不同机器不同进程产生的 ObjectId 是唯一的 ; 后3 字节就是一个自动增加的计数器 , 确保相同进程同一秒产生的 ObjectId 也是不一样的 , 同一秒钟最多允许每个进程拥有 16777216 个不同的 ObjectId ; </p>
+
+</body>
+</html>
+<!-- This document was created with MarkdownPad, the Markdown editor for Windows (http://markdownpad.com) -->

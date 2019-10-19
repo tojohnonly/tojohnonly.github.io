@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>#. Windows问题QA</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style type="text/css">
+/* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
+/* Author: Nicolas Hery - http://nicolashery.com */
+/* Version: b13fe65ca28d2e568c6ed5d7f06581183df8f2ff */
+/* Source: https://github.com/nicolahery/markdownpad-github */
+
+/* RESET
+=============================================================================*/
+
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+/* BODY
+=============================================================================*/
+
+body {
+  font-family: Microsoft Yahei UI;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #333;
+  background-color: #fff;
+  padding: 20px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+body>*:first-child {
+  margin-top: 0 !important;
+}
+
+body>*:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* BLOCKS
+=============================================================================*/
+
+p, blockquote, ul, ol, dl, table, pre {
+  margin: 15px 0;
+}
+
+/* HEADERS
+=============================================================================*/
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 20px 0 10px;
+  padding: 0;
+  font-weight: bold;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1 tt, h1 code, h2 tt, h2 code, h3 tt, h3 code, h4 tt, h4 code, h5 tt, h5 code, h6 tt, h6 code {
+  font-size: inherit;
+}
+
+h1 {
+  font-size: 28px;
+  color: #000;
+}
+
+h2 {
+  font-size: 24px;
+  border-bottom: 1px solid #ccc;
+  color: #000;
+}
+
+h3 {
+  font-size: 18px;
+}
+
+h4 {
+  font-size: 16px;
+}
+
+h5 {
+  font-size: 14px;
+}
+
+h6 {
+  color: #777;
+  font-size: 14px;
+}
+
+body>h2:first-child, body>h1:first-child, body>h1:first-child+h2, body>h3:first-child, body>h4:first-child, body>h5:first-child, body>h6:first-child {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6 {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+h1+p, h2+p, h3+p, h4+p, h5+p, h6+p {
+  margin-top: 10px;
+}
+
+/* LINKS
+=============================================================================*/
+
+a {
+  color: #4183C4;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* LISTS
+=============================================================================*/
+
+ul, ol {
+  padding-left: 30px;
+}
+
+ul li > :first-child, 
+ol li > :first-child, 
+ul li ul:first-of-type, 
+ol li ol:first-of-type, 
+ul li ol:first-of-type, 
+ol li ul:first-of-type {
+  margin-top: 0px;
+}
+
+ul ul, ul ol, ol ol, ol ul {
+  margin-bottom: 0;
+}
+
+dl {
+  padding: 0;
+}
+
+dl dt {
+  font-size: 14px;
+  font-weight: bold;
+  font-style: italic;
+  padding: 0;
+  margin: 15px 0 5px;
+}
+
+dl dt:first-child {
+  padding: 0;
+}
+
+dl dt>:first-child {
+  margin-top: 0px;
+}
+
+dl dt>:last-child {
+  margin-bottom: 0px;
+}
+
+dl dd {
+  margin: 0 0 15px;
+  padding: 0 15px;
+}
+
+dl dd>:first-child {
+  margin-top: 0px;
+}
+
+dl dd>:last-child {
+  margin-bottom: 0px;
+}
+
+/* CODE
+=============================================================================*/
+
+pre, code, tt {
+  font-size: 12px;
+  font-family: Microsoft Yahei UI;
+}
+
+code, tt {
+  margin: 0 0px;
+  padding: 0px 0px;
+  white-space: nowrap;
+  border: 1px solid #eaeaea;
+  background-color: #f8f8f8;
+  border-radius: 3px;
+}
+
+pre>code {
+  margin: 0;
+  padding: 0;
+  white-space: pre;
+  border: none;
+  background: transparent;
+}
+
+pre {
+  background-color: #f8f8f8;
+  border: 1px solid #ccc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px;
+}
+
+pre code, pre tt {
+  background-color: transparent;
+  border: none;
+}
+
+kbd {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #DDDDDD;
+    background-image: linear-gradient(#F1F1F1, #DDDDDD);
+    background-repeat: repeat-x;
+    border-color: #DDDDDD #CCCCCC #CCCCCC #DDDDDD;
+    border-image: none;
+    border-radius: 2px 2px 2px 2px;
+    border-style: solid;
+    border-width: 1px;
+	font-family: Microsoft Yahei UI;
+    line-height: 10px;
+    padding: 1px 4px;
+}
+
+/* QUOTES
+=============================================================================*/
+
+blockquote {
+  border-left: 4px solid #DDD;
+  padding: 0 15px;
+  color: #777;
+}
+
+blockquote>:first-child {
+  margin-top: 0px;
+}
+
+blockquote>:last-child {
+  margin-bottom: 0px;
+}
+
+/* HORIZONTAL RULES
+=============================================================================*/
+
+hr {
+  clear: both;
+  margin: 15px 0;
+  height: 0px;
+  overflow: hidden;
+  border: none;
+  background: transparent;
+  border-bottom: 4px solid #ddd;
+  padding: 0;
+}
+
+/* TABLES
+=============================================================================*/
+
+table th {
+  font-weight: bold;
+}
+
+table th, table td {
+  border: 1px solid #ccc;
+  padding: 6px 13px;
+}
+
+table tr {
+  border-top: 1px solid #ccc;
+  background-color: #fff;
+}
+
+table tr:nth-child(2n) {
+  background-color: #f8f8f8;
+}
+
+/* IMAGES
+=============================================================================*/
+
+img {
+  max-width: 100%
+}
+</style>
+</head>
+<body>
+<h1>Windows问题QA</h1>
+<hr />
+<h3>1. 系统无法远程桌面,你的凭据不工作,解决方法</h3>
+<ol>
+<li>
+<p>解决方法一 : 修改组策略</p>
+<ul>
+<li>在 <code>开始</code> 窗口运行 <code>gpedit.msc</code> , 进入<code>计算机配置-&gt;管理模板-&gt;系统-&gt;凭据分配-&gt;允许分配保存的凭据用于仅NTLM服务器身份验证</code> , 双击打开 , <code>选择 已启用-&gt;单击 显示</code> 输入 <code>TERMSRV/*</code> , 点确定后退出。 ;</li>
+<li>在 <code>开始</code> 窗口运行命令 <code>gpupdate /force</code> 立即生效或重启电脑 ;</li>
+</ul>
+</li>
+<li>
+<p>解决方法二 : 添加凭据</p>
+<ul>
+<li>进入 <code>控制面板</code> -&gt; <code>凭据管理器</code> -&gt; <code>添加Windows凭据</code> -&gt; <code>输入要登录的服务器的IP地址,用户名,密码</code> , 点确定退出 ;</li>
+</ul>
+</li>
+<li>
+<p>解决方法三 : 修改网络访问模型</p>
+<ul>
+<li><code>开始</code> -&gt; <code>运行</code> -&gt; <code>gpedit.msc</code> -&gt; <code>计算机配置</code> -&gt; <code>Windows设置</code> -&gt; <code>安全设置</code> -&gt; <code>本地策略</code> -&gt; <code>安全选项</code> -&gt; <code>网络访问:本地帐户的共享和安全模型</code> ;</li>
+<li>修改为 <code>使用经典模式</code> ;</li>
+</ul>
+</li>
+</ol>
+<h3>2. Cmder 默认的命令提示符 λ 改成 $</h3>
+<p><code>cmder\vendor\clink.lua</code> 文件中第 41 行中 <code>{lamb}</code> 修改为 <code>$</code> , 如下所示 :</p>
+<blockquote>
+<p>修改前 :</p>
+</blockquote>
+<pre><code>local cmder_prompt = &quot;\x1b[1;32;40m{cwd} {git}{hg} \n\x1b[1;30;40m{lamb} \x1b[0m&quot;
+</code></pre>
+
+<blockquote>
+<p>修改后 :</p>
+</blockquote>
+<pre><code>local cmder_prompt = &quot;\x1b[1;32;40m{cwd} {git}{hg} \n\x1b[1;30;40m$ \x1b[0m&quot;
+</code></pre>
+
+<h3>3. 有道云笔记去广告</h3>
+<p>右键图标 ,  <code>打开文件位置</code> , 选择 <code>theme</code> 文件夹里面的 <code>build.xml</code> 文件 , 修改内容如下 :</p>
+<pre><code>&lt;PanelAd type=&quot;adpanel&quot; css=&quot;public&quot; ass=&quot;mainform panelclient PanelAd&quot;&gt;
+    &lt;panelTopLine type=&quot;panel&quot; css=&quot;AdPanel&quot; Dockstyle=&quot;top&quot; Bounds=&quot;0,0,0,0&quot;/&gt;
+    &lt;MiddlePhotoPanel type=&quot;panel&quot; css=&quot;public&quot; DockStyle=&quot;top&quot; Bounds=&quot;0,0,0,0&quot; Margin=&quot;0,0,0,0&quot;&gt;
+        &lt;AdPhoto type=&quot;photo&quot; css=&quot;Ad AdPhoto&quot; AnchorStyle=&quot;center&quot; AutoZoom=&quot;ZoomEqual&quot; Bounds=&quot;0,0,0,0&quot;&gt;
+            &lt;AdClose type=&quot;button&quot; css=&quot;adclear&quot; AnchorStyle=&quot;topright&quot; Bounds=&quot;0,0,0,0&quot; /&gt;
+            &lt;AdText type=&quot;label&quot; css=&quot;AdText&quot; AnchorStyle=&quot;bottomleft&quot; Bounds=&quot;0,0,0,0&quot;/&gt;
+        &lt;/AdPhoto&gt;
+    &lt;/MiddlePhotoPanel&gt;
+&lt;/PanelAd&gt;
+</code></pre>
+
+<h3>4. Power Designer 设置字体和显示列</h3>
+<p>修改 Table 显示列 :  </p>
+<pre><code>Tools -&gt; Display Preference -&gt; Content -&gt; Table -&gt; Advanced -&gt; Columns -&gt; List columns -&gt; 点击搜索按钮 -&gt; 选中 Name , 并移动到最上面
+</code></pre>
+
+<p>修改字体样式 :  </p>
+<pre><code>Tools -&gt; Display Preference -&gt; Format -&gt; Table -&gt; Modify -&gt; Font 
+</code></pre>
+
+<h3>5. U 盘 EFI 分区造成 Windows 不识别</h3>
+<p>首先以管理员身份运行CMD工具 -&gt; 输入 <code>diskpart</code> 开启工具 -&gt; <code>list disk</code> 查看物理磁盘 -&gt; <code>磁盘 2</code> 是我需要处理的 , 输入 <code>select disk 2</code> -&gt; <code>clean</code> 完成清理 , 然后在磁盘管理当中格式化即可</p>
+
+</body>
+</html>
+<!-- This document was created with MarkdownPad, the Markdown editor for Windows (http://markdownpad.com) -->

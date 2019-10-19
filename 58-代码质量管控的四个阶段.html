@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>代码质量管控的四个阶段</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style type="text/css">
+/* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
+/* Author: Nicolas Hery - http://nicolashery.com */
+/* Version: b13fe65ca28d2e568c6ed5d7f06581183df8f2ff */
+/* Source: https://github.com/nicolahery/markdownpad-github */
+
+/* RESET
+=============================================================================*/
+
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+/* BODY
+=============================================================================*/
+
+body {
+  font-family: Microsoft YaHei UI;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #333;
+  background-color: #fff;
+  padding: 20px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+body>*:first-child {
+  margin-top: 0 !important;
+}
+
+body>*:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* BLOCKS
+=============================================================================*/
+
+p, blockquote, ul, ol, dl, table, pre {
+  margin: 15px 0;
+}
+
+/* HEADERS
+=============================================================================*/
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 20px 0 10px;
+  padding: 0;
+  font-weight: bold;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1 tt, h1 code, h2 tt, h2 code, h3 tt, h3 code, h4 tt, h4 code, h5 tt, h5 code, h6 tt, h6 code {
+  font-size: inherit;
+}
+
+h1 {
+  font-size: 28px;
+  color: #000;
+}
+
+h2 {
+  font-size: 24px;
+  border-bottom: 1px solid #ccc;
+  color: #000;
+}
+
+h3 {
+  font-size: 18px;
+}
+
+h4 {
+  font-size: 16px;
+}
+
+h5 {
+  font-size: 14px;
+}
+
+h6 {
+  color: #777;
+  font-size: 14px;
+}
+
+body>h2:first-child, body>h1:first-child, body>h1:first-child+h2, body>h3:first-child, body>h4:first-child, body>h5:first-child, body>h6:first-child {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6 {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+h1+p, h2+p, h3+p, h4+p, h5+p, h6+p {
+  margin-top: 10px;
+}
+
+/* LINKS
+=============================================================================*/
+
+a {
+  color: #4183C4;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* LISTS
+=============================================================================*/
+
+ul, ol {
+  padding-left: 30px;
+}
+
+ul li > :first-child, 
+ol li > :first-child, 
+ul li ul:first-of-type, 
+ol li ol:first-of-type, 
+ul li ol:first-of-type, 
+ol li ul:first-of-type {
+  margin-top: 0px;
+}
+
+ul ul, ul ol, ol ol, ol ul {
+  margin-bottom: 0;
+}
+
+dl {
+  padding: 0;
+}
+
+dl dt {
+  font-size: 14px;
+  font-weight: bold;
+  font-style: italic;
+  padding: 0;
+  margin: 15px 0 5px;
+}
+
+dl dt:first-child {
+  padding: 0;
+}
+
+dl dt>:first-child {
+  margin-top: 0px;
+}
+
+dl dt>:last-child {
+  margin-bottom: 0px;
+}
+
+dl dd {
+  margin: 0 0 15px;
+  padding: 0 15px;
+}
+
+dl dd>:first-child {
+  margin-top: 0px;
+}
+
+dl dd>:last-child {
+  margin-bottom: 0px;
+}
+
+/* CODE
+=============================================================================*/
+
+pre, code, tt {
+  font-size: 12px;
+  font-family: Consolas, "Liberation Mono", Courier, monospace;
+}
+
+code, tt {
+  margin: 0 0px;
+  padding: 0px 0px;
+  white-space: nowrap;
+  border: 1px solid #eaeaea;
+  background-color: #f8f8f8;
+  border-radius: 3px;
+}
+
+pre>code {
+  margin: 0;
+  padding: 0;
+  white-space: pre;
+  border: none;
+  background: transparent;
+}
+
+pre {
+  background-color: #f8f8f8;
+  border: 1px solid #ccc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px;
+}
+
+pre code, pre tt {
+  background-color: transparent;
+  border: none;
+}
+
+kbd {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #DDDDDD;
+    background-image: linear-gradient(#F1F1F1, #DDDDDD);
+    background-repeat: repeat-x;
+    border-color: #DDDDDD #CCCCCC #CCCCCC #DDDDDD;
+    border-image: none;
+    border-radius: 2px 2px 2px 2px;
+    border-style: solid;
+    border-width: 1px;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    line-height: 10px;
+    padding: 1px 4px;
+}
+
+/* QUOTES
+=============================================================================*/
+
+blockquote {
+  border-left: 4px solid #DDD;
+  padding: 0 15px;
+  color: #777;
+}
+
+blockquote>:first-child {
+  margin-top: 0px;
+}
+
+blockquote>:last-child {
+  margin-bottom: 0px;
+}
+
+/* HORIZONTAL RULES
+=============================================================================*/
+
+hr {
+  clear: both;
+  margin: 15px 0;
+  height: 0px;
+  overflow: hidden;
+  border: none;
+  background: transparent;
+  border-bottom: 4px solid #ddd;
+  padding: 0;
+}
+
+/* TABLES
+=============================================================================*/
+
+table th {
+  font-weight: bold;
+}
+
+table th, table td {
+  border: 1px solid #ccc;
+  padding: 6px 13px;
+}
+
+table tr {
+  border-top: 1px solid #ccc;
+  background-color: #fff;
+}
+
+table tr:nth-child(2n) {
+  background-color: #f8f8f8;
+}
+
+/* IMAGES
+=============================================================================*/
+
+img {
+  max-width: 100%;
+  box-shadow: 0px 0px 5px #888888;
+}
+</style>
+</head>
+<body>
+<h1>代码质量管控的四个阶段</h1>
+<hr />
+<h2>背景</h2>
+<p>本文讨论的代码质量指的是代码本身的质量 , 包括复杂度 , 重复率 , 代码风格等要素 ; 代码是团队的共同财产 , 代码质量是团队技术水平和管理水平的直接体现 ;</p>
+<p>代码质量下降通常会自成因果 , 导致恶性循环 :</p>
+<ul>
+<li>破窗效应 : 在烂代码上继续生产烂代码的心理负担小很多</li>
+<li>传染性 : 烂代码传递着一种不在意质量 , 只看业务成果的负面信息 , 会伤害团队的技术热情和工作氛围 , 导致更多烂代码出现</li>
+</ul>
+<p>本文会分析代码质量下降的内在机制 , 并分享在代码质量管控方面的一些实践经验 ;</p>
+<h2>熵增定律与代码质量</h2>
+<p>熵增定律告诉我们 , 一个封闭系统总是趋向于熵增 , 也就是系统的无序程度只会不断增加 ;</p>
+<p><img src="images/58-代码质量管控的四个阶段/szdl.png" alt="szdl" /></p>
+<p>对于软件项目来说 , 代码质量代表着系统的有序程度 , 烂代码增加就是系统无序性上升的体现 ; 在无外力影响的情况下 , 烂代码只会原来越多 ;</p>
+<p>为了维持系统有序 , 需要外界向系统不断输入能量 ; 对于代码质量 , 我们需要主动投入资源 , 来有意识地抑制烂代码越来越多的自然趋势 ;</p>
+<h2>经典循环</h2>
+<p>烂代码产生的常见原因是业务压力大 , 导致没有时间或意愿讲究代码质量 ; 因为向业务压力妥协而生产烂代码之后 , 开发效率会随之下降 , 导致业务压力更大 , 形成一种典型的恶性循环 ;</p>
+<p><img src="images/58-代码质量管控的四个阶段/jdxh_1.png" alt="jdxh_1" /></p>
+<p>为了应对业务压力 , 常见的做法就是向项目中增加人力 , 但是单纯地增加人力的话 , 会因为风格不一致 , 沟通成本上升等原因导致烂代码更多 ;</p>
+<p><img src="images/58-代码质量管控的四个阶段/jdxh_2.png" alt="jdxh_2" /></p>
+<p>要遏制这种恶性循环 , 需要多管齐下 , 主动对代码质量进行管控 , 并且持续进行技术升级 , 系统性地解决问题 ;</p>
+<p><img src="images/58-代码质量管控的四个阶段/jdxh_3.png" alt="jdxh_3" /></p>
+<p>不过质量管控和技术升级需要长期投入才能产生效果 ; 通常情况下人们还是倾向于通过增加人力快速地解决业务压力的问题 , 而忽略了对于代码质量的负面影响 , 导致代码质量越来越差 ;</p>
+<h2>四个阶段</h2>
+<p>我把代码质量管控通常需要经历的四个阶段 , 称之为 <strong>四个现代化</strong> :</p>
+<ul>
+<li>规范化 : 建立代码规范与 Code Review 制度 ;</li>
+<li>自动化 : 使用工具自动检查代码质量 ;</li>
+<li>流程化 : 将代码质量检查与代码流动过程绑定 ;</li>
+<li>中心化 : 以团队整体为视角 , 集中管理代码规范 , 并实现质量状况透明化 ;</li>
+</ul>
+<h4>阶段一 : 规范化</h4>
+<p>保障代码质量的基础是建立团队的代码规范 , 通常包括 ;</p>
+<ul>
+<li>风格规范 : 缩进 , 换行 , 大小写等风格问题 ;</li>
+<li>实践规范 : 规避一些常见的隐患 , 或者针对特定问题的最佳实践 ;</li>
+<li>业务规范 : 与业务有关的特殊要求 , 比如文案中的关键词 ;</li>
+</ul>
+<p>团队的代码规范通常以文档的形式存在 , 供新人们学习 ; 但文档这种形式常见的情况就是新人看过之后就不再回顾了 , 也很难对实际写代码形成真正的约束 ; </p>
+<p>在规范的基础上 , 要通过Code Review将规范落地 ; Code Review中大家可以对代码质量问题进行交流 , 并且相互监督 , 形成团队重视代码的习惯 ;</p>
+<p>关于Code Review可以参考另一篇文章 ; Code Review体系与团队文化 <a href="https://zhuanlan.zhihu.com/zhangxin840">https://zhuanlan.zhihu.com/zhangxin840</a></p>
+<h4>阶段二 : 自动化</h4>
+<p>自动化是指在代码规范的基础上 , 使用自动化工具进行质量检查 , 通常包括 :</p>
+<ul>
+<li>代码规范检查 : 包括风格规范 , 实践规范 , 业务规范 ;</li>
+<li>重复率 : 重复出现的代码区块占比 , 通常要求在 5% 以下 ;</li>
+<li>复杂度 : 总行数 , 模块大小 , 循环复杂度等 ;</li>
+<li>检查覆盖度 : 经过检查的行数占代码库总行数的比例 ;</li>
+</ul>
+<p>自动化质量检查可以覆盖多数常见问题 , 能够提升开发效率 , 也可以降 低人工 Code Review 的成本 ;</p>
+<p><img src="images/58-代码质量管控的四个阶段/zdh.png" alt="zdh" /></p>
+<p>自动化检查工具的规则集与代码规范直接对应 ; 通过编辑器插件 , 在写代码的时候直接给出检查结果 ; 到这个阶段 , 团队的代码规范文档已经不再需要陈述各种细节 , 开发者可以直接通过查看自动化工具的规则集来了解代码规范 ;</p>
+<h4>阶段三 : 流程化</h4>
+<p>流程化的意思是将自动化代码质量检查和 Code Review 与代码流动的过程绑定 , 从而保证所有上线的代码都经过机器与人工多个环节的检查 ;</p>
+<p>代码流动过程 :</p>
+<p><img src="images/58-代码质量管控的四个阶段/lch_1.png" alt="lch_1" /></p>
+<p>执行自动化代码质量检查的时机 :</p>
+<ul>
+<li>编辑时 : 使用编辑器插件 , 实时运行质量检查 ;</li>
+<li>构建时 : 在本地或者开发机的构建脚本中运行质量检查 ;</li>
+<li>提交时 : 利用Git Hooks , 提交代码或者生成 Pull Request 时运行质量检查 ;</li>
+<li>发布时 : 在发布脚本中再做一次质量检查 , 通常与自动化测试放在一起 ;</li>
+</ul>
+<p>质量检查与代码流动绑定后的效果 :</p>
+<p><img src="images/58-代码质量管控的四个阶段/lch_2.png" alt="lch_2" /></p>
+<p>除了人工的 Code Review 之外 , 各个环节的代码质量检查都是机器自动运行的 , 不会给开发者带来额外的成本 ;</p>
+<h4>阶段四 : 中心化</h4>
+<p>当团队规模越来越大 , 项目越来越多时 , 代码质量管控就会面临以下问题 :</p>
+<ul>
+<li>不同项目使用的代码规范不一样 ;</li>
+<li>部分项目由于放松要求 , 没有接入质量检查 , 或者存在大量未修复的缺陷 ;</li>
+<li>无法从团队整体层面上体现各个项目的质量状况对比 ;</li>
+</ul>
+<p>为了应对以上问题 , <strong>需要建设中心化的代码质量管控体系</strong> , 要点包括 :</p>
+<ul>
+<li>代码规范统一管理 , 使用 Git 或者 NPM 包管理自动化代码质量检查的规则集 , 自动安装 , 不在本地写规则 ; 一个团队 , 一类项目 , 一套规则 ;</li>
+<li>使用统一的持续集成服务 , 质量检查不通过的项目不能上线 ;</li>
+<li>建立代码质量评分制度 , 让项目与项目之间能够横向对比 , 项目自身能够纵向对比 , 并且进行汇总反馈 ;</li>
+</ul>
+<h2>总结</h2>
+<p>在面临业务压力时 , 人们通常会倾向于通过增加人力来缓解业务压力 ; 但从系统整体的角度来看 , 人力增加会造成代码质量变差 , 开发效率下降 , 从而再度增大业务压力 ; 这种代码质量越来越差的循环 , 是熵增定律在软件工程领域的生动体现 ;</p>
+<p>为了抑制这种循环 , 我们需要有意识地投入资源来建设代码质量的管控体系 ; 这个过程分为四个阶段 : 规范化 , 自动化 , 流程化 , 中心化 ; 每个阶段都有不同关注的要点 ;</p>
+
+</body>
+</html>
+<!-- This document was created with MarkdownPad, the Markdown editor for Windows (http://markdownpad.com) -->

@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>软件测试方法汇总</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style type="text/css">
+/* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
+/* Author: Nicolas Hery - http://nicolashery.com */
+/* Version: b13fe65ca28d2e568c6ed5d7f06581183df8f2ff */
+/* Source: https://github.com/nicolahery/markdownpad-github */
+
+/* RESET
+=============================================================================*/
+
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+/* BODY
+=============================================================================*/
+
+body {
+  font-family: 'Microsoft YaHei UI', Helvetica, arial, freesans, clean, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #333;
+  background-color: #fff;
+  padding: 20px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+body>*:first-child {
+  margin-top: 0 !important;
+}
+
+body>*:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* BLOCKS
+=============================================================================*/
+
+p, blockquote, ul, ol, dl, table, pre {
+  margin: 15px 0;
+}
+
+/* HEADERS
+=============================================================================*/
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 20px 0 10px;
+  padding: 0;
+  font-weight: bold;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1 tt, h1 code, h2 tt, h2 code, h3 tt, h3 code, h4 tt, h4 code, h5 tt, h5 code, h6 tt, h6 code {
+  font-size: inherit;
+}
+
+h1 {
+  font-size: 28px;
+  color: #000;
+}
+
+h2 {
+  font-size: 24px;
+  border-bottom: 1px solid #ccc;
+  color: #000;
+}
+
+h3 {
+  font-size: 18px;
+}
+
+h4 {
+  font-size: 16px;
+}
+
+h5 {
+  font-size: 14px;
+}
+
+h6 {
+  color: #777;
+  font-size: 14px;
+}
+
+body>h2:first-child, body>h1:first-child, body>h1:first-child+h2, body>h3:first-child, body>h4:first-child, body>h5:first-child, body>h6:first-child {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6 {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+h1+p, h2+p, h3+p, h4+p, h5+p, h6+p {
+  margin-top: 10px;
+}
+
+/* LINKS
+=============================================================================*/
+
+a {
+  color: #4183C4;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* LISTS
+=============================================================================*/
+
+ul, ol {
+  padding-left: 30px;
+}
+
+ul li > :first-child, 
+ol li > :first-child, 
+ul li ul:first-of-type, 
+ol li ol:first-of-type, 
+ul li ol:first-of-type, 
+ol li ul:first-of-type {
+  margin-top: 0px;
+}
+
+ul ul, ul ol, ol ol, ol ul {
+  margin-bottom: 0;
+}
+
+dl {
+  padding: 0;
+}
+
+dl dt {
+  font-size: 14px;
+  font-weight: bold;
+  font-style: italic;
+  padding: 0;
+  margin: 15px 0 5px;
+}
+
+dl dt:first-child {
+  padding: 0;
+}
+
+dl dt>:first-child {
+  margin-top: 0px;
+}
+
+dl dt>:last-child {
+  margin-bottom: 0px;
+}
+
+dl dd {
+  margin: 0 0 15px;
+  padding: 0 15px;
+}
+
+dl dd>:first-child {
+  margin-top: 0px;
+}
+
+dl dd>:last-child {
+  margin-bottom: 0px;
+}
+
+/* CODE
+=============================================================================*/
+
+pre, code, tt {
+  font-size: 12px;
+  font-family: Consolas, "Liberation Mono", Courier, monospace;
+}
+
+code, tt {
+  margin: 0 0px;
+  padding: 0px 0px;
+  white-space: nowrap;
+  border: 1px solid #eaeaea;
+  background-color: #f8f8f8;
+  border-radius: 3px;
+}
+
+pre>code {
+  margin: 0;
+  padding: 0;
+  white-space: pre;
+  border: none;
+  background: transparent;
+}
+
+pre {
+  background-color: #f8f8f8;
+  border: 1px solid #ccc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px;
+}
+
+pre code, pre tt {
+  background-color: transparent;
+  border: none;
+}
+
+kbd {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #DDDDDD;
+    background-image: linear-gradient(#F1F1F1, #DDDDDD);
+    background-repeat: repeat-x;
+    border-color: #DDDDDD #CCCCCC #CCCCCC #DDDDDD;
+    border-image: none;
+    border-radius: 2px 2px 2px 2px;
+    border-style: solid;
+    border-width: 1px;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    line-height: 10px;
+    padding: 1px 4px;
+}
+
+/* QUOTES
+=============================================================================*/
+
+blockquote {
+  border-left: 4px solid #DDD;
+  padding: 0 15px;
+  color: #777;
+}
+
+blockquote>:first-child {
+  margin-top: 0px;
+}
+
+blockquote>:last-child {
+  margin-bottom: 0px;
+}
+
+/* HORIZONTAL RULES
+=============================================================================*/
+
+hr {
+  clear: both;
+  margin: 15px 0;
+  height: 0px;
+  overflow: hidden;
+  border: none;
+  background: transparent;
+  border-bottom: 4px solid #ddd;
+  padding: 0;
+}
+
+/* TABLES
+=============================================================================*/
+
+table th {
+  font-weight: bold;
+}
+
+table th, table td {
+  border: 1px solid #ccc;
+  padding: 6px 13px;
+}
+
+table tr {
+  border-top: 1px solid #ccc;
+  background-color: #fff;
+}
+
+table tr:nth-child(2n) {
+  background-color: #f8f8f8;
+}
+
+/* IMAGES
+=============================================================================*/
+
+img {
+  max-width: 100%
+}
+</style>
+</head>
+<body>
+<h1>软件测试方法汇总</h1>
+<hr />
+<h3>黑盒测试</h3>
+<p>之所以被称为黑盒测试是因为可以将被测程序看成是一个无法打开的黑盒 , 而工作人员在不考虑任何程序内部结构和特性的条件下 , 根据需求规格说明书设计测试实例 , 并检查程序的功能是否能够按照规范说明准确无误的运行 ; 其主要是对软件界面和软件功能进行测试 ; 对于黑盒测试行为必须加以量化才能够有效的保证软件的质量</p>
+<h3>白盒测试</h3>
+<p>其与黑盒测试不同 , 它主要是借助程序内部的逻辑和相关信息 , 通过检测内部动作是否按照设计规格说明书的设定进行 , 检查每一条通路能否正常工作 ; 白盒测试是从程序结构方面出发对测试用例进行设计 ; 其主要用于检查各个逻辑结构是否合理 , 对应的模块独立路径是否正常以及内部结构是否有效 ; 常用的白盒测试法有控制流分析 , 数据流分析 , 路径分析 , 程序变异等 , 其中逻辑覆盖法是主要的测试方法</p>
+<h3>灰盒测试</h3>
+<p>灰盒测试则介于黑盒测试和白盒测试之间 ; 灰盒测试除了重视输出相对于出入的正确性 , 也看重其内部表现 ; 但是它不可能像白盒测试那样详细和完整 ; 它只是简单的靠一些象征性的现象或标志来判断其内部的运行情况 , 因此在内部结果出现错误 , 但输出结果正确的情况下可以采取灰盒测试方法 ; 因为在此情况下灰盒比白盒高效 , 比黑盒适用性广的优势就凸显出来了</p>
+<h3>静态测试</h3>
+<p>静态测试的含义是被测程序不运行 , 只依靠分析或检查源程序的语句 , 结构 , 过程等来检查程序是否有错误 ; 即通过对软件的需求规格说明书 , 设计说明书以及源程序做结构分析和流程图分析 , 从而来找出错误 ; 例如不匹配的参数 , 未定义的变量等</p>
+<h3>动态测试</h3>
+<p>动态测试与静态测试相对应 , 其是通过运行被测试程序 , 对得到的运行结果与预期的结果进行比较分析 , 同时分析运行效率和健壮性能等 ; 这种方法可简单分为三个步骤:构造测试实例 , 执行程序以及分析结果</p>
+<h3>手工测试</h3>
+<p>就是测试人员按照事先为覆盖被测软件需求而编写的测试用例 , 根据测试大纲中所描述的测试步骤和方法 , 手工地一个一个地输 入执行 , 包括与被测软件进行交互 (如输入测试数据 , 记录测试结果等) , 然后观察测试结果 , 看被测程序是否存在问题 , 或在执行过程中是否会有异常发生 , 属于比较原始但是必须执行的一个步骤</p>
+<h3>自动化测试</h3>
+<p>实际上是将大量的重复性的测试工作交给计算机去完成 , 通常是使用自动化测试工具来模拟手动测试步骤 , 执行用某种程序设计语言编写的过程 (全自动测试就是指在自动测试过程中 , 不需要人工干预 , 由程序自动完成测试的全过程；半自动测试就是指在自动测试过程中 , 需要手动输入测试用例或选择测试路径 , 再由自动测试程序按照人工指定的要求完成自动测试) </p>
+<h3>单元测试</h3>
+<p>单元测试主要是开发人员对该软件的模块进行测试 , 通过测试以发现该模块的实际功能出现不符合的情况和编码错误 ; 由于该模块的规模不大 , 功能单一 , 结构较简单 , 且测试人员可通过阅读源程序清楚知道其逻辑结构 , 首先应通过静态测试方法 , 比如静态分析 , 代码审查等 , 对该模块的源程序进行分析 , 按照模块的程序设计的控制流程图 , 以满足软件覆盖率要求的逻辑测试要求 ; 另外 , 也可采用黑盒测试方法提出一组基本的测试用例 , 再用白盒测试方法进行验证 ; 若用黑盒测试方法所产生的测试用例满足不了软件的覆盖要求 , 可采用白盒法增补出新的测试用例 , 以满足所需的覆盖标准 ; 其所需的覆盖标准应视模块的实际具体情况而定 ; 对一些质量要求和可靠性要求较高的模块 , 一般要满足所需条件的组合覆盖或者路径覆盖标准</p>
+<h3>功能测试</h3>
+<p>功能测试就是对产品的各功能进行验证 , 根据功能测试用例 , 逐项测试 , 检查产品是否达到用户要求的功能</p>
+<h3>集成测试</h3>
+<p>集成测试通常要对已经严格按照程序设计要求和标准组装起来的模块同时进行测试 , 明确该程序结构组装的正确性 , 发现和接口有关的问题 , 比如模块接口的数据是否会在穿越接口时发生丢失；各个模块之间因某种疏忽而产生不利的影响；将模块各个子功能组合起来后产生的功能要求达不到预期的功能要求；一些在误差范围内且可接受的误差由于长时间的积累进而到达了不能接受的程度；数据库因单个模块发生错误造成自身出现错误等等 ; 同时因集成测试是界于单元测试和系统测试之间的 , 所以 , 集成测试具有承上启下的作用 ; 因此有关测试人员必须做好集成测试工作 ; 在这一阶段 , 一般采用的是白盒和黑盒结合的方法进行测试 , 验证这一阶段设计的合理性以及需求功能的实现性</p>
+<h3>场景测试</h3>
+<p>测试人员验证几个模块是否能完成一个用户场景</p>
+<h3>系统测试</h3>
+<p>一般情况下 , 系统测试采用黑盒法来进行测试的 , 以此来检查该系统是否符合软件需求 ; 本阶段的主要测试内容包括健壮性测试 , 性能测试 , 功能测试 , 安装或反安装测试 , 用户界面测试 , 压力测试 , 可靠性及安全性测试等 ; 为了有效保证这一阶段测试的客观性 , 必须由独立的测试小组来进行相关的系统测试 ; 另外系统测试过程较为复杂 , 由于在系统测试阶段不断变更需求造成功能的删除或增加 , 从而使程序不断出现相应的更改 , 而程序在更改后可能会出现新的问题 , 或者原本没有问题的功能由于更改导致出现问题 ; 所以测试人员必须进行回归测试</p>
+<h3>验收测试</h3>
+<p>验收测试是在软件产品投入正式运行前的所要进行的测试工作 ; 和系统测试相比而言 , 验收测试与之的区别就只是测试人员不同 , 验收测试则是由用户来执行这一操作的 ; 验收测试的主要目标是为向用户展示所开发出来的软件符合预定的要求和有关标准 , 并验证软件实际工作的有效性和可靠性 , 确保用户能用该软件顺利完成既定的任务和功能 ; 通过了验收测试 , 该产品就可进行发布 ; 但是 , 在实际交付给用户之后 , 开发人员是无法预测该软件用户在实际运用过程中是如何使用该程序的 , 所以从用户的角度出发 , 测试人员还应进行Alpha测试或Beta测试这两种情形的测试</p>
+<h3>Alpha 测试</h3>
+<p>由多个用户在开发环境下进行的测试 , 也可以是公司内部的用户在模拟实际操作环境下进行的测试 ; Alpha 测试的目的是评价软件产品的 FLURPS (即功能 , 局域化 , 可用性 , 可靠性 , 性能和支持) ; 尤其注重产品的界面和特色 ; Alpha 测试可以从软件产品编码结束之时开始 , 或在模块 (子系统) 测试完成之后开始 , 也可以在确认测试过程中产品达到一定的稳定和可靠程度之后再开始</p>
+<h3>Beta 测试</h3>
+<p>真实的用户在真实的用户环境中进行的测试, 也叫公测 , 是在实际环境中由多个用户对其进行测试 , 并将在测试过程中发现的错误有效反馈给软件开发者 ; 所以在测试过程中用户必须定期将所遇到的问题反馈给开发者</p>
+<h3>AB 测试</h3>
+<p>AB 测试是为 Web 或 App 界面或流程制作两个 (A/B) 或多个 (A/B/n) 版本 , 在同一时间维度 , 分别让组成成分相同 (相似) 的访客群组 (目标人群) 随机的访问这些版本 , 收集各群组的用户体验数据和业务数据 , 最后分析评估出最好版本 , 正式采用</p>
+<h3>性能测试</h3>
+<p>性能测试要求测试人员熟练性能测试工具 , 比如 QTP, LoadRunner, Jmeter ; Visual Studio 也提供了很多性能测试的工具. 要求测试人员对低层协议非常理解和编写脚本 , 性能测试非常有技术含量 , 很有发展前途 , 是软件测试人员的一个职业发展方向</p>
+<h3>安全性测试</h3>
+<p>安全性测试的内容很广 , 非常有难度 ; 我只接触过XSS (跨站脚本攻击) 和SQL注入攻击 ; 安全性测试非常有技术含量 , 我认为也是软件测试人员的一个职业发展方向</p>
+<h3>回归测试</h3>
+<p>对一个新的版本 , 重新运行以往的测试用例 , 看看新版本和已知的版本相比是否有退化 , 重新进行测试以确认修改没有引入新的错误或导致其他代码产生错误 ; 自动回归测试将大幅降低系统测试 , 维护升级等阶段的成本 ; 
+回归测试作为软件生命周期的一个组成部分 , 在整个软件测试过程中占有很大的工作量比重 , 软件开发的各个阶段都会进行多次回归测试 ; 在渐进和快速迭代开发中 , 新版本的连续发布使回归测试进行的更加频繁 , 而在极端编程方法中 , 更是要求每天都进行若干次回归测试 ; 因此 , 通过选择正确的回归测试策略来改进回归测试的效率和有效性是很有意义的</p>
+<h3>探索性测试</h3>
+<p>探索性测试可以说是一种测试思维技术 ; 它没有很多实际的测试方法 , 技术和工具 , 但是却是所有测试人员都应该掌握的一种测试思维方式 ; 探索性强调测试人员的主观能动性 , 抛弃繁杂的测试计划和测试用例设计过程 , 强调在碰到问题时及时改变测试策略 
+对探索性测试最直白的定义是 : 同时设计测试和执行测试 ; 探索性测试有时候会与即兴测试 (ad hoc testing) 混淆 ; 即兴测试通常是指临时准备的 , 即兴的 Bug 搜索测试过程 ; 从定义可以看出 , 谁都可以做即兴测试 ; 由 Cem Kaner 提出的探索性测试 , 相比即兴测试是一种精致的 , 有思想的过程</p>
+<h3>BVT 测试</h3>
+<p>BVT 的全称是 Build Verification Test ; 可以说这个全称就是 BVT 的定义了 ; BVT 只验证 Build 构建的成功与失败 , 不深入测试构建好的 Build 的功能 , 性能等等 ; 在每日构建的环境里 , 每个 Daily Build 构建完成时都要执行 BVT ; 对于 Daily Build 以外的每个版本和微版本 , 构建完成时也要执行 BVT ; BVT 是集成测试的一道门槛 , 只有通过了 BVT 的 Build 才可以进入后面的集成测试过程</p>
+<h3>冒烟测试</h3>
+<p>就是完成一个新版本的开发后 , 对该版本最基本的功能进行测试 , 保证基本的功能和流程能走通 ; 如果不通过 , 则打回开发那边重新开发；如果通过测试 , 才会进行下一步的测试 (功能测试 , 集成测试 , 系统测试等等) ; 冒烟测试优点是节省测试时间 , 防止 Build 失败 , 缺点是覆盖率还是比较低</p>
+
+</body>
+</html>
+<!-- This document was created with MarkdownPad, the Markdown editor for Windows (http://markdownpad.com) -->

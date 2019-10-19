@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Java异常详解</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style type="text/css">
+/* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
+/* Author: Nicolas Hery - http://nicolashery.com */
+/* Version: b13fe65ca28d2e568c6ed5d7f06581183df8f2ff */
+/* Source: https://github.com/nicolahery/markdownpad-github */
+
+/* RESET
+=============================================================================*/
+
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+/* BODY
+=============================================================================*/
+
+body {
+  font-family: Microsoft Yahei UI;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #333;
+  background-color: #fff;
+  padding: 20px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+body>*:first-child {
+  margin-top: 0 !important;
+}
+
+body>*:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* BLOCKS
+=============================================================================*/
+
+p, blockquote, ul, ol, dl, table, pre {
+  margin: 15px 0;
+}
+
+/* HEADERS
+=============================================================================*/
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 20px 0 10px;
+  padding: 0;
+  font-weight: bold;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1 tt, h1 code, h2 tt, h2 code, h3 tt, h3 code, h4 tt, h4 code, h5 tt, h5 code, h6 tt, h6 code {
+  font-size: inherit;
+}
+
+h1 {
+  font-size: 28px;
+  color: #000;
+}
+
+h2 {
+  font-size: 24px;
+  border-bottom: 1px solid #ccc;
+  color: #000;
+}
+
+h3 {
+  font-size: 18px;
+}
+
+h4 {
+  font-size: 16px;
+}
+
+h5 {
+  font-size: 14px;
+}
+
+h6 {
+  color: #777;
+  font-size: 14px;
+}
+
+body>h2:first-child, body>h1:first-child, body>h1:first-child+h2, body>h3:first-child, body>h4:first-child, body>h5:first-child, body>h6:first-child {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6 {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+h1+p, h2+p, h3+p, h4+p, h5+p, h6+p {
+  margin-top: 10px;
+}
+
+/* LINKS
+=============================================================================*/
+
+a {
+  color: #4183C4;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* LISTS
+=============================================================================*/
+
+ul, ol {
+  padding-left: 30px;
+}
+
+ul li > :first-child, 
+ol li > :first-child, 
+ul li ul:first-of-type, 
+ol li ol:first-of-type, 
+ul li ol:first-of-type, 
+ol li ul:first-of-type {
+  margin-top: 0px;
+}
+
+ul ul, ul ol, ol ol, ol ul {
+  margin-bottom: 0;
+}
+
+dl {
+  padding: 0;
+}
+
+dl dt {
+  font-size: 14px;
+  font-weight: bold;
+  font-style: italic;
+  padding: 0;
+  margin: 15px 0 5px;
+}
+
+dl dt:first-child {
+  padding: 0;
+}
+
+dl dt>:first-child {
+  margin-top: 0px;
+}
+
+dl dt>:last-child {
+  margin-bottom: 0px;
+}
+
+dl dd {
+  margin: 0 0 15px;
+  padding: 0 15px;
+}
+
+dl dd>:first-child {
+  margin-top: 0px;
+}
+
+dl dd>:last-child {
+  margin-bottom: 0px;
+}
+
+/* CODE
+=============================================================================*/
+
+pre, code, tt {
+  font-size: 12px;
+  font-family: Microsoft Yahei UI;
+}
+
+code, tt {
+  margin: 0 0px;
+  padding: 0px 0px;
+  white-space: nowrap;
+  border: 1px solid #eaeaea;
+  background-color: #f8f8f8;
+  border-radius: 3px;
+}
+
+pre>code {
+  margin: 0;
+  padding: 0;
+  white-space: pre;
+  border: none;
+  background: transparent;
+}
+
+pre {
+  background-color: #f8f8f8;
+  border: 1px solid #ccc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px;
+}
+
+pre code, pre tt {
+  background-color: transparent;
+  border: none;
+}
+
+kbd {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #DDDDDD;
+    background-image: linear-gradient(#F1F1F1, #DDDDDD);
+    background-repeat: repeat-x;
+    border-color: #DDDDDD #CCCCCC #CCCCCC #DDDDDD;
+    border-image: none;
+    border-radius: 2px 2px 2px 2px;
+    border-style: solid;
+    border-width: 1px;
+	font-family: Microsoft Yahei UI;
+    line-height: 10px;
+    padding: 1px 4px;
+}
+
+/* QUOTES
+=============================================================================*/
+
+blockquote {
+  border-left: 4px solid #DDD;
+  padding: 0 15px;
+  color: #777;
+}
+
+blockquote>:first-child {
+  margin-top: 0px;
+}
+
+blockquote>:last-child {
+  margin-bottom: 0px;
+}
+
+/* HORIZONTAL RULES
+=============================================================================*/
+
+hr {
+  clear: both;
+  margin: 15px 0;
+  height: 0px;
+  overflow: hidden;
+  border: none;
+  background: transparent;
+  border-bottom: 4px solid #ddd;
+  padding: 0;
+}
+
+/* TABLES
+=============================================================================*/
+
+table th {
+  font-weight: bold;
+}
+
+table th, table td {
+  border: 1px solid #ccc;
+  padding: 6px 13px;
+}
+
+table tr {
+  border-top: 1px solid #ccc;
+  background-color: #fff;
+}
+
+table tr:nth-child(2n) {
+  background-color: #f8f8f8;
+}
+
+/* IMAGES
+=============================================================================*/
+
+img {
+  max-width: 100%;
+  box-shadow: 0px 0px 5px #888888;
+}
+</style>
+</head>
+<body>
+<h1>Java异常详解</h1>
+<hr />
+<h2>1. 概述</h2>
+<p>异常是程序中的一些错误 , 但并不是所有的错误都是异常 , 并且错误有时候是可以避免的 ;</p>
+<p>比如说 , 你的代码少了一个分号 , 那么运行出来结果是提示是错误 <code>java.lang.Error</code>；如果你用 <code>System.out.println(11/0)</code> , 那么你是因为你用 0 做了除数 , 会抛出 <code>java.lang.ArithmeticException</code> 的异常 ;</p>
+<p>异常发生的原因有很多 , 通常包含以下几大类 :</p>
+<ul>
+<li>用户输入了非法数据 ;</li>
+<li>要打开的文件不存在 ;</li>
+<li>网络通信时连接中断 , 或者JVM内存溢出 ;</li>
+</ul>
+<p>这些异常有的是因为用户错误引起 , 有的是程序错误引起的 , 还有其它一些是因为物理错误引起的 ;
+要理解 Java 异常处理是如何工作的 , 你需要掌握以下三种类型的异常 :</p>
+<ul>
+<li><strong>检查性异常</strong> : 最具代表的检查性异常是用户错误或问题引起的异常 , 这是程序员无法预见的 ; 例如要打开一个不存在文件时 , 一个异常就发生了 , 这些异常在编译时不能被简单地忽略 ;</li>
+<li><strong>运行时异常</strong> : 运行时异常是可能被程序员避免的异常 ; 与检查性异常相反 , 运行时异常可以在编译时被忽略 ;</li>
+<li><strong>错误</strong> : 错误不是异常 , 而是脱离程序员控制的问题 ; 错误在代码中通常被忽略 ; 例如 , 当栈溢出时 , 一个错误就发生了 , 它们在编译也检查不到的 ;</li>
+</ul>
+<p><br /></p>
+<h2>2. Exception 类的层次</h2>
+<p>所有的异常类是从 <code>java.lang.Exception</code> 类继承的子类 ;</p>
+<p>Exception 类是 Throwable 类的子类 ; 除了 Exception 类外 , Throwable 还有一个子类 Error ;</p>
+<p>Java 程序通常不捕获错误 ; 错误一般发生在严重故障时 , 它们在 Java 程序处理的范畴之外 ;</p>
+<p>Error 用来指示运行时环境发生的错误 ; 例如 JVM 内存溢出 ; 一般地 , 程序不会从错误中恢复 ;</p>
+<p>异常类有两个主要的子类 : <strong>检查性异常类</strong> 和 <strong>运行时异常类 (RuntimeException)</strong> ;</p>
+<p><img src="images/73-Java异常详解/exception_type.png" alt="exception_type" /></p>
+<h3>检查型异常 (CheckedException)</h3>
+<p>在 Java 中所有不是 RuntimeException 派生的 Exception 都是检查型异常 ; 当函数中存在抛出检查型异常的操作时该函数的函数声明中必须包含 throws 语句 ; 调用改函数的函数也必须对该异常进行处理 , 如不进行处理则必须在调用函数上声明 throws 语句 ;<br />
+检查型异常是 Java 首创的 , 在编译期对异常的处理有强制性的要求 ; 在 JDK 代码中大量的异常属于检查型异常 , 包括 IOException , SQLException 等等 ;</p>
+<h3>非检查型异常 (UncheckedException)</h3>
+<p>在 Java 中所有 RuntimeException 的派生类都是非检查型异常 , 与检查型异常对比 , 非检查型异常可以不在函数声明中添加 throws 语句 , 调用函数上也不需要强制处理 ;<br />
+常见的 NullPointException , ClassCastException 是常见的非检查型异常 ; 非检查型异常可以不使用 try...catch 进行处理 , 但是如果有异常产生 , 则异常将由 JVM 进行处理 ; 对于 RuntimeException 的子类最好也使用异常处理机制 ; 虽然 RuntimeException 的异常可以不使用 try...catch 进行处理 , 但是如果一旦发生异常 , 则肯定会导致程序中断执行 , 所以为了保证程序再出错后依然可以执行 , 在开发代码时最好使用 try...catch 的异常处理机制进行处理 ;</p>
+<h3>问题</h3>
+<pre><code>public class ExceptionTypeTest {
+    public void doSomething() throws ArithmeticException{
+        System.out.println();
+    }
+    public static void main(){
+        ExceptionTypeTest ett = new ExceptionTypeTest();
+        ett.doSomething();
+    }
+}
+</code></pre>
+
+<ul>
+<li>问题1 : 上面的程序能否编译通过 ? 并说明理由 ;</li>
+</ul>
+<p>解答 : 能编译通过 ;<br />
+分析:按照一般常理 , doSomething 方法是定义了 ArithmeticException 异常 , 在 main 方法里面调用了该方法 ; 那么应当继续抛出或者捕获一下 ; 但是 ArithmeticException 异常是继承 RuntimeException 运行时异常 ; Java 里面异常分为两大类 : CheckedException (检查异常) 和 UncheckedException (未检查异常) , 对于未检查异常也叫 RuntimeException (运行时异常) , 对于运行时异常 , Java 编译器不要求你一定要把它捕获或者一定要继续抛出 , 但是对 CheckedException (检查异常) 要求你必须要在方法里面或者捕获或者继续抛出 ;</p>
+<ul>
+<li>问题2:上面的程序将 ArithmeticException 改为 IOException 能否编译通过 ? 并说明理由 ;</li>
+</ul>
+<p>解答 : 不能编译通过 ;<br />
+分析 : IOException extends Exception 是属于 CheckedException , 必须进行处理 , 或者必须捕获或者必须抛出 ;</p>
+<p><strong>对未检查的异常 (UncheckedException) 的几种处理方式 :</strong></p>
+<ul>
+<li>捕获处理</li>
+<li>继续抛出</li>
+<li>不处理</li>
+</ul>
+<p><strong>对检查的异常 (CheckedException) 的几种处理方式 :</strong></p>
+<ul>
+<li>继续抛出 , 消极的方法 , 一直可以抛到 Java 虚拟机来处理</li>
+<li>用 try...catch 捕获</li>
+</ul>
+<p><br /></p>
+<h2>3. 异常处理</h2>
+<h4>捕获异常</h4>
+<pre><code>// 文件名 : ExcepTest.java
+import java.io.*;
+public class ExcepTest{
+
+    public static void main(String args[]){
+        try{
+            int a[] = new int[2];
+            System.out.println(&quot;Access element three :&quot; + a[3]);
+        }catch(ArrayIndexOutOfBoundsException e){
+            System.out.println(&quot;Exception thrown  :&quot; + e);
+        }
+        System.out.println(&quot;Out of the block&quot;);
+    }
+}
+</code></pre>
+
+<h4>多重捕获块</h4>
+<blockquote>
+<p>一个 try 代码块后面跟随多个 catch 代码块的情况就叫多重捕获</p>
+</blockquote>
+<pre><code>try
+{
+    file = new FileInputStream(fileName);
+    x = (byte) file.read();
+}catch(IOException i)
+{
+    i.printStackTrace();
+    return -1;
+}catch(FileNotFoundException f) //Not valid!
+{
+    f.printStackTrace();
+    return -1;
+}
+</code></pre>
+
+<h4>throws/throw 关键字</h4>
+<blockquote>
+<p>如果一个方法没有捕获一个检查性异常 , 那么该方法必须使用 throws 关键字来声明 , throws 关键字放在方法签名的尾部 ;<br />
+也可以使用 throw 关键字抛出一个异常，无论它是新实例化的还是刚捕获到的。</p>
+</blockquote>
+<pre><code>import java.io.*;
+public class className{
+    public void deposit(double amount) throws RemoteException, 
+        InsufficientFundsException{
+        // Method implementation
+        throw new RemoteException();
+    }
+    //Remainder of class definition
+}
+</code></pre>
+
+<h4>finally 关键字</h4>
+<blockquote>
+<p>finally 关键字用来创建在 try 代码块后面执行的代码块 ;<br />
+无论是否发生异常 , finally 代码块中的代码总会被执行 ;<br />
+在 finally 代码块中 , 可以运行清理类型等收尾善后性质的语句 ;<br />
+finally 代码块出现在 catch 代码块最后 , 语法如下 :  
+</p>
+</blockquote>
+<pre><code>public class ExcepTest{
+    public static void main(String args[]){
+        int a[] = new int[2];
+        try{
+            System.out.println(&quot;Access element three :&quot; + a[3]);
+        }catch(ArrayIndexOutOfBoundsException e){
+            System.out.println(&quot;Exception thrown  :&quot; + e);
+        }
+        finally{
+            a[0] = 6;
+            System.out.println(&quot;First element value: &quot; +a[0]);
+            System.out.println(&quot;The finally statement is executed&quot;);
+        }
+    }
+}
+</code></pre>
+
+
+</body>
+</html>
+<!-- This document was created with MarkdownPad, the Markdown editor for Windows (http://markdownpad.com) -->

@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Erlang顺序型编程进阶</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style type="text/css">
+/* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
+/* Author: Nicolas Hery - http://nicolashery.com */
+/* Version: b13fe65ca28d2e568c6ed5d7f06581183df8f2ff */
+/* Source: https://github.com/nicolahery/markdownpad-github */
+
+/* RESET
+=============================================================================*/
+
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+/* BODY
+=============================================================================*/
+
+body {
+  font-family: Microsoft YaHei UI;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #333;
+  background-color: #fff;
+  padding: 20px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+body>*:first-child {
+  margin-top: 0 !important;
+}
+
+body>*:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* BLOCKS
+=============================================================================*/
+
+p, blockquote, ul, ol, dl, table, pre {
+  margin: 15px 0;
+}
+
+/* HEADERS
+=============================================================================*/
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 20px 0 10px;
+  padding: 0;
+  font-weight: bold;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1 tt, h1 code, h2 tt, h2 code, h3 tt, h3 code, h4 tt, h4 code, h5 tt, h5 code, h6 tt, h6 code {
+  font-size: inherit;
+}
+
+h1 {
+  font-size: 28px;
+  color: #000;
+}
+
+h2 {
+  font-size: 24px;
+  border-bottom: 1px solid #ccc;
+  color: #000;
+}
+
+h3 {
+  font-size: 18px;
+}
+
+h4 {
+  font-size: 16px;
+}
+
+h5 {
+  font-size: 14px;
+}
+
+h6 {
+  color: #777;
+  font-size: 14px;
+}
+
+body>h2:first-child, body>h1:first-child, body>h1:first-child+h2, body>h3:first-child, body>h4:first-child, body>h5:first-child, body>h6:first-child {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6 {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+h1+p, h2+p, h3+p, h4+p, h5+p, h6+p {
+  margin-top: 10px;
+}
+
+/* LINKS
+=============================================================================*/
+
+a {
+  color: #4183C4;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* LISTS
+=============================================================================*/
+
+ul, ol {
+  padding-left: 30px;
+}
+
+ul li > :first-child, 
+ol li > :first-child, 
+ul li ul:first-of-type, 
+ol li ol:first-of-type, 
+ul li ol:first-of-type, 
+ol li ul:first-of-type {
+  margin-top: 0px;
+}
+
+ul ul, ul ol, ol ol, ol ul {
+  margin-bottom: 0;
+}
+
+dl {
+  padding: 0;
+}
+
+dl dt {
+  font-size: 14px;
+  font-weight: bold;
+  font-style: italic;
+  padding: 0;
+  margin: 15px 0 5px;
+}
+
+dl dt:first-child {
+  padding: 0;
+}
+
+dl dt>:first-child {
+  margin-top: 0px;
+}
+
+dl dt>:last-child {
+  margin-bottom: 0px;
+}
+
+dl dd {
+  margin: 0 0 15px;
+  padding: 0 15px;
+}
+
+dl dd>:first-child {
+  margin-top: 0px;
+}
+
+dl dd>:last-child {
+  margin-bottom: 0px;
+}
+
+/* CODE
+=============================================================================*/
+
+pre, code, tt {
+  font-size: 12px;
+  font-family: Consolas, "Liberation Mono", Courier, monospace;
+}
+
+code, tt {
+  margin: 0 0px;
+  padding: 0px 0px;
+  white-space: nowrap;
+  border: 1px solid #eaeaea;
+  background-color: #f8f8f8;
+  border-radius: 3px;
+}
+
+pre>code {
+  margin: 0;
+  padding: 0;
+  white-space: pre;
+  border: none;
+  background: transparent;
+}
+
+pre {
+  background-color: #f8f8f8;
+  border: 1px solid #ccc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px;
+}
+
+pre code, pre tt {
+  background-color: transparent;
+  border: none;
+}
+
+kbd {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #DDDDDD;
+    background-image: linear-gradient(#F1F1F1, #DDDDDD);
+    background-repeat: repeat-x;
+    border-color: #DDDDDD #CCCCCC #CCCCCC #DDDDDD;
+    border-image: none;
+    border-radius: 2px 2px 2px 2px;
+    border-style: solid;
+    border-width: 1px;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    line-height: 10px;
+    padding: 1px 4px;
+}
+
+/* QUOTES
+=============================================================================*/
+
+blockquote {
+  border-left: 4px solid #DDD;
+  padding: 0 15px;
+  color: #777;
+}
+
+blockquote>:first-child {
+  margin-top: 0px;
+}
+
+blockquote>:last-child {
+  margin-bottom: 0px;
+}
+
+/* HORIZONTAL RULES
+=============================================================================*/
+
+hr {
+  clear: both;
+  margin: 15px 0;
+  height: 0px;
+  overflow: hidden;
+  border: none;
+  background: transparent;
+  border-bottom: 4px solid #ddd;
+  padding: 0;
+}
+
+/* TABLES
+=============================================================================*/
+
+table th {
+  font-weight: bold;
+}
+
+table th, table td {
+  border: 1px solid #ccc;
+  padding: 6px 13px;
+}
+
+table tr {
+  border-top: 1px solid #ccc;
+  background-color: #fff;
+}
+
+table tr:nth-child(2n) {
+  background-color: #f8f8f8;
+}
+
+/* IMAGES
+=============================================================================*/
+
+img {
+  max-width: 100%
+}
+</style>
+</head>
+<body>
+<h1>Erlang顺序型编程进阶</h1>
+<hr />
+<h3>BIF (内建函数)</h3>
+<pre><code>% 元组转换成列表
+1&gt; tuple_to_list({12,cat,&quot;hellp&quot;}).
+[12,cat,&quot;hellp&quot;]
+% 返回当前时分秒
+2&gt; time().
+{17,55,23}
+</code></pre>
+
+<h3>二进制数据</h3>
+<pre><code>1&gt; &lt;&lt;5,10,20&gt;&gt;.
+&lt;&lt;5,10,20&gt;&gt;
+2&gt; &lt;&lt;&quot;hello&quot;&gt;&gt;.
+&lt;&lt;&quot;hello&quot;&gt;&gt;
+3&gt; &lt;&lt;99,97,116&gt;&gt;.
+&lt;&lt;&quot;cat&quot;&gt;&gt;
+</code></pre>
+
+<h3>操纵二进制数据的 BIF</h3>
+<pre><code>1&gt; Bin1 = &lt;&lt;1,2,3&gt;&gt;.
+&lt;&lt;1,2,3&gt;&gt;
+2&gt; Bin2 = &lt;&lt;4,5&gt;&gt;.
+&lt;&lt;4,5&gt;&gt;
+3&gt; Bin3 = &lt;&lt;6&gt;&gt;.
+&lt;&lt;6&gt;&gt;
+4&gt; list_to_binary([Bin1,1,[2,3,Bin2],4|Bin3]).
+&lt;&lt;1,2,3,1,2,3,4,5,4,6&gt;&gt;
+5&gt; split_binary(&lt;&lt;1,2,3,4,5,6,7,8,9,10&gt;&gt;,3).
+{&lt;&lt;1,2,3&gt;&gt;,&lt;&lt;4,5,6,7,8,9,10&gt;&gt;}
+6&gt; B = term_to_binary({binaries,&quot;are&quot;,useful}).
+&lt;&lt;131,104,3,100,0,8,98,105,110,97,114,105,101,115,107,0,3,
+  97,114,101,100,0,6,117,115,101,102,117,108&gt;&gt;
+7&gt; binary_to_term(B).
+{binaries,&quot;are&quot;,useful}
+8&gt; size(&lt;&lt;1,2,3,4,5&gt;&gt;).
+5
+</code></pre>
+
+<h3>比特语法</h3>
+<blockquote>
+<p>将 X, Y, Z 封装在一个 16 bit 字长的内存区域 , X 占 3bit , Y 占 7bit , Z 占 6bit</p>
+</blockquote>
+<pre><code>1&gt; X = 2.
+2
+2&gt; Y = 61.
+61
+3&gt; Z = 20.
+20
+4&gt; M = &lt;&lt;X:3, Y:7, Z:6&gt;&gt;.
+&lt;&lt;&quot;OT&quot;&gt;&gt;
+5&gt; &lt;&lt;X1:3, Y1:7, Z1:6&gt;&gt; = M.
+&lt;&lt;&quot;OT&quot;&gt;&gt;
+6&gt; X1.
+2
+7&gt; Y1.
+61
+8&gt; Z1.
+20
+</code></pre>
+
+<h3>小问题集锦</h3>
+<p>apply , 将模块中的函数应用到参数上面去 :</p>
+<pre><code>1&gt; apply(erlang, atom_to_list, [hello]).
+&quot;hello&quot;
+</code></pre>
+
+<p>属性 :</p>
+<pre><code>-module(modname).   % 模块声明
+-import(lists, [map/2]).   % 从别的模块导入函数
+-export([a/2, b/1]).   % 导出函数
+-compile(Options).   % 添加编译选项
+-vsn(Version).   % 指定模块版本
+</code></pre>
+
+<p>块表达式 :</p>
+<pre><code>begin
+    Expr1,
+    ...,
+    Expr2
+end
+</code></pre>
+
+<p>布尔类型 :</p>
+<pre><code>1&gt; true.
+true
+2&gt; false.
+false
+</code></pre>
+
+<p>布尔表达式 :</p>
+<pre><code>not B1.
+B1 and B2.
+B1 or B2.
+B1 xor B2.
+</code></pre>
+
+<p>短路布尔表达式 :</p>
+<pre><code>Expr1 orelse Expr2.
+% 先求表达式 Expr1 , 如果 Expr1 为 true , 则不会求 Expr2 的值 (即被短路了) ; 如果 Expr1 为 false , 则会对 Expr2 求值
+Expr1 andalso Expr2.
+% 先对 Expr1 求值 , 如果为 true , 那么 必须对 Expr2 求值 ; 如果 Expr1 为 false , 则不对 Expr2 求值
+</code></pre>
+
+<p>包含文件 :</p>
+<pre><code>-include(Filename).
+-include(Libname).
+</code></pre>
+
+<p>列表操作符 <code>++</code> 和 <code>--</code></p>
+<pre><code>1&gt; [1,2,3] ++ [4,5,6].
+[1,2,3,4,5,6]
+2&gt; [1,2,3] -- [1].
+[2,3]
+3&gt; [1,1,2,3] -- [1].
+[1,2,3]
+4&gt; [1,1,2,3] -- [1,1].
+[2,3]
+</code></pre>
+
+<p>宏 :</p>
+<pre><code>%% m1.erl
+-module(m1).
+-export([start/0]).
+-ifdef(debug).
+-define(TRACE(X), io:format(&quot;TRACE ~p:~p ~p~n&quot;,[?MODULE, ?LINE, X])).
+-else.
+-define(TRACE(X), void).
+-endif.
+start() -&gt;  loop(5).
+loop(0) -&gt; 
+    void;
+loop(N) -&gt;
+    ?TRACE(N),
+    loop(N-1).
+
+%% cmd
+1&gt; c(m1,{d,debug}).
+{ok,m1}
+2&gt; m1:start(). 
+TRACE m1:15 5
+TRACE m1:15 4
+TRACE m1:15 3
+TRACE m1:15 2
+TRACE m1:15 1
+void
+</code></pre>
+
+<p>数值类型 :</p>
+<blockquote>
+<p>整型 :</p>
+</blockquote>
+<pre><code>% 2 进制数
+1&gt; 2#00101010.
+42
+% 16 进制数
+2&gt; 16#af6bfa23.
+2943089187
+3&gt; 13.
+13
+4&gt; -18.
+-18
+</code></pre>
+
+<blockquote>
+<p>浮点型 :</p>
+</blockquote>
+<pre><code>1&gt; 1.0.
+1.0
+2&gt; 3.1415926.
+3.1415926
+3&gt; -2.3e+6.
+-2.3e6
+4&gt; 23.56E-27.
+2.356e-26
+</code></pre>
+
+<p>进程字典 :</p>
+<pre><code>1&gt; erase().
+[]
+2&gt; put(x,20).
+undefined
+3&gt; get(x).
+20
+4&gt; get(y).
+undefined
+5&gt; put(y,40).
+undefined
+6&gt; get(y).
+40
+7&gt; get().
+[{x,20},{y,40}]
+8&gt; erase(x).
+20
+9&gt; get().
+[{y,40}]
+</code></pre>
+
+
+</body>
+</html>
+<!-- This document was created with MarkdownPad, the Markdown editor for Windows (http://markdownpad.com) -->

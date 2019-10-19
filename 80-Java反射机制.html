@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Java反射机制</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style type="text/css">
+/* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
+/* Author: Nicolas Hery - http://nicolashery.com */
+/* Version: b13fe65ca28d2e568c6ed5d7f06581183df8f2ff */
+/* Source: https://github.com/nicolahery/markdownpad-github */
+
+/* RESET
+=============================================================================*/
+
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+/* BODY
+=============================================================================*/
+
+body {
+  font-family: Microsoft Yahei UI;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #333;
+  background-color: #fff;
+  padding: 20px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+body>*:first-child {
+  margin-top: 0 !important;
+}
+
+body>*:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* BLOCKS
+=============================================================================*/
+
+p, blockquote, ul, ol, dl, table, pre {
+  margin: 15px 0;
+}
+
+/* HEADERS
+=============================================================================*/
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 20px 0 10px;
+  padding: 0;
+  font-weight: bold;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1 tt, h1 code, h2 tt, h2 code, h3 tt, h3 code, h4 tt, h4 code, h5 tt, h5 code, h6 tt, h6 code {
+  font-size: inherit;
+}
+
+h1 {
+  font-size: 28px;
+  color: #000;
+}
+
+h2 {
+  font-size: 24px;
+  border-bottom: 1px solid #ccc;
+  color: #000;
+}
+
+h3 {
+  font-size: 18px;
+}
+
+h4 {
+  font-size: 16px;
+}
+
+h5 {
+  font-size: 14px;
+}
+
+h6 {
+  color: #777;
+  font-size: 14px;
+}
+
+body>h2:first-child, body>h1:first-child, body>h1:first-child+h2, body>h3:first-child, body>h4:first-child, body>h5:first-child, body>h6:first-child {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6 {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+h1+p, h2+p, h3+p, h4+p, h5+p, h6+p {
+  margin-top: 10px;
+}
+
+/* LINKS
+=============================================================================*/
+
+a {
+  color: #4183C4;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* LISTS
+=============================================================================*/
+
+ul, ol {
+  padding-left: 30px;
+}
+
+ul li > :first-child, 
+ol li > :first-child, 
+ul li ul:first-of-type, 
+ol li ol:first-of-type, 
+ul li ol:first-of-type, 
+ol li ul:first-of-type {
+  margin-top: 0px;
+}
+
+ul ul, ul ol, ol ol, ol ul {
+  margin-bottom: 0;
+}
+
+dl {
+  padding: 0;
+}
+
+dl dt {
+  font-size: 14px;
+  font-weight: bold;
+  font-style: italic;
+  padding: 0;
+  margin: 15px 0 5px;
+}
+
+dl dt:first-child {
+  padding: 0;
+}
+
+dl dt>:first-child {
+  margin-top: 0px;
+}
+
+dl dt>:last-child {
+  margin-bottom: 0px;
+}
+
+dl dd {
+  margin: 0 0 15px;
+  padding: 0 15px;
+}
+
+dl dd>:first-child {
+  margin-top: 0px;
+}
+
+dl dd>:last-child {
+  margin-bottom: 0px;
+}
+
+/* CODE
+=============================================================================*/
+
+pre, code, tt {
+  font-size: 12px;
+  font-family: Microsoft Yahei UI;
+}
+
+code, tt {
+  margin: 0 0px;
+  padding: 0px 0px;
+  white-space: nowrap;
+  border: 1px solid #eaeaea;
+  background-color: #f8f8f8;
+  border-radius: 3px;
+}
+
+pre>code {
+  margin: 0;
+  padding: 0;
+  white-space: pre;
+  border: none;
+  background: transparent;
+}
+
+pre {
+  background-color: #f8f8f8;
+  border: 1px solid #ccc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px;
+}
+
+pre code, pre tt {
+  background-color: transparent;
+  border: none;
+}
+
+kbd {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #DDDDDD;
+    background-image: linear-gradient(#F1F1F1, #DDDDDD);
+    background-repeat: repeat-x;
+    border-color: #DDDDDD #CCCCCC #CCCCCC #DDDDDD;
+    border-image: none;
+    border-radius: 2px 2px 2px 2px;
+    border-style: solid;
+    border-width: 1px;
+	font-family: Microsoft Yahei UI;
+    line-height: 10px;
+    padding: 1px 4px;
+}
+
+/* QUOTES
+=============================================================================*/
+
+blockquote {
+  border-left: 4px solid #DDD;
+  padding: 0 15px;
+  color: #777;
+}
+
+blockquote>:first-child {
+  margin-top: 0px;
+}
+
+blockquote>:last-child {
+  margin-bottom: 0px;
+}
+
+/* HORIZONTAL RULES
+=============================================================================*/
+
+hr {
+  clear: both;
+  margin: 15px 0;
+  height: 0px;
+  overflow: hidden;
+  border: none;
+  background: transparent;
+  border-bottom: 4px solid #ddd;
+  padding: 0;
+}
+
+/* TABLES
+=============================================================================*/
+
+table th {
+  font-weight: bold;
+}
+
+table th, table td {
+  border: 1px solid #ccc;
+  padding: 6px 13px;
+}
+
+table tr {
+  border-top: 1px solid #ccc;
+  background-color: #fff;
+}
+
+table tr:nth-child(2n) {
+  background-color: #f8f8f8;
+}
+
+/* IMAGES
+=============================================================================*/
+
+img {
+  max-width: 100%
+}
+</style>
+</head>
+<body>
+<h1>Java反射机制</h1>
+<hr />
+<h2>1. 类对象概述</h2>
+<p>类对象概念 : 所有的类 , 都存在一个类对象 , 这个类对象用于提供类本身的信息 , 比如有几种构造方法 , 有多少属性 , 有哪些普通方法 ;</p>
+<p><strong>什么是类对象</strong></p>
+<p>在理解类对象之前，先说我们熟悉的对象之间的区别 :<br />
+garen 和 teemo 都是 Hero 对象 , 他们的区别在于 , 各自有不同的名称 , 血量 , 伤害值 ;</p>
+<p>然后说说类之间的区别 :<br />
+Hero 和 Item 都是类 , 他们的区别在于有不同的方法 , 不同的属性 ;</p>
+<p>类对象 , 就是用于描述这种类 , 都有什么属性 , 什么方法的</p>
+<p><strong>获取类对象</strong></p>
+<p>获取类对象有 3 种方式 :</p>
+<ol>
+<li>Class.forName</li>
+<li>Hero.class</li>
+<li>new Hero().getClass()</li>
+</ol>
+<p>在一个 JVM 中 , 一种类 , 只会有一个类对象存在 ; 所以以上三种方式取出来的类对象 , 都是一样的 ;</p>
+<p>注 : 准确的讲是一个 ClassLoader 下 , 一种类 , 只会有一个类对象存在 ; 通常一个 JVM 下 , 只会有一个 ClassLoader ;</p>
+<pre><code>// 测试类
+package charactor;
+public class Hero {
+    private String name;
+    private String health;
+}
+
+// 获取类对象
+package reflection;
+import charactor.Hero;
+public class TestReflection {
+    public static void main(String[] args) throws ClassNotFoundException {
+        String className = &quot;charactor.Hero&quot;;
+        Class class1 = Class.forName(className);
+        Class class2 = Hero.class;
+        Class class3 = new Hero().getClass();
+        System.out.println(class1 == class2);
+        System.out.println(class2 == class3);
+    }
+}
+</code></pre>
+
+<p><strong>获取类对象的时候 , 会导致类属性被初始化</strong></p>
+<p>为 Hero 增加一个静态属性 , 并且在静态初始化块里进行初始化 :</p>
+<pre><code>// 测试类
+package charactor;
+public class Hero {
+    private String name;
+    private String health;
+    static String copyright;
+    static {
+        System.out.println(&quot;初始化 copyright&quot;);
+        copyright = &quot;版权由 Ensk NearApp 公司所有&quot;;
+    }
+}
+</code></pre>
+
+<p>再运行 TestReflection 代码 , 结果如下 :</p>
+<pre><code>初始化 copyright
+true
+true
+</code></pre>
+
+<p><br/></p>
+<h2>2. 用反射创建对象</h2>
+<p>与传统的通过 new 来获取对象的方式不同 
+反射机制 , 会先拿到 Hero 的 <strong>类对象</strong> , 然后通过类对象获取 <strong>构造器对象”</strong> , 再通过构造器对象创建一个对象 ;</p>
+<pre><code>// 测试类
+package charactor;
+public class Hero {
+    private String name;
+    private String health;
+    public String getName() {
+        return name;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
+    public String getHealth() {
+        return health;
+    }
+    public void setHealth(String health) {
+        this.health = health;
+    }
+}
+
+// 创建对象
+package reflection;
+import java.lang.reflect.Constructor;
+import charactor.Hero;
+public class TestReflection {
+    public static void main(String[] args) throws Exception {
+        // 传统的使用 new 创建对象
+        Hero hero1 = new Hero();
+        hero1.setName(&quot;teemo&quot;);
+        // 使用反射方式创建对象
+        String className = &quot;charactor.Hero&quot;;
+        // 获取类对象
+        Class class1 = Class.forName(className);
+        // 获取类构造器
+        Constructor constructor1 = class1.getConstructor();
+        // 通过构造器实例化
+        Hero hero2 = (Hero) constructor1.newInstance();
+        hero2.setName(&quot;gareen&quot;);
+    }
+}
+</code></pre>
+
+<p><strong>通过配置文件获取对象</strong></p>
+<p>在 <code>D:\</code> 新建一个 <code>hero.config</code> 文件 , 在这个文件中保存类的全名称 &quot;charactor.Hero&quot; , 接着设计一个方法 <code>public static Hero getHero()</code> , 在这个方法中 , 读取 <code>hero.config</code> 的数据 , 取出其中的类名 , 根据类名实例化出对象 , 然后返回对象 :</p>
+<pre><code>package reflection;
+import java.io.File;
+import java.io.FileReader;
+import java.lang.reflect.Constructor;
+import charactor.Hero;
+public class TestReflection {
+    public static void main(String[] args) throws Exception {
+        Hero hero = getHero();
+    }
+    public static Hero getHero() throws Exception {
+        File file = new File(&quot;D:\\hero.config&quot;);
+        FileReader fileReader = new FileReader(file);
+        char[] fileContent = new char[(int) file.length()];
+        fileReader.read(fileContent);
+        String className = new String(fileContent);
+        Class classHero = Class.forName(className);
+        Constructor constructor = classHero.getConstructor();
+        Hero hero = (Hero) constructor.newInstance();
+        return hero;
+    }
+}
+</code></pre>
+
+<p><br/></p>
+<h2>3. 访问属性</h2>
+<p>通过反射机制修改对象的属性</p>
+<pre><code>package reflection;
+import java.lang.reflect.Field;
+import charactor.Hero;
+public class TestReflection {
+    public static void main(String[] args) throws Exception {
+        Hero hero = new Hero();
+        // 使用传统方法修改属性值
+        hero.setName(&quot;teemo&quot;);
+        // 获取对应类的字段
+        Field fieldName = hero.getClass().getDeclaredField(&quot;name&quot;);
+        // 设置 private 字段可访问 , public 无需设置
+        fieldName.setAccessible(true);
+        // 设置对象属性值
+        fieldName.set(hero, &quot;garen&quot;);
+        System.out.println(hero);
+    }
+}
+</code></pre>
+
+<p><strong>getField 和 getDeclaredField 的区别 :</strong><br />
+这两个方法都是用于获取字段 , <code>getField</code> 只能获取 public 的 , 包括从父类继承来的字段 ; <code>getDeclaredField</code> 可以获取本类所有的字段 , 包括 private 的字段 , 但是不能获取继承来的字段 ;</p>
+<blockquote>
+<p>注 : 这里只能获取到 private 的字段 , 但并不能访问该 private 字段的值 , 除非加上 setAccessible(true)</p>
+</blockquote>
+<p><br/></p>
+<h2>4. 调用方法</h2>
+<p>通过反射机制调用 Hero 的 <code>setName</code> 方法</p>
+<pre><code>package reflection;
+import java.lang.reflect.Method;
+import charactor.Hero;
+public class TestReflection {
+    public static void main(String[] args) throws Exception {
+        Hero hero = new Hero();
+        // 使用传统方法修改属性值
+        hero.setName(&quot;teemo&quot;);
+        // 获取这个名字叫做 setName , 参数类型是 String 的方法
+        Method method = hero.getClass().getMethod(&quot;setName&quot;, String.class);
+        // 调用方法
+        method.invoke(hero, &quot;garen&quot;);
+        System.out.println(hero);
+    }
+}
+</code></pre>
+
+<p><br/></p>
+<h2>5. 实际用途</h2>
+<p>反射非常强大 , 但是学习了之后 , 会不知道该如何使用 , 反而觉得还不如直接调用方法来的直接和方便 ;<br />
+通常来说 , 需要在学习了 Spring 的依赖注入 , 反转控制之后 , 才会对反射有更好的理解 , 在这里举两个例子 , 来演示一下反射的一种实际运用 :</p>
+<p>首先准备两个业务类 , 这两个业务类很简单 , 就是各自都有一个业务方法 , 分别打印不同的字符串 :</p>
+<pre><code>// Service1.java
+package reflection;
+public class Service1 {
+    public void doService1() {
+        System.out.println(&quot;业务方法 1&quot;);
+    }
+}
+
+// Service2.java
+package reflection;
+public class Service2 {
+    public void doService2() {
+        System.out.println(&quot;业务方法 2&quot;);
+    }
+}
+</code></pre>
+
+<p>当需要从第一个业务方法切换到第二个业务方法的时候 , 使用非反射方式 , 必须修改代码 , 并且重新编译运行 , 才可以达到效果 :</p>
+<pre><code>package reflection;
+public class TestReflection {
+    public static void main(String[] args) throws Exception {
+        // new Service1().doService1();
+        new Service2().doService2();
+    }
+}
+</code></pre>
+
+<p>使用反射方式 , 首先准备一个配置文件 , 就叫做 <code>spring.txt</code> 吧, 放在 <code>src</code> 目录下 ; 里面存放的是类的名称 , 和要调用的方法名 ; 
+在测试类 Test 中 , 首先取出类名称和方法名 , 然后通过反射去调用这个方法 ;<br />
+当需要从调用第一个业务方法 , 切换到调用第二个业务方法的时候 , 不需要修改一行代码 , 也不需要重新编译 , 只需要修改配置文件 <code>spring.txt</code> , 再运行即可 ;<br />
+这也是 Spring 框架的最基本的原理 , 只是它做的更丰富 , 安全 , 健壮 ;</p>
+<pre><code>// spring.txt
+class=reflection.Service1
+method=doService1
+
+// TestReflection.java
+package reflection;
+import java.io.File;
+import java.io.FileInputStream;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
+import java.util.Properties;
+public class TestReflection {
+    public static void main(String[] args) throws Exception {
+        File springConfigFile = new File(&quot;F:\\Code\\JavaWorkSpace\\javareflection\\src\\spring.txt&quot;);
+        Properties springConfig = new Properties();
+        springConfig.load(new FileInputStream(springConfigFile));
+        String className = springConfig.getProperty(&quot;class&quot;);
+        String methodName = springConfig.getProperty(&quot;method&quot;);
+        Class class1 = Class.forName(className);
+        Method method1 = class1.getMethod(methodName);
+        Constructor constructor1 = class1.getConstructor();
+        Object service = constructor1.newInstance();
+        method1.invoke(service);
+    }
+}
+</code></pre>
+
+
+</body>
+</html>
+<!-- This document was created with MarkdownPad, the Markdown editor for Windows (http://markdownpad.com) -->

@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Windows搭建Nexus3私服</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style type="text/css">
+/* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
+/* Author: Nicolas Hery - http://nicolashery.com */
+/* Version: b13fe65ca28d2e568c6ed5d7f06581183df8f2ff */
+/* Source: https://github.com/nicolahery/markdownpad-github */
+
+/* RESET
+=============================================================================*/
+
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+/* BODY
+=============================================================================*/
+
+body {
+  font-family: Microsoft YaHei UI;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #333;
+  background-color: #fff;
+  padding: 20px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+body>*:first-child {
+  margin-top: 0 !important;
+}
+
+body>*:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* BLOCKS
+=============================================================================*/
+
+p, blockquote, ul, ol, dl, table, pre {
+  margin: 15px 0;
+}
+
+/* HEADERS
+=============================================================================*/
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 20px 0 10px;
+  padding: 0;
+  font-weight: bold;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1 tt, h1 code, h2 tt, h2 code, h3 tt, h3 code, h4 tt, h4 code, h5 tt, h5 code, h6 tt, h6 code {
+  font-size: inherit;
+}
+
+h1 {
+  font-size: 28px;
+  color: #000;
+}
+
+h2 {
+  font-size: 24px;
+  border-bottom: 1px solid #ccc;
+  color: #000;
+}
+
+h3 {
+  font-size: 18px;
+}
+
+h4 {
+  font-size: 16px;
+}
+
+h5 {
+  font-size: 14px;
+}
+
+h6 {
+  color: #777;
+  font-size: 14px;
+}
+
+body>h2:first-child, body>h1:first-child, body>h1:first-child+h2, body>h3:first-child, body>h4:first-child, body>h5:first-child, body>h6:first-child {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6 {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+h1+p, h2+p, h3+p, h4+p, h5+p, h6+p {
+  margin-top: 10px;
+}
+
+/* LINKS
+=============================================================================*/
+
+a {
+  color: #4183C4;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* LISTS
+=============================================================================*/
+
+ul, ol {
+  padding-left: 30px;
+}
+
+ul li > :first-child, 
+ol li > :first-child, 
+ul li ul:first-of-type, 
+ol li ol:first-of-type, 
+ul li ol:first-of-type, 
+ol li ul:first-of-type {
+  margin-top: 0px;
+}
+
+ul ul, ul ol, ol ol, ol ul {
+  margin-bottom: 0;
+}
+
+dl {
+  padding: 0;
+}
+
+dl dt {
+  font-size: 14px;
+  font-weight: bold;
+  font-style: italic;
+  padding: 0;
+  margin: 15px 0 5px;
+}
+
+dl dt:first-child {
+  padding: 0;
+}
+
+dl dt>:first-child {
+  margin-top: 0px;
+}
+
+dl dt>:last-child {
+  margin-bottom: 0px;
+}
+
+dl dd {
+  margin: 0 0 15px;
+  padding: 0 15px;
+}
+
+dl dd>:first-child {
+  margin-top: 0px;
+}
+
+dl dd>:last-child {
+  margin-bottom: 0px;
+}
+
+/* CODE
+=============================================================================*/
+
+pre, code, tt {
+  font-size: 12px;
+  font-family: Consolas, "Liberation Mono", Courier, monospace;
+}
+
+code, tt {
+  margin: 0 0px;
+  padding: 0px 0px;
+  white-space: nowrap;
+  border: 1px solid #eaeaea;
+  background-color: #f8f8f8;
+  border-radius: 3px;
+}
+
+pre>code {
+  margin: 0;
+  padding: 0;
+  white-space: pre;
+  border: none;
+  background: transparent;
+}
+
+pre {
+  background-color: #f8f8f8;
+  border: 1px solid #ccc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px;
+}
+
+pre code, pre tt {
+  background-color: transparent;
+  border: none;
+}
+
+kbd {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #DDDDDD;
+    background-image: linear-gradient(#F1F1F1, #DDDDDD);
+    background-repeat: repeat-x;
+    border-color: #DDDDDD #CCCCCC #CCCCCC #DDDDDD;
+    border-image: none;
+    border-radius: 2px 2px 2px 2px;
+    border-style: solid;
+    border-width: 1px;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    line-height: 10px;
+    padding: 1px 4px;
+}
+
+/* QUOTES
+=============================================================================*/
+
+blockquote {
+  border-left: 4px solid #DDD;
+  padding: 0 15px;
+  color: #777;
+}
+
+blockquote>:first-child {
+  margin-top: 0px;
+}
+
+blockquote>:last-child {
+  margin-bottom: 0px;
+}
+
+/* HORIZONTAL RULES
+=============================================================================*/
+
+hr {
+  clear: both;
+  margin: 15px 0;
+  height: 0px;
+  overflow: hidden;
+  border: none;
+  background: transparent;
+  border-bottom: 4px solid #ddd;
+  padding: 0;
+}
+
+/* TABLES
+=============================================================================*/
+
+table th {
+  font-weight: bold;
+}
+
+table th, table td {
+  border: 1px solid #ccc;
+  padding: 6px 13px;
+}
+
+table tr {
+  border-top: 1px solid #ccc;
+  background-color: #fff;
+}
+
+table tr:nth-child(2n) {
+  background-color: #f8f8f8;
+}
+
+/* IMAGES
+=============================================================================*/
+
+img {
+  max-width: 100%;
+  box-shadow: 0px 0px 5px #888888;
+}
+</style>
+</head>
+<body>
+<h1>Windows搭建Nexus3私服</h1>
+<hr />
+<h2>1. Nexus 简介</h2>
+<p>Nexus 是一个强大的 Maven 仓库管理器 , 它极大地简化了自己内部仓库的维护和外部仓库的访问 ; 利用 Nexus 你可以只在一个地方就能够完全控制访问和部署在你所维护仓库中的每个 Artifact ; Nexus 是一套 &quot;开箱即用&quot; 的系统不需要数据库 , 它使用文件系统加 Lucene 来组织数据 ; Nexus 使用 ExtJS 来开发界面 , 利用 Restlet 来提供完整的 REST APIs , 通过 m2eclipse 与 Eclipse 集成使用 ; Nexus 支持 WebDAV 与 LDAP 安全身份认证 ; 使用私服具有以下的好处 :</p>
+<ul>
+<li>节省外网带宽</li>
+<li>加速 Maven 构建 , 提高效率</li>
+<li>内部部署构件</li>
+<li>灵活的安全和权限管理</li>
+</ul>
+<p>访问流程如下如所示 :</p>
+<p><img src="images/78-Windows搭建Nexus3私服/nexus_flow.png" alt="nexus_flow" /></p>
+<p><br /></p>
+<h2>2. 下载安装</h2>
+<p>官网下载地址 :</p>
+<p><a href="https://www.sonatype.com/download-oss-sonatype">https://www.sonatype.com/download-oss-sonatype</a></p>
+<p><img src="images/78-Windows搭建Nexus3私服/download.png" alt="download" /></p>
+<p>选择对应的版本下载即可 , 我下载的是 <code>nexus-3.7.1-02</code> ;</p>
+<p>Nexus3.x 是免安装的 , 下载之后解压到指定文件夹就可以了 , 比如 : <code>D:\Program\Nexus</code><br />
+解压完以后会有两个文件夹 , <code>nexus-3.7.1-02</code> 和 <code>sonatype-work</code> , <code>nexus-3.7.1-02</code> 是程序文件夹 , 里面有个 <code>bin</code> 文件夹存放了运行的程序入口 ; <code>sonatype-work</code> 主要是配置/缓存/存储文件夹 ;</p>
+<p><br /></p>
+<h2>3. 运行 Nexus 服务</h2>
+<p>打开命令行 , 切换到 Nexus 程序目录 :</p>
+<pre><code># D:
+# cd D:\Program\Nexus\nexus-3.7.1-02\bin
+</code></pre>
+
+<p>输入 <code>nexus /run</code> , 运行程序 :</p>
+<pre><code># nexus /run
+</code></pre>
+
+<p>过程会比较慢 , 出现如下提示运行成功 :</p>
+<pre><code>...
+-------------------------------------------------
+Started Sonatype Nexus OSS 3.7.1-02
+-------------------------------------------------
+...
+</code></pre>
+
+<blockquote>
+<p>默认端口是 8081 , 要修改端口时需要修改 <code>...\sonatype-work\nexus3\etc”</code> 目录下的 <code>nexus.properties</code> 配置文件 , 修改其中的端口即可</p>
+</blockquote>
+<p>浏览器访问直接输入 <code>http://127.0.0.1:8081/</code> , 即可进入主页 :</p>
+<p><img src="images/78-Windows搭建Nexus3私服/home_init.png" alt="home_init" /></p>
+<p>主页访客身份可以浏览已经下载到私服的文件目录 , 如下 :</p>
+<p><img src="images/78-Windows搭建Nexus3私服/browse_one.png" alt="browse_one" /></p>
+<p>点击右上角用管理员身份登陆进去 , 默认账户密码是 <code>admin</code> , <code>admin123</code> :</p>
+<p><img src="images/78-Windows搭建Nexus3私服/admin_one.png" alt="admin_one" /></p>
+<p>这里面可以设置 Nexus 的各种仓库配置</p>
+<p><br /></p>
+<h2>4. Eclipse 中使用 Nexus</h2>
+<p>回到刚刚的管理员仓库管理界面 , 复制 <code>maven-central</code> 仓库的地址 :</p>
+<p><img src="images/78-Windows搭建Nexus3私服/central_url.png" alt="central_url" /></p>
+<p>然后在Eclipse 里面的 Maven 项目中配置 pom 文件 , 如下 :</p>
+<pre><code>    &lt;repositories&gt;
+        &lt;repository&gt;
+            &lt;id&gt;nexux&lt;/id&gt;
+            &lt;name&gt;ToJohnNexus&lt;/name&gt;
+            &lt;url&gt;http://192.168.0.107:8081/repository/maven-central/&lt;/url&gt;
+        &lt;/repository&gt;
+    &lt;/repositories&gt;
+
+    &lt;dependencies&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;log4j&lt;/groupId&gt;
+            &lt;artifactId&gt;log4j&lt;/artifactId&gt;
+            &lt;version&gt;1.2.8&lt;/version&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+</code></pre>
+
+<p>保存后就会去给个配置的 Nexus 私服下载 , 如下图 :</p>
+<p><img src="images/78-Windows搭建Nexus3私服/nexus_download.png" alt="nexus_download" /></p>
+<p>私服先检查本地有没有缓存 , 没有缓存就去中央仓库下载 ;<br />
+我们可以在 Nexus 首页看到刚刚下载的 log4j 文件目录 :</p>
+<p><img src="images/78-Windows搭建Nexus3私服/browse_two.png" alt="browse_two" /></p>
+<p><br /></p>
+<h2>5. 发布项目到 Nexus</h2>
+<p>首先在项目的 <code>pom.xml</code> 文件中配置发布信息 :</p>
+<pre><code>&lt;distributionManagement&gt;
+    &lt;repository&gt;
+        &lt;id&gt;java-base-ch01-release&lt;/id&gt;
+        &lt;name&gt;java base ch01 release&lt;/name&gt;
+        &lt;url&gt;http://192.168.0.107:8081/repository/maven-releases/&lt;/url&gt;
+    &lt;/repository&gt;
+    &lt;snapshotRepository&gt;
+        &lt;id&gt;java-base-ch01-snapshot&lt;/id&gt;
+        &lt;name&gt;java base ch01 snapshot&lt;/name&gt;
+        &lt;url&gt;http://192.168.0.107:8081/repository/maven-snapshots/&lt;/url&gt;
+    &lt;/snapshotRepository&gt;
+&lt;/distributionManagement&gt;
+</code></pre>
+
+<p>然后在本地 Maven 仓库的设置文件中配置 server 节点 :</p>
+<blockquote>
+<p>设置文件默认在 Maven 仓库目录下 , 如 :<code>C:\Users\tojohn\.m2\settings.xml</code> , 没有的话可以新建一个</p>
+</blockquote>
+<pre><code>&lt;servers&gt;
+    &lt;server&gt;
+        &lt;id&gt;java-base-ch01-release&lt;/id&gt;
+        &lt;username&gt;admin&lt;/username&gt;
+        &lt;password&gt;admin123&lt;/password&gt;
+    &lt;/server&gt;
+    &lt;server&gt;
+        &lt;id&gt;java-base-ch01-snapshot&lt;/id&gt;
+        &lt;username&gt;admin&lt;/username&gt;
+        &lt;password&gt;admin123&lt;/password&gt;
+    &lt;/server&gt;
+&lt;/servers&gt;
+</code></pre>
+
+<blockquote>
+<p>账户一定是要有发布权限的账户 , 否则会提示无法授权错误</p>
+</blockquote>
+<p>然后发布项目 , 运行 <code>clean deploy</code> 命令 , 出现如下输出则成功发布 :</p>
+<pre><code>...
+[INFO] 
+[INFO] --- maven-deploy-plugin:2.7:deploy (default-deploy) @ java-base-ch01 ---
+[INFO] Downloading from java-base-ch01-snapshot: http://192.168.0.107:8081/repository/maven-snapshots/com/tojohn/exp/java-base-ch01/0.0.1-SNAPSHOT/maven-metadata.xml
+[INFO] Uploading to java-base-ch01-snapshot: http://192.168.0.107:8081/repository/maven-snapshots/com/tojohn/exp/java-base-ch01/0.0.1-SNAPSHOT/java-base-ch01-0.0.1-20180120.095315-1.jar
+[INFO] Uploaded to java-base-ch01-snapshot: http://192.168.0.107:8081/repository/maven-snapshots/com/tojohn/exp/java-base-ch01/0.0.1-SNAPSHOT/java-base-ch01-0.0.1-20180120.095315-1.jar (2.7 kB at 7.3 kB/s)
+[INFO] Uploading to java-base-ch01-snapshot: http://192.168.0.107:8081/repository/maven-snapshots/com/tojohn/exp/java-base-ch01/0.0.1-SNAPSHOT/java-base-ch01-0.0.1-20180120.095315-1.pom
+[INFO] Uploaded to java-base-ch01-snapshot: http://192.168.0.107:8081/repository/maven-snapshots/com/tojohn/exp/java-base-ch01/0.0.1-SNAPSHOT/java-base-ch01-0.0.1-20180120.095315-1.pom (1.5 kB at 5.3 kB/s)
+[INFO] Downloading from java-base-ch01-snapshot: http://192.168.0.107:8081/repository/maven-snapshots/com/tojohn/exp/java-base-ch01/maven-metadata.xml
+[INFO] Uploading to java-base-ch01-snapshot: http://192.168.0.107:8081/repository/maven-snapshots/com/tojohn/exp/java-base-ch01/0.0.1-SNAPSHOT/maven-metadata.xml
+[INFO] Uploaded to java-base-ch01-snapshot: http://192.168.0.107:8081/repository/maven-snapshots/com/tojohn/exp/java-base-ch01/0.0.1-SNAPSHOT/maven-metadata.xml (778 B at 2.8 kB/s)
+[INFO] Uploading to java-base-ch01-snapshot: http://192.168.0.107:8081/repository/maven-snapshots/com/tojohn/exp/java-base-ch01/maven-metadata.xml
+[INFO] Uploaded to java-base-ch01-snapshot: http://192.168.0.107:8081/repository/maven-snapshots/com/tojohn/exp/java-base-ch01/maven-metadata.xml (288 B at 693 B/s)
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time: 3.737 s
+[INFO] Finished at: 2018-01-20T17:53:16+08:00
+[INFO] Final Memory: 19M/224M
+[INFO] ------------------------------------------------------------------------
+...
+</code></pre>
+
+<p>再去网页端查看 , 会发现刚刚发布的项目已经在 Nexus 库中了 :</p>
+<p><img src="images/78-Windows搭建Nexus3私服/deploy.png" alt="deploy" /></p>
+
+</body>
+</html>
+<!-- This document was created with MarkdownPad, the Markdown editor for Windows (http://markdownpad.com) -->

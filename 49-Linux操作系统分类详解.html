@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Linux操作系统分类详解</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style type="text/css">
+/* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
+/* Author: Nicolas Hery - http://nicolashery.com */
+/* Version: b13fe65ca28d2e568c6ed5d7f06581183df8f2ff */
+/* Source: https://github.com/nicolahery/markdownpad-github */
+
+/* RESET
+=============================================================================*/
+
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+/* BODY
+=============================================================================*/
+
+body {
+  font-family: Microsoft YaHei UI;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #333;
+  background-color: #fff;
+  padding: 20px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+body>*:first-child {
+  margin-top: 0 !important;
+}
+
+body>*:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* BLOCKS
+=============================================================================*/
+
+p, blockquote, ul, ol, dl, table, pre {
+  margin: 15px 0;
+}
+
+/* HEADERS
+=============================================================================*/
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 20px 0 10px;
+  padding: 0;
+  font-weight: bold;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1 tt, h1 code, h2 tt, h2 code, h3 tt, h3 code, h4 tt, h4 code, h5 tt, h5 code, h6 tt, h6 code {
+  font-size: inherit;
+}
+
+h1 {
+  font-size: 28px;
+  color: #000;
+}
+
+h2 {
+  font-size: 24px;
+  border-bottom: 1px solid #ccc;
+  color: #000;
+}
+
+h3 {
+  font-size: 18px;
+}
+
+h4 {
+  font-size: 16px;
+}
+
+h5 {
+  font-size: 14px;
+}
+
+h6 {
+  color: #777;
+  font-size: 14px;
+}
+
+body>h2:first-child, body>h1:first-child, body>h1:first-child+h2, body>h3:first-child, body>h4:first-child, body>h5:first-child, body>h6:first-child {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6 {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+h1+p, h2+p, h3+p, h4+p, h5+p, h6+p {
+  margin-top: 10px;
+}
+
+/* LINKS
+=============================================================================*/
+
+a {
+  color: #4183C4;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* LISTS
+=============================================================================*/
+
+ul, ol {
+  padding-left: 30px;
+}
+
+ul li > :first-child, 
+ol li > :first-child, 
+ul li ul:first-of-type, 
+ol li ol:first-of-type, 
+ul li ol:first-of-type, 
+ol li ul:first-of-type {
+  margin-top: 0px;
+}
+
+ul ul, ul ol, ol ol, ol ul {
+  margin-bottom: 0;
+}
+
+dl {
+  padding: 0;
+}
+
+dl dt {
+  font-size: 14px;
+  font-weight: bold;
+  font-style: italic;
+  padding: 0;
+  margin: 15px 0 5px;
+}
+
+dl dt:first-child {
+  padding: 0;
+}
+
+dl dt>:first-child {
+  margin-top: 0px;
+}
+
+dl dt>:last-child {
+  margin-bottom: 0px;
+}
+
+dl dd {
+  margin: 0 0 15px;
+  padding: 0 15px;
+}
+
+dl dd>:first-child {
+  margin-top: 0px;
+}
+
+dl dd>:last-child {
+  margin-bottom: 0px;
+}
+
+/* CODE
+=============================================================================*/
+
+pre, code, tt {
+  font-size: 12px;
+  font-family: Consolas, "Liberation Mono", Courier, monospace;
+}
+
+code, tt {
+  margin: 0 0px;
+  padding: 0px 0px;
+  white-space: nowrap;
+  border: 1px solid #eaeaea;
+  background-color: #f8f8f8;
+  border-radius: 3px;
+}
+
+pre>code {
+  margin: 0;
+  padding: 0;
+  white-space: pre;
+  border: none;
+  background: transparent;
+}
+
+pre {
+  background-color: #f8f8f8;
+  border: 1px solid #ccc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px;
+}
+
+pre code, pre tt {
+  background-color: transparent;
+  border: none;
+}
+
+kbd {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #DDDDDD;
+    background-image: linear-gradient(#F1F1F1, #DDDDDD);
+    background-repeat: repeat-x;
+    border-color: #DDDDDD #CCCCCC #CCCCCC #DDDDDD;
+    border-image: none;
+    border-radius: 2px 2px 2px 2px;
+    border-style: solid;
+    border-width: 1px;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    line-height: 10px;
+    padding: 1px 4px;
+}
+
+/* QUOTES
+=============================================================================*/
+
+blockquote {
+  border-left: 4px solid #DDD;
+  padding: 0 15px;
+  color: #777;
+}
+
+blockquote>:first-child {
+  margin-top: 0px;
+}
+
+blockquote>:last-child {
+  margin-bottom: 0px;
+}
+
+/* HORIZONTAL RULES
+=============================================================================*/
+
+hr {
+  clear: both;
+  margin: 15px 0;
+  height: 0px;
+  overflow: hidden;
+  border: none;
+  background: transparent;
+  border-bottom: 4px solid #ddd;
+  padding: 0;
+}
+
+/* TABLES
+=============================================================================*/
+
+table th {
+  font-weight: bold;
+}
+
+table th, table td {
+  border: 1px solid #ccc;
+  padding: 6px 13px;
+}
+
+table tr {
+  border-top: 1px solid #ccc;
+  background-color: #fff;
+}
+
+table tr:nth-child(2n) {
+  background-color: #f8f8f8;
+}
+
+/* IMAGES
+=============================================================================*/
+
+img {
+  max-width: 100%
+}
+</style>
+</head>
+<body>
+<h1>Linux操作系统分类详解</h1>
+<hr />
+<p>Linux 操作系统的发行版本可以大体分为两类 , 一类是商业公司维护的发行版本 , 以著名的 <strong>Redhat (RHEL)</strong> 为代表 , 另一类是社区组织维护的发行版本 , 以 <strong>Debian</strong> 为代表 ; </p>
+<ul>
+<li><strong>Redhat</strong>  , 应该说是在国内使用人群最多的 Linux 版本 , 包括 RHEL , Fedora Core , CentOS , 
+甚至有人将 Redhat 等同于 Linux 操作系统 , 而有些老鸟更是只用这一个版本的 Linux 操作系统 ;</li>
+<li><strong>Debian</strong>  , 或者称 Debian 系列 , 包括 Debian 和 Ubuntu 等 ; Debian 是社区类 Linux 操作系统的典范 , 
+是迄今为止最遵循 GNU 规范的 Linux 系统 ; </li>
+</ul>
+<h3>Redhat</h3>
+<p>Redhat , 应该称为 Redhat 系列 , 包括 <strong>RHEL</strong> (Redhat Enterprise Linux , 也就是所谓的 Redhat Advance Server , 收费版本) , <strong>Fedora Core</strong> (由原来的 Redhat 桌面版本发展而来 , 免费版本) , <strong>CentOS</strong> (RHEL的社区克隆版本 , 免费) ;</p>
+<p>Redhat 应该说是在国内使用人群最多的 Linux 版本 , 甚至有人将 Redhat 等同于 Linux 操作系统 , 而有些老鸟更是只用这一个版本的 Linux 操作系统 ; 所以这个版本的特点就是使用人群数量大 , 资料非常多 , 言下之意就是如果你有什么不明白的地方 , 很容易找到人来问 , 而且网上的一般Linux 教程都是以 Redhat 为例来讲解的 ;</p>
+<p>Redhat 系列的包管理方式采用的是基于 <code>RPM</code> 包的 <code>YUM</code> 包管理方式 , 包分发方式是编译好的二进制文件 ; 稳定性方面 RHEL 和 CentOS 的稳定性非常好 , 适合于服务器使用 , 但是 Fedora Core 的稳定性较差 , 最好只用于桌面应用 ;</p>
+<h3>Debian</h3>
+<p>Debian , 或者称 Debian 系列 , 包括 <strong>Debian</strong> 和 <strong>Ubuntu</strong> 等 ; Debian 是社区类 Linux 操作系统的典范 , 是迄今为止最遵循 <code>GNU</code> 规范的 Linux系统 ; </p>
+<p>Debian 最早由 Ian Murdock 于 1993 年创建 , 分为三个版本分支 (branch) : stable , testing 和 unstable ;</p>
+<blockquote>
+<p>unstable 为最新的测试版本 , 其中包括最新的软件包 , 但是也有相对较多的bug , 适合桌面用户 ; testing 的版本都经过 unstable 中的测试 , 相对较为稳定 , 也支持了不少新技术 (比如SMP等) ; 而 stable 一般只用于服务器 , 上面的软件包大部分都比较过时 , 但是稳定和安全性都非常的高 ; </p>
+</blockquote>
+<p>Ubuntu 严格来说不能算一个独立的发行版本 , Ubuntu 是基于 Debian 的 unstable 版本加强而来 , 可以这么说 , Ubuntu 就是一个拥有 Debian 所有的优点 , 以及自己所加强的优点的近乎完美的 Linux 桌面系统 ; </p>
+<blockquote>
+<p>根据选择的桌面系统不同 , 有三个版本可供选择 , 基于 Gnome 的 Ubuntu , 基于 KDE 的 Kubuntu 以及基于 Xfc 的 Xubuntu ; 特点是界面非常友好容易上手 , 对硬件的支持非常全面 , 是最适合做桌面系统的Linux发行版本 ;</p>
+</blockquote>
+<p>Debian 最具特色的是 <code>apt-get/dpkg</code> 包管理方式 , 其实 Redhat 的 YUM 也是在模仿 Debian 的 APT 方式 , 但在二进制文件发行方式中 , APT 应该是最好的了 ; Debian 的资料也很丰富 , 有很多支持的社区 , 有问题求教也有地方可去 ;</p>
+<h3>Gentoo</h3>
+<p>伟大的 Gentoo 是 Linux 世界最年轻的发行版本 , 正因为年轻 , 所以能吸取在她之前的所有发行版本的优点 , 这也是 Gentoo 被称为最完美的 Linux 操作系统发行版本的原因之一 ; Gentoo 最初由 Daniel Robbins (FreeBSD 的开发者之一) 创建 ;</p>
+<p>首个稳定版本发布于 2002 年 ; 由于开发者对 FreeBSD 的熟识 , 所以 Gentoo 拥有媲美 FreeBSD 的广受美誉的 Portage 包管理系统 ; 不同于 APT 和 YUM 等二进制文件分发的包管理系统 , Portage 是基于源代码分发的 , 必须编译后才能运行 , 对于大型软件而言比较慢 ;</p>
+<p>不过正因为所有软件都是在本地机器编译的 , 在经过各种定制的编译参数优化后 , 能将机器的硬件性能发挥到极致 ; Gentoo 是所有 Linux 发行版本里安装最复杂的 , 但是又是安装完成后最便于管理的版本 , 也是在相同硬件环境下运行最快的版本 ;</p>
+<h3>FreeBSD</h3>
+<p>最后 , 介绍一下 FreeBSD , 需要强调的是 , FreeBSD 并不是一个 Linux 系统 ! 但 FreeBSD 与 Linux 的用户群有相当一部分是重合的 , 二者支持的硬件环境也比较一致 , 所采用的软件也比较类似 , 所以可以将 FreeBSD 视为一个 Linux 版本来比较 ;</p>
+<p>FreeBSD 拥有两个分支 : stable 和 current ; 顾名思义 , stable 是稳定版 , 而 current 则是添加了新技术的测试版 ; FreeBSD 采用 Ports 包管理系统 , 与 Gentoo 类似 , 基于源代码分发 , 必须在本地机器编后后才能运行 , 但是 Ports 系统没有 Portage 系统使用简便 , 使用起来稍微复杂一些 ;</p>
+<h3>系统选择</h3>
+<p>FreeBSD 的最大特点就是稳定和高效 , 是作为服务器操作系统的最佳选择 , 但对硬件的支持没有 Linux 操作系统完备 , 所以并不适合作为桌面系统 ;</p>
+<p>如果只是需要一个桌面系统 , 而且既不想使用盗版 , 又不想花大量的钱购买商业软件 , 那么就需要一款适合桌面使用的 Linux 发行版本了 , 如果不想自己定制任何东西 , 不想在系统上浪费太多时间 , 那么很简单 , 你就根据自己的爱好在 ubuntu , kubuntu 以及 xubuntu 中选一款吧 , 三者的区别仅仅是桌面程序的不一样 ;</p>
+<p>如果需要一个桌面系统 , 而且还想非常灵活的定制自己的 Linux 系统 , 想让自己的机器跑得更欢 , 不介意在 Linux 操作系统安装方面浪费一点时间 , 那么选择就是 Gentoo , 尽情享受 Gentoo 带来的自由快感吧 ! </p>
+<p>如果需要的是一个服务器系统 , 而且非常厌烦各种 Linux 操作系统的配置 , 只是想要一个比较稳定的服务器系统而已 , 那么你最好的选择就是 CentOS 了 , 安装完成后 , 经过简单的配置就能提供非常稳定的服务了 ;</p>
+<p>如果需要的是一个坚如磐石的非常稳定的服务器系统 , 那么选择就是 FreeBSD ; </p>
+<p>如果需要一个稳定的服务器系统 , 而且想深入摸索一下 Linux 操作系统的各个方面的知识 , 想自己定制许多内容 , 那么推荐你使用 Gentoo ;</p>
+
+</body>
+</html>
+<!-- This document was created with MarkdownPad, the Markdown editor for Windows (http://markdownpad.com) -->

@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Log4j使用指南</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style type="text/css">
+/* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
+/* Author: Nicolas Hery - http://nicolashery.com */
+/* Version: b13fe65ca28d2e568c6ed5d7f06581183df8f2ff */
+/* Source: https://github.com/nicolahery/markdownpad-github */
+
+/* RESET
+=============================================================================*/
+
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+/* BODY
+=============================================================================*/
+
+body {
+  font-family: "Microsoft YaHei UI", Helvetica, arial, freesans, clean, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #333;
+  background-color: #fff;
+  padding: 20px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+body>*:first-child {
+  margin-top: 0 !important;
+}
+
+body>*:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* BLOCKS
+=============================================================================*/
+
+p, blockquote, ul, ol, dl, table, pre {
+  margin: 15px 0;
+}
+
+/* HEADERS
+=============================================================================*/
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 20px 0 10px;
+  padding: 0;
+  font-weight: bold;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1 tt, h1 code, h2 tt, h2 code, h3 tt, h3 code, h4 tt, h4 code, h5 tt, h5 code, h6 tt, h6 code {
+  font-size: inherit;
+}
+
+h1 {
+  font-size: 28px;
+  color: #000;
+}
+
+h2 {
+  font-size: 24px;
+  border-bottom: 1px solid #ccc;
+  color: #000;
+}
+
+h3 {
+  font-size: 18px;
+}
+
+h4 {
+  font-size: 16px;
+}
+
+h5 {
+  font-size: 14px;
+}
+
+h6 {
+  color: #777;
+  font-size: 14px;
+}
+
+body>h2:first-child, body>h1:first-child, body>h1:first-child+h2, body>h3:first-child, body>h4:first-child, body>h5:first-child, body>h6:first-child {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6 {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+h1+p, h2+p, h3+p, h4+p, h5+p, h6+p {
+  margin-top: 10px;
+}
+
+/* LINKS
+=============================================================================*/
+
+a {
+  color: #4183C4;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* LISTS
+=============================================================================*/
+
+ul, ol {
+  padding-left: 30px;
+}
+
+ul li > :first-child, 
+ol li > :first-child, 
+ul li ul:first-of-type, 
+ol li ol:first-of-type, 
+ul li ol:first-of-type, 
+ol li ul:first-of-type {
+  margin-top: 0px;
+}
+
+ul ul, ul ol, ol ol, ol ul {
+  margin-bottom: 0;
+}
+
+dl {
+  padding: 0;
+}
+
+dl dt {
+  font-size: 14px;
+  font-weight: bold;
+  font-style: italic;
+  padding: 0;
+  margin: 15px 0 5px;
+}
+
+dl dt:first-child {
+  padding: 0;
+}
+
+dl dt>:first-child {
+  margin-top: 0px;
+}
+
+dl dt>:last-child {
+  margin-bottom: 0px;
+}
+
+dl dd {
+  margin: 0 0 15px;
+  padding: 0 15px;
+}
+
+dl dd>:first-child {
+  margin-top: 0px;
+}
+
+dl dd>:last-child {
+  margin-bottom: 0px;
+}
+
+/* CODE
+=============================================================================*/
+
+pre, code, tt {
+  font-size: 12px;
+  font-family: "Microsoft YaHei UI", Consolas, "Liberation Mono", Courier, monospace;
+}
+
+code, tt {
+  margin: 0 0px;
+  padding: 0px 0px;
+  white-space: nowrap;
+  border: 1px solid #eaeaea;
+  background-color: #f8f8f8;
+  border-radius: 3px;
+}
+
+pre>code {
+  margin: 0;
+  padding: 0;
+  white-space: pre;
+  border: none;
+  background: transparent;
+}
+
+pre {
+  background-color: #f8f8f8;
+  border: 1px solid #ccc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px;
+}
+
+pre code, pre tt {
+  background-color: transparent;
+  border: none;
+}
+
+kbd {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #DDDDDD;
+    background-image: linear-gradient(#F1F1F1, #DDDDDD);
+    background-repeat: repeat-x;
+    border-color: #DDDDDD #CCCCCC #CCCCCC #DDDDDD;
+    border-image: none;
+    border-radius: 2px 2px 2px 2px;
+    border-style: solid;
+    border-width: 1px;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    line-height: 10px;
+    padding: 1px 4px;
+}
+
+/* QUOTES
+=============================================================================*/
+
+blockquote {
+  border-left: 4px solid #DDD;
+  padding: 0 15px;
+  color: #777;
+}
+
+blockquote>:first-child {
+  margin-top: 0px;
+}
+
+blockquote>:last-child {
+  margin-bottom: 0px;
+}
+
+/* HORIZONTAL RULES
+=============================================================================*/
+
+hr {
+  clear: both;
+  margin: 15px 0;
+  height: 0px;
+  overflow: hidden;
+  border: none;
+  background: transparent;
+  border-bottom: 4px solid #ddd;
+  padding: 0;
+}
+
+/* TABLES
+=============================================================================*/
+
+table th {
+  font-weight: bold;
+}
+
+table th, table td {
+  border: 1px solid #ccc;
+  padding: 6px 13px;
+}
+
+table tr {
+  border-top: 1px solid #ccc;
+  background-color: #fff;
+}
+
+table tr:nth-child(2n) {
+  background-color: #f8f8f8;
+}
+
+/* IMAGES
+=============================================================================*/
+
+img {
+  max-width: 100%
+}
+</style>
+</head>
+<body>
+<h1>Log4j 使用指南</h1>
+<hr />
+<p>Log4j 是 Apache 的一个开源项目 , 通过使用 Log4j , 我们可以控制日志信息输送的目的地是控制台 , 文件 , GUI 组件 , 甚至是套接口服务器 , NT 的事件记录器 , UNIX Syslog 守护进程等 ; 我们也可以控制每一条日志的输出格式 ; 通过定义每一条日志信息的级别 , 我们能够更加细致地控制日志的生成过程 ; 最令人感兴趣的就是 , 这些可以通过一个配置文件来灵活地进行配置 , 而不需要修改应用的代码</p>
+<p>本文提到的 Log4j 版本是 1.x , 官方最新版本是 2.x , 比 1.x 性能好很多 , 但配置文件有很大差异 , 暂不赘述</p>
+<h2>基础配置</h2>
+<ul>
+<li>新建一个 Java 项目 , 在项目 <code>Java Build Path</code> 中 <code>Add External JARs</code> , 添加下载好的 log4j 包 , 我用的版本是 1.2.17</li>
+<li></li>
+<li>
+<p>新建 <code>Log4jDemo</code> 类文件 , 代码如下 :</p>
+<pre><code>import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+
+public class Log4jDemo {
+    // 基于类的名称获取日志对象
+    static Logger logger = Logger.getLogger(Log4jDemo.class);
+
+    public static void main(String[] args) throws InterruptedException {
+        // 进行默认配置
+        BasicConfigurator.configure();
+        // 设置日志输出级别
+        logger.setLevel(Level.DEBUG);
+        // 进行不同级别的日志输出
+        logger.trace(&quot;跟踪信息&quot;);
+        logger.debug(&quot;调试信息&quot;);
+        logger.info(&quot;输出信息&quot;);
+        // 线程等待 1 秒便于观察前后日志输出的时间差
+        Thread.sleep(1000);
+        logger.warn(&quot;警告信息&quot;);
+        logger.error(&quot;错误信息&quot;);
+        logger.fatal(&quot;致命信息&quot;);
+    }
+}
+</code></pre>
+
+</li>
+<li>
+<p>输出信息如下 :</p>
+<pre><code>DEBUG [main] (Log4jDemo.java:18) - 调试信息
+0 [main] DEBUG exp.Log4jDemo  - 调试信息
+ INFO [main] (Log4jDemo.java:19) - 输出信息
+2 [main] INFO exp.Log4jDemo  - 输出信息
+ WARN [main] (Log4jDemo.java:22) - 警告信息
+1003 [main] WARN exp.Log4jDemo  - 警告信息
+ERROR [main] (Log4jDemo.java:23) - 错误信息
+1003 [main] ERROR exp.Log4jDemo  - 错误信息
+FATAL [main] (Log4jDemo.java:24) - 致命信息
+1003 [main] FATAL exp.Log4jDemo  - 致命信息
+</code></pre>
+
+</li>
+</ul>
+<p><br /></p>
+<h2>基于配置文件</h2>
+<ul>
+<li>
+<p>首先在 <code>src</code> 目录下添加 <code>log4j.properties</code> 文件 , 写入如下内容 :</p>
+<pre><code>## 设置根日志级别 , 输出目的地
+log4j.rootLogger=DEBUG,CONSOLE,D
+
+## CONSOLE 目的地输出配置
+log4j.appender.CONSOLE=org.apache.log4j.ConsoleAppender
+log4j.appender.CONSOLE.layout=org.apache.log4j.PatternLayout
+log4j.appender.CONSOLE.layout.ConversionPattern=%5p [%t] (%F:%L) - %m%n
+
+## D 目的地输出设置
+log4j.appender.D=org.apache.log4j.RollingFileAppender
+log4j.appender.D.File=C:/Users/dayi_wei/Desktop/debug.log
+log4j.appender.D.MaxFileSize=100KB
+log4j.appender.D.MaxBackupIndex=5
+log4j.appender.D.Threshold=DEBUG
+log4j.appender.D.layout=org.apache.log4j.PatternLayout
+log4j.appender.D.layout.ConversionPattern=%d [%-5p] %c\:%x%L - %m%n
+</code></pre>
+
+</li>
+<li>
+<p>代码文件修改如下 :</p>
+<pre><code>import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
+
+public class Log4jDemo {
+    // 基于类的名称获取日志对象
+    static Logger logger = Logger.getLogger(Log4jDemo.class);
+
+    public static void main(String[] args) throws InterruptedException {
+        // 进行基于文件的配置
+        PropertyConfigurator.configure(&quot;F:/Code/Worksapce/messy/messy/src/log4j.properties&quot;);
+        // 进行不同级别的日志输出
+        logger.trace(&quot;跟踪信息&quot;);
+        logger.debug(&quot;调试信息&quot;);
+        logger.info(&quot;输出信息&quot;);
+        logger.warn(&quot;警告信息&quot;);
+        logger.error(&quot;错误信息&quot;);
+        logger.fatal(&quot;致命信息&quot;);
+    }
+}
+</code></pre>
+
+</li>
+<li>
+<p>如上设置了两个输出目的地 , 控制台和文件 , 控制台打印信息如下 :</p>
+<pre><code>DEBUG [main] (Log4jDemo.java:15) - 调试信息
+ INFO [main] (Log4jDemo.java:16) - 输出信息
+ WARN [main] (Log4jDemo.java:17) - 警告信息
+ERROR [main] (Log4jDemo.java:18) - 错误信息
+FATAL [main] (Log4jDemo.java:19) - 致命信息
+</code></pre>
+
+</li>
+<li>
+<p>文件里面的信息如下 :</p>
+<pre><code>2019-02-22 15:20:12,362 [DEBUG] exp.Log4jDemo:15 - 调试信息
+2019-02-22 15:20:12,364 [INFO ] exp.Log4jDemo:16 - 输出信息
+2019-02-22 15:20:12,364 [WARN ] exp.Log4jDemo:17 - 警告信息
+2019-02-22 15:20:12,364 [ERROR] exp.Log4jDemo:18 - 错误信息
+2019-02-22 15:20:12,364 [FATAL] exp.Log4jDemo:19 - 致命信息
+</code></pre>
+
+</li>
+<li>
+<p>解释log4j.properties</p>
+<pre><code>log4j.rootLogger=DEBUG,CONSOLE,D
+设置日志输出的等级为 DEBUG , 低于 DEBUG 就不会输出了
+设置日志输出到两种地方 , 分别叫做 CONSOLE 和 D
+
+log4j.appender.CONSOLE=org.apache.log4j.ConsoleAppender
+第一个地方 CONSOLE , 输出到控制台
+
+log4j.appender.CONSOLE.layout=org.apache.log4j.PatternLayout
+log4j.appender.CONSOLE.layout.ConversionPattern=%5p [%t] (%F:%L) - %m%n
+输出格式是 %5p [%t] (%F:%L) - %m%n
+
+log4j.appender.D=org.apache.log4j.RollingFileAppender
+log4j.appender.D.File=C:/Users/dayi_wei/Desktop/debug.log
+log4j.appender.D.MaxFileSize=100KB
+log4j.appender.D.MaxBackupIndex=5
+log4j.appender.D.Threshold=DEBUG
+log4j.appender.D.layout=org.apache.log4j.PatternLayout
+log4j.appender.D.layout.ConversionPattern=%d [%-5p] %c\:%x%L - %m%n
+第二个地方 D , 以滚动的方式输出到文件 , 文件名是 debug.log , 文件最大100k , 最多滚动 5 个文件
+输出格式是 %p %t %c - %m%n
+</code></pre>
+
+</li>
+</ul>
+<p><br /></p>
+<h2>配置文件详解</h2>
+<p>Log4J 配置文件的基本格式如下 : </p>
+<pre><code># 配置根Logger
+log4j.rootLogger = [level] , appenderName1 , appenderName2 , …
+
+# 配置日志信息输出目的地 Appender
+log4j.appender.appenderName = fully.qualified.name.of.appender.class 
+　　log4j.appender.appenderName.option1 = value1 
+　　… 
+　　log4j.appender.appenderName.optionN = valueN 
+
+# 配置日志信息的格式 (布局) 
+log4j.appender.appenderName.layout = fully.qualified.name.of.layout.class 
+　　log4j.appender.appenderName.layout.option1 = value1 
+　　… 
+　　log4j.appender.appenderName.layout.optionN = valueN 
+</code></pre>
+
+<p><strong>[level]</strong> 是日志输出级别</p>
+<p>分为 OFF , FATAL , ERROR , WARN , INFO , DEBUG , ALL 或者您定义的级别 , 这些级别是从高到低的级别 ; Log4j 建议只使用四个级别 , 优先级从高到低分别是 ERROR , WARN , INFO , DEBUG ; 通过在这里定义的级别 , 您可以控制到应用程序中相应级别的日志信息的开关 ; 比如在这里定义了 INFO级别 , 则应用程序中所有DEBUG级别的日志信息将不被打印出来</p>
+<p><strong>Appender</strong> 为日志输出目的地 , Log4j 提供的有以下几种 :</p>
+<pre><code>org.apache.log4j.ConsoleAppender (控制台)
+org.apache.log4j.FileAppender (文件)
+org.apache.log4j.DailyRollingFileAppender (每天产生一个日志文件)
+org.apache.log4j.RollingFileAppender (文件大小到达指定尺寸的时候产生一个新的文件)
+org.apache.log4j.WriterAppender (将日志信息以流格式发送到任意指定的地方)
+</code></pre>
+
+<p><strong>Layout</strong> 为日志输出格式 , Log4j 提供的 layout 有以下几种 :</p>
+<pre><code>org.apache.log4j.HTMLLayout (以HTML表格形式布局)
+org.apache.log4j.PatternLayout (可以灵活地指定布局模式)
+org.apache.log4j.SimpleLayout (包含日志信息的级别和信息字符串)
+org.apache.log4j.TTCCLayout (包含日志产生的时间、线程、类别等等信息)
+</code></pre>
+
+<p><strong>打印参数</strong> Log4J 采用类似 C 语言中的 printf 函数的打印格式格式化日志信息 , 如下:</p>
+<pre><code>%m   输出代码中指定的消息
+%p   输出优先级 , 即 DEBUG , INFO , WARN , ERROR , FATAL 
+%r   输出自应用启动到输出该 log 信息耗费的毫秒数 
+%c   输出所属的类目 , 通常就是所在类的全名 
+%t   输出产生该日志事件的线程名 
+%n   输出一个回车换行符 , Windows 平台为 &quot;/r/n&quot; , Unix 平台为 &quot;/n&quot;
+%d   输出日志时间点的日期或时间 , 默认格式为ISO8601 , 也可以在其后指定格式
+%l    输出日志事件的发生位置 , 包括类目名 , 发生的线程 , 以及在代码中的行数 如 : Testlog4.main(TestLog4.java: 10) 
+</code></pre>
+
+<p><strong>在代码中初始化 Logger</strong></p>
+<pre><code>* 在程序中调用 BasicConfigurator.configure()方法 , 给根记录器增加一个ConsoleAppender , 根记录器的默认级别是 Level.DEBUG
+* 配置放在文件里 , 通过命令行参数传递文件名字 , 通过 PropertyConfigurator.configure(args[x]) 解析并配置
+* 配置放在文件里 , 通过环境变量传递文件名等信息 , 利用 log4j 默认的初始化过程解析并配置
+* 配置放在文件里 , 通过应用服务器配置传递文件名等信息 , 利用一个特殊的 servlet 来完成配置
+</code></pre>
+
+<p><strong>为不同的 Appender 设置日志输出级别</strong></p>
+<p>当调试系统时 , 我们往往注意的只是异常级别的日志输出 , 但是通常所有级别的输出都是放在一个文件里的 , 如果日志输出的级别是 DEBUG , 那就慢慢去找吧 ;<br />
+这时我们也许会想要是能把异常信息单独输出到一个文件里该多好啊 ; 当然可以 , Log4j 已经提供了这样的功能 , 我们只需要在配置中修改 Appender 的 Threshold 就能实现 , 比如下面的例子 : </p>
+<pre><code> ## D 目的地输出设置
+log4j.appender.D=org.apache.log4j.RollingFileAppender
+log4j.appender.D.File=C:/Users/dayi_wei/Desktop/debug.log
+log4j.appender.D.MaxFileSize=100KB
+log4j.appender.D.MaxBackupIndex=5
+log4j.appender.D.Threshold=ERROR    ## 只输出ERROR级别以上的日志
+log4j.appender.D.layout=org.apache.log4j.PatternLayout
+log4j.appender.D.layout.ConversionPattern=%d [%-5p] %c\:%x%L - %m%n
+</code></pre>
+
+
+</body>
+</html>
+<!-- This document was created with MarkdownPad, the Markdown editor for Windows (http://markdownpad.com) -->

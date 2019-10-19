@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>C++编辑注册表</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style type="text/css">
+/* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
+/* Author: Nicolas Hery - http://nicolashery.com */
+/* Version: b13fe65ca28d2e568c6ed5d7f06581183df8f2ff */
+/* Source: https://github.com/nicolahery/markdownpad-github */
+
+/* RESET
+=============================================================================*/
+
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+/* BODY
+=============================================================================*/
+
+body {
+  font-family: Microsoft Yahei UI;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #333;
+  background-color: #fff;
+  padding: 20px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+body>*:first-child {
+  margin-top: 0 !important;
+}
+
+body>*:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* BLOCKS
+=============================================================================*/
+
+p, blockquote, ul, ol, dl, table, pre {
+  margin: 15px 0;
+}
+
+/* HEADERS
+=============================================================================*/
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 20px 0 10px;
+  padding: 0;
+  font-weight: bold;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1 tt, h1 code, h2 tt, h2 code, h3 tt, h3 code, h4 tt, h4 code, h5 tt, h5 code, h6 tt, h6 code {
+  font-size: inherit;
+}
+
+h1 {
+  font-size: 28px;
+  color: #000;
+}
+
+h2 {
+  font-size: 24px;
+  border-bottom: 1px solid #ccc;
+  color: #000;
+}
+
+h3 {
+  font-size: 18px;
+}
+
+h4 {
+  font-size: 16px;
+}
+
+h5 {
+  font-size: 14px;
+}
+
+h6 {
+  color: #777;
+  font-size: 14px;
+}
+
+body>h2:first-child, body>h1:first-child, body>h1:first-child+h2, body>h3:first-child, body>h4:first-child, body>h5:first-child, body>h6:first-child {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6 {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+h1+p, h2+p, h3+p, h4+p, h5+p, h6+p {
+  margin-top: 10px;
+}
+
+/* LINKS
+=============================================================================*/
+
+a {
+  color: #4183C4;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* LISTS
+=============================================================================*/
+
+ul, ol {
+  padding-left: 30px;
+}
+
+ul li > :first-child, 
+ol li > :first-child, 
+ul li ul:first-of-type, 
+ol li ol:first-of-type, 
+ul li ol:first-of-type, 
+ol li ul:first-of-type {
+  margin-top: 0px;
+}
+
+ul ul, ul ol, ol ol, ol ul {
+  margin-bottom: 0;
+}
+
+dl {
+  padding: 0;
+}
+
+dl dt {
+  font-size: 14px;
+  font-weight: bold;
+  font-style: italic;
+  padding: 0;
+  margin: 15px 0 5px;
+}
+
+dl dt:first-child {
+  padding: 0;
+}
+
+dl dt>:first-child {
+  margin-top: 0px;
+}
+
+dl dt>:last-child {
+  margin-bottom: 0px;
+}
+
+dl dd {
+  margin: 0 0 15px;
+  padding: 0 15px;
+}
+
+dl dd>:first-child {
+  margin-top: 0px;
+}
+
+dl dd>:last-child {
+  margin-bottom: 0px;
+}
+
+/* CODE
+=============================================================================*/
+
+pre, code, tt {
+  font-size: 12px;
+  font-family: Microsoft Yahei UI;
+}
+
+code, tt {
+  margin: 0 0px;
+  padding: 0px 0px;
+  white-space: nowrap;
+  border: 1px solid #eaeaea;
+  background-color: #f8f8f8;
+  border-radius: 3px;
+}
+
+pre>code {
+  margin: 0;
+  padding: 0;
+  white-space: pre;
+  border: none;
+  background: transparent;
+}
+
+pre {
+  background-color: #f8f8f8;
+  border: 1px solid #ccc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px;
+}
+
+pre code, pre tt {
+  background-color: transparent;
+  border: none;
+}
+
+kbd {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #DDDDDD;
+    background-image: linear-gradient(#F1F1F1, #DDDDDD);
+    background-repeat: repeat-x;
+    border-color: #DDDDDD #CCCCCC #CCCCCC #DDDDDD;
+    border-image: none;
+    border-radius: 2px 2px 2px 2px;
+    border-style: solid;
+    border-width: 1px;
+	font-family: Microsoft Yahei UI;
+    line-height: 10px;
+    padding: 1px 4px;
+}
+
+/* QUOTES
+=============================================================================*/
+
+blockquote {
+  border-left: 4px solid #DDD;
+  padding: 0 15px;
+  color: #777;
+}
+
+blockquote>:first-child {
+  margin-top: 0px;
+}
+
+blockquote>:last-child {
+  margin-bottom: 0px;
+}
+
+/* HORIZONTAL RULES
+=============================================================================*/
+
+hr {
+  clear: both;
+  margin: 15px 0;
+  height: 0px;
+  overflow: hidden;
+  border: none;
+  background: transparent;
+  border-bottom: 4px solid #ddd;
+  padding: 0;
+}
+
+/* TABLES
+=============================================================================*/
+
+table th {
+  font-weight: bold;
+}
+
+table th, table td {
+  border: 1px solid #ccc;
+  padding: 6px 13px;
+}
+
+table tr {
+  border-top: 1px solid #ccc;
+  background-color: #fff;
+}
+
+table tr:nth-child(2n) {
+  background-color: #f8f8f8;
+}
+
+/* IMAGES
+=============================================================================*/
+
+img {
+  max-width: 100%
+}
+</style>
+</head>
+<body>
+<h1>C++编辑注册表</h1>
+<hr />
+<h3>1. 注册表简介</h3>
+<p>注册表是 Windows 操作系统中的一个核心数据库 , 其中存放着各种参数 , 直接控制着 Windows 的启动 , 硬件驱动程序的装载以及一些 Windows 应用程序的运行 , 从而在整个系统中起着核心作用 ; 这些作用包括了软 , 硬件的相关配置和状态信息 , 比如注册表中保存有应用程序和资源管理器外壳的初始条件 , 首选项和卸载数据等 , 联网计算机的整个系统的设置和各种许可 , 文件扩展名与应用程序的关联 , 硬件部件的描述 , 状态和属性 , 性能记录和其他底层的系统状态信息 , 以及其他数据等 ;</p>
+<p><br /></p>
+<h3>2. 注册表的数据结构</h3>
+<p>注册表由 <strong>键</strong> (也叫主键或称 &quot;项&quot; ) , <strong>子键</strong> (子项) 和 <strong>值</strong> 项构成 ; 一个键就是分支中的一个文件夹 , 而子键就是这个文件夹当中的子文件夹 , 子键同样它也是一个键 ; 一个值项则是一个键的当前定义 , 由名称 , 数据类型以及分配的值组成 ; 一个键可以有一个或多个值 , 每个值的名称各不相同 , 如果一个值的名称为空 , 则该值为该键的默认值 ;</p>
+<p>注册表的数据类型主要有以下四种 :</p>
+<ul>
+<li><code>REG_SZ</code> : 字符串 : 文本字符串</li>
+<li><code>REG_MULTI_SZ</code> : 多字符串值 : 含有多个文本值的字符串</li>
+<li><code>REG_BINARY</code> : 二进制数 : 二进制值 , 以十六进制显示</li>
+<li><code>REG_DWORD</code> : 双字值 : 一个 32 位的二进制值 , 显示为 8 位的十六进制值</li>
+</ul>
+<p><br /></p>
+<h3>3. 主键简介</h3>
+<p><strong>HKEY_CLASSES_ROOT</strong></p>
+<p>在注册表中 HKEY_CLASSES_ROOT 是系统中控制所有数据文件的项 ; HKEY_CLASSES_ROOT 控制键包括了所有文件扩展和所有和执行文件相关的文件 ; 它同样也决定了当一个文件被双击时起反应的相关应用程序 ; HKEY_CLASSES_ROOT 被用作程序员在安装软件时方便的发送信息 , 在 Win95 和 Winnt 中 , HKEY_CLASSES_ROOT 和 <code>HKEY_LOCAL_MACHINE/Software/Classes</code> 是相同的 ; 程序员在运行他们的启动程序时不需要担忧实际的位置 , 相反的 , 他们只需要在 HKEY_CLASSES_ROOT 中加入数据就可以了 ;</p>
+<p><strong>HKEY_CURRENT_CONFIG</strong></p>
+<p>Win95 一般只使用一个硬件配置文件 ; 如果有多个硬件配置文件 ; <code>HKEY_LOCAL_MACHINE/Config</code> 中就会添加一个键 ;<code>HKEY_LOCAL_MACHINE/Config</code> 包含了HKEY_LOCAL_MACHINE中相同的数据 ;<br />
+在启动时 , 你可以选择你愿意使用的配置文件 ; 如果有多个安装 , 每次系统重新启动时 , 你就必须选择 ; HKEY_CURRENT_CONFIG 是在启动时控制目前硬件配置的键 ; 在系统启动以后 , 任何地方的变化都会自动影响到它 ; 程序员经常使用 HKEY_CURRENT_CONFIG 方便的来存取配置信息 ; HKEY_CURRENT_CONFIG 包括了系统中现有的所有配置文件的细节 ; 你的选择影响了哪一个硬件配置文件成为现在的 ; 举例来说 , 如果配置 0002 被选择了 , 所有 0002 的配置信息会被映射到这些键上 ; HKEY_CURRENT_CONFIG 允许软件和设备驱动程序员很方便的更新注册表 , 而不涉及到多个配置文件信息 ;  HKEY_LOCAL_MACHINE 中同样的数据和任何注册表的变化都会同时的变化 ;</p>
+<p><strong>HKEY_USERS</strong></p>
+<p>HKEY_USERS 将缺省用户和目前登陆用户的信息输入到注册表编辑器 , 在 Win95 中 , 它仅被那些配置文件激活的登陆用户使用 , 同样在 Winnt 下 , 它也是这样 ;  Win95 从 user.dat 中取得他们的信息 , Winnt 从 ntuser.dat 中取得信息 ; dat文件包含了所有基于用户的注册表设置并且允许你取配置这些用户的环境 ; 如果你改变了缺省用户的设置 , 所有新用户会继承同样的设置 ; 而且 , 那些已经被建立的用户变的失效 ;</p>
+<p><strong>HKEY_LOCAL_MACHINE</strong></p>
+<p>HKEY_LOCAL_MACHINE是一个显示控制系统和软件的处理键 ; HKLM 键保存着计算机的系统信息 ; 它包括网络和硬件上所有的软件设置 ; (比如文件的位置 , 注册和未注册的状态 , 版本号等等) 这些设置和用户无关 , 因为这些设置是针对使用这个系统的所有用户的 ;</p>
+<p><strong>HKEY_CURRENT_USER</strong></p>
+<p>HKEY_CURRENT_USER 包含着在 HKEY_USERS 安全辨别里列出的同样信息 ; 任何在 HKEY_CURRENT_USER 里的改动也都会立即HKEY_USERS 改动 , 相反也是这样 ; HKEY_CURRENT_USER 允许程序员和开发者易于存取目前登陆用户的设置 ; 通过建立这个键 , 微软很容易在不涉及到用户的 SID 下改变 , 添加和设置 ; 也就是说 , 所有当前的操作改变只是针对当前用户而改变 , 并不影响其他用户 ;</p>
+<p><br /></p>
+<h3>4. C++ 函数支持</h3>
+<ul>
+<li>
+<p>打开一个指定的注册表键</p>
+<pre><code>LONG RegOpenKeyEx(
+    HKEY hKey,    // 需要打开的主键的名称
+    LPCTSTR lpSubKey,    // 需要打开的子键的名称
+    DWORD ulOptions,    // 保留 , 设为 0
+    REGSAM samDesired,    // 安全访问标记 , 也就是权限
+    PHKEY phkResult    // 得到的将要打开键的句柄
+) 
+</code></pre>
+
+</li>
+<li>
+<p>检索一个已打开的注册表句柄中 , 指定的注册表键的类型和设置值</p>
+<pre><code>LONG WINAPI RegQueryValueEx(
+    HKEY hKey,
+    LPCTSTR lpValueName,
+    LPDWORD lpReserved,
+    LPDWORD lpType,
+    LPBYTE lpData,
+    LPDWORD lpcbData
+);
+</code></pre>
+
+</li>
+<li>
+<p>创建或打开注册表项 , 默认为创建 , 当注册表中有此项时 , 为打开</p>
+<pre><code>LONG WINAPI RegCreateKey(
+    _In_ HKEY hKey,
+    _In_opt_ LPCTSTR lpSubKey,
+    _Out_ PHKEY phkResult
+);
+</code></pre>
+
+</li>
+<li>
+<p>设置注册表键的值</p>
+<pre><code>LONG RegSetValueEx(
+    HKEY hKey,
+    LPCTSTR lpValueName,
+    DWORD Reserved,
+    DWORD dwType,
+    CONST BYTE *lpData,
+    DWORD cbData
+);
+</code></pre>
+
+</li>
+<li>
+<p>删除一个注册表的键</p>
+<pre><code>LONG WINAPI RegDeleteKey(
+    __in HKEY hKey,
+    __in LPCTSTR lpSubKey
+);
+</code></pre>
+
+</li>
+<li>
+<p>删除一个注册表键的值</p>
+<pre><code>LONGWINAPIRegDeleteValue(
+    _In_HKEYhKey,
+    _In_opt_LPCTSTRlpValueName
+);
+</code></pre>
+
+</li>
+</ul>
+<p><br /></p>
+<h3>5. 代码实例</h3>
+<pre><code>// 查询一个键的值
+void CRegeditDemoDlg::OnBnClickedButtonQuery()
+{
+    HKEY hKEY;    // 定义有关的 hKEY , 在查询结束时要关闭
+    // 打开与路径 data_Set 相关的 hKEY
+    LPCTSTR strPath= _T(&quot;Wow6432Node\\CLSID\\{00024500-0000-0000-C000-000000000046}\\LocalServer&quot;);
+    //访问注册表，hKEY则保存此函数所打开的键的句柄
+    if (ERROR_SUCCESS == ::RegOpenKeyEx(HKEY_CLASSES_ROOT,strPath,0,KEY_READ,&amp;hKEY))
+    {
+        char szValue[256] = {0};
+        DWORD dwSize = sizeof(szValue);
+        DWORD dwType = REG_SZ;
+        // 取键的默认值
+        if (::RegQueryValueEx(hKEY,_T(&quot;ENSK&quot;), 0, &amp;dwType, (LPBYTE)&amp;szValue, &amp;dwSize) != ERROR_SUCCESS)
+        {
+            AfxMessageBox(_T(&quot;错误：无法查询有关的注册表信息&quot;));
+        }
+        //程序结束，关闭打开的 hKEY
+        ::RegCloseKey(hKEY);
+    }
+}
+
+// 创建一个键并写值
+void CRegeditDemoDlg::OnBnClickedButtonCreateAndAlter()
+{
+    HKEY hKey;    // 定义有关的 hKEY , 在查询结束时要关闭
+    HKEY hTempKey;
+    CString strName = _T(&quot;China&quot;);
+    DWORD nLength = (strName.GetLength() + 1) * sizeof(TCHAR);    // 定义数据长度
+    LPBYTE lpbName = new BYTE[(strName.GetLength() + 1) * sizeof(TCHAR)];    // 有可能是 Ansi 或 Unicode
+    memcpy(lpbName, (void*)(LPCTSTR)strName, (strName.GetLength() + 1) * sizeof(TCHAR));
+    LPCTSTR strPath= _T(&quot;Wow6432Node\\CLSID\\{00024500-0000-0000-C000-000000000046}\\LocalServer&quot;);
+    // 打开与路径 strPath 相关的 hKEY
+    if (ERROR_SUCCESS == ::RegOpenKeyEx(HKEY_CLASSES_ROOT, strPath, 0, KEY_SET_VALUE, &amp;hKey))
+    {
+        // 在当前键下创建一个子键 &quot;TOJOHN&quot;
+        if (ERROR_SUCCESS == ::RegCreateKey(hKey, _T(&quot;TOJOHN&quot;), &amp;hTempKey))
+        {
+            // 设置子健的值
+            if (ERROR_SUCCESS == ::RegSetValueEx(hTempKey, _T(&quot;Name&quot;), 0, REG_SZ, lpbName, nLength))
+            {
+                AfxMessageBox(_T(&quot;更新注册表成功&quot;));
+            }
+            else
+            {
+                AfxMessageBox(_T(&quot;更新注册表失败&quot;));
+            }
+        }
+        ::RegCloseKey(hTempKey);
+    }
+    ::RegCloseKey(hKey);
+}
+
+// 删除一个键
+void CRegeditDemoDlg::OnBnClickedButtonDeleteKey()
+{
+    HKEY hKey;    // 定义有关的 hKEY , 在查询结束时要关闭
+    LPCTSTR strPath= _T(&quot;Wow6432Node\\CLSID\\{00024500-0000-0000-C000-000000000046}\\LocalServer&quot;);
+    // 打开与路径 strPath 相关的 hKEY
+    if (ERROR_SUCCESS == ::RegOpenKeyEx(HKEY_CLASSES_ROOT, strPath,0,KEY_SET_VALUE, &amp;hKey))
+    {
+        // 使用 hKey 来操作 strPath 这个 KEY 里面的值
+        if (ERROR_SUCCESS == ::RegDeleteKey(hKey, _T(&quot;TOJOHN&quot;)))
+        {
+            AfxMessageBox(_T(&quot;删除注册表键成功&quot;));
+        }
+        else
+        {
+            AfxMessageBox(_T(&quot;删除注册表键失败&quot;));
+        }
+
+    }
+    ::RegCloseKey(hKey);
+}
+
+// 删除一个键的值
+void CRegeditDemoDlg::OnBnClickedButtonDeleteValue()
+{
+    HKEY hKey;    // 定义有关的 hKEY , 在查询结束时要关闭
+    LPCTSTR strPath= _T(&quot;Wow6432Node\\CLSID\\{00024500-0000-0000-C000-000000000046}\\LocalServer\\TOJOHN&quot;);
+    // 打开与路径 strPath 相关的 hKEY
+    if (ERROR_SUCCESS == ::RegOpenKeyEx(HKEY_CLASSES_ROOT, strPath, 0, KEY_SET_VALUE, &amp;hKey))
+    {
+        // 使用 hKey 来操作 strPath 这个 KEY 里面的值
+        if (ERROR_SUCCESS == ::RegDeleteValue(hKey, _T(&quot;Name&quot;)))
+        {
+            AfxMessageBox(_T(&quot;删除注册表值成功&quot;));
+        }
+        else
+        {
+            AfxMessageBox(_T(&quot;删除注册表值失败&quot;));
+        }
+    }
+    ::RegCloseKey(hKey);
+}
+
+// 写入 DWORD 类型的值
+void CRegeditDemoDlg::OnBnClickedButtonWriteDword()
+{
+    HKEY hKey;    // 定义有关的 hKEY , 在查询结束时要关闭
+    HKEY hTempKey;
+    DWORD dwValue = 6;
+    DWORD dwSize = sizeof(DWORD);
+    DWORD dwType = REG_DWORD;
+    LPCTSTR strPath= _T(&quot;Wow6432Node\\CLSID\\{00024500-0000-0000-C000-000000000046}\\LocalServer&quot;);
+    //打开与路径 strPath 相关的 hKEY
+    if (ERROR_SUCCESS == ::RegOpenKeyEx(HKEY_CLASSES_ROOT, strPath, 0, KEY_SET_VALUE, &amp;hKey))
+    {
+        // 使用 hKey 来操作 strPath 这个 KEY 里面的值
+        if (ERROR_SUCCESS == ::RegCreateKey(hKey, _T(&quot;TOJOHN&quot;), &amp;hTempKey))
+        {
+            if (ERROR_SUCCESS == ::RegSetValueEx(hTempKey, _T(&quot;Name&quot;), 0, REG_DWORD, (CONST BYTE*)&amp;dwValue, sizeof(DWORD)))
+            {
+                AfxMessageBox(_T(&quot;更新注册表成功&quot;));
+            }
+            else
+            {
+                AfxMessageBox(_T(&quot;更新注册表失败&quot;));
+            }
+        }
+        ::RegCloseKey(hTempKey);
+    }
+    ::RegCloseKey(hKey);
+}
+
+// 写入二进制类型的值
+void CRegeditDemoDlg::OnBnClickedButtonWriteBinary()
+{
+    HKEY hKey;    // 定义有关的 hKEY , 在查询结束时要关闭
+    HKEY hTempKey;
+    BYTE byteName[10];
+    memset(byteName, 0, sizeof(byteName));    // 将数组 byteName 清零
+    byteName[0] = 0xff;
+    byteName[1] = 0xac;
+    byteName[2] = 0x05;
+    byteName[4] = 0x4e;
+    LPCTSTR strPath= _T(&quot;Wow6432Node\\CLSID\\{00024500-0000-0000-C000-000000000046}\\LocalServer&quot;);
+    //打开与路径 strPath 相关的 hKEY
+    if (ERROR_SUCCESS == ::RegOpenKeyEx(HKEY_CLASSES_ROOT, strPath, 0, KEY_SET_VALUE, &amp;hKey))
+    {
+        // 使用 hKey 来操作 strPath 这个 KEY 里面的值
+        if (ERROR_SUCCESS == ::RegCreateKey(hKey, _T(&quot;TOJOHN&quot;), &amp;hTempKey))
+        {
+            if (ERROR_SUCCESS == ::RegSetValueEx(hTempKey, _T(&quot;Name&quot;), 0, REG_BINARY, (unsigned char *)byteName, 5))
+            {
+                AfxMessageBox(_T(&quot;更新注册表成功&quot;));
+            }
+            else
+            {
+                AfxMessageBox(_T(&quot;更新注册表失败&quot;));
+            }
+        }
+        ::RegCloseKey(hTempKey);
+    }
+    ::RegCloseKey(hKey);
+}
+</code></pre>
+
+
+</body>
+</html>
+<!-- This document was created with MarkdownPad, the Markdown editor for Windows (http://markdownpad.com) -->

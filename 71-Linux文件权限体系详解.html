@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Linux文件权限体系详解</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style type="text/css">
+/* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
+/* Author: Nicolas Hery - http://nicolashery.com */
+/* Version: b13fe65ca28d2e568c6ed5d7f06581183df8f2ff */
+/* Source: https://github.com/nicolahery/markdownpad-github */
+
+/* RESET
+=============================================================================*/
+
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+/* BODY
+=============================================================================*/
+
+body {
+  font-family: Microsoft Yahei UI;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #333;
+  background-color: #fff;
+  padding: 20px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+body>*:first-child {
+  margin-top: 0 !important;
+}
+
+body>*:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* BLOCKS
+=============================================================================*/
+
+p, blockquote, ul, ol, dl, table, pre {
+  margin: 15px 0;
+}
+
+/* HEADERS
+=============================================================================*/
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 20px 0 10px;
+  padding: 0;
+  font-weight: bold;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1 tt, h1 code, h2 tt, h2 code, h3 tt, h3 code, h4 tt, h4 code, h5 tt, h5 code, h6 tt, h6 code {
+  font-size: inherit;
+}
+
+h1 {
+  font-size: 28px;
+  color: #000;
+}
+
+h2 {
+  font-size: 24px;
+  border-bottom: 1px solid #ccc;
+  color: #000;
+}
+
+h3 {
+  font-size: 18px;
+}
+
+h4 {
+  font-size: 16px;
+}
+
+h5 {
+  font-size: 14px;
+}
+
+h6 {
+  color: #777;
+  font-size: 14px;
+}
+
+body>h2:first-child, body>h1:first-child, body>h1:first-child+h2, body>h3:first-child, body>h4:first-child, body>h5:first-child, body>h6:first-child {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6 {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+h1+p, h2+p, h3+p, h4+p, h5+p, h6+p {
+  margin-top: 10px;
+}
+
+/* LINKS
+=============================================================================*/
+
+a {
+  color: #4183C4;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* LISTS
+=============================================================================*/
+
+ul, ol {
+  padding-left: 30px;
+}
+
+ul li > :first-child, 
+ol li > :first-child, 
+ul li ul:first-of-type, 
+ol li ol:first-of-type, 
+ul li ol:first-of-type, 
+ol li ul:first-of-type {
+  margin-top: 0px;
+}
+
+ul ul, ul ol, ol ol, ol ul {
+  margin-bottom: 0;
+}
+
+dl {
+  padding: 0;
+}
+
+dl dt {
+  font-size: 14px;
+  font-weight: bold;
+  font-style: italic;
+  padding: 0;
+  margin: 15px 0 5px;
+}
+
+dl dt:first-child {
+  padding: 0;
+}
+
+dl dt>:first-child {
+  margin-top: 0px;
+}
+
+dl dt>:last-child {
+  margin-bottom: 0px;
+}
+
+dl dd {
+  margin: 0 0 15px;
+  padding: 0 15px;
+}
+
+dl dd>:first-child {
+  margin-top: 0px;
+}
+
+dl dd>:last-child {
+  margin-bottom: 0px;
+}
+
+/* CODE
+=============================================================================*/
+
+pre, code, tt {
+  font-size: 12px;
+  font-family: Microsoft Yahei UI;
+}
+
+code, tt {
+  margin: 0 0px;
+  padding: 0px 0px;
+  white-space: nowrap;
+  border: 1px solid #eaeaea;
+  background-color: #f8f8f8;
+  border-radius: 3px;
+}
+
+pre>code {
+  margin: 0;
+  padding: 0;
+  white-space: pre;
+  border: none;
+  background: transparent;
+}
+
+pre {
+  background-color: #f8f8f8;
+  border: 1px solid #ccc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px;
+}
+
+pre code, pre tt {
+  background-color: transparent;
+  border: none;
+}
+
+kbd {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #DDDDDD;
+    background-image: linear-gradient(#F1F1F1, #DDDDDD);
+    background-repeat: repeat-x;
+    border-color: #DDDDDD #CCCCCC #CCCCCC #DDDDDD;
+    border-image: none;
+    border-radius: 2px 2px 2px 2px;
+    border-style: solid;
+    border-width: 1px;
+	font-family: Microsoft Yahei UI;
+    line-height: 10px;
+    padding: 1px 4px;
+}
+
+/* QUOTES
+=============================================================================*/
+
+blockquote {
+  border-left: 4px solid #DDD;
+  padding: 0 15px;
+  color: #777;
+}
+
+blockquote>:first-child {
+  margin-top: 0px;
+}
+
+blockquote>:last-child {
+  margin-bottom: 0px;
+}
+
+/* HORIZONTAL RULES
+=============================================================================*/
+
+hr {
+  clear: both;
+  margin: 15px 0;
+  height: 0px;
+  overflow: hidden;
+  border: none;
+  background: transparent;
+  border-bottom: 4px solid #ddd;
+  padding: 0;
+}
+
+/* TABLES
+=============================================================================*/
+
+table th {
+  font-weight: bold;
+}
+
+table th, table td {
+  border: 1px solid #ccc;
+  padding: 6px 13px;
+}
+
+table tr {
+  border-top: 1px solid #ccc;
+  background-color: #fff;
+}
+
+table tr:nth-child(2n) {
+  background-color: #f8f8f8;
+}
+
+/* IMAGES
+=============================================================================*/
+
+img {
+  max-width: 100%
+}
+</style>
+</head>
+<body>
+<h1>Linux文件权限体系详解</h1>
+<hr />
+<h3>1. 概述</h3>
+<p>Linux 系统中的目录和文件的访问身份分为 <strong>user , group , others</strong> 分别简写为 <strong>u , g , o</strong> ;</p>
+<ul>
+<li>user 是文件的所有者 ;  </li>
+<li>group 是文件所有者所在组的其他成员 ;  </li>
+<li>others 就是不在所有者的所在组的其他用户 ;  </li>
+</ul>
+<p>还有一个 <strong>all</strong> 代表所有用户 , 简写为 <strong>a</strong> ;</p>
+<p>每个身份对文件的权限又分为 : <strong>read , write , execute</strong> , 分别简写为 : <strong>r , w , x</strong> , 数字表示分别为 : <strong>4 , 2 , 1</strong> ;</p>
+<h3>2. ls -l (ll) 命令显示文件详细信息</h3>
+<p><img src="images/71-Linux文件权限体系详解/ll_info.png" alt="ll_info" /></p>
+<p>显示的结果信息 , 一行是一个目录或者一个文件 , 每行用空格分隔为七列 :</p>
+<p>第一列是权限信息 : 这部分的类似于 drwxr-xr-x 可以分为四部分 :</p>
+<pre><code>第一个字符是表示文件类型 , 可以为以下几种类型  
+- 文件 , b 存储设备 (如硬盘) , d 目录 , c 串口设备 (如键盘 , 鼠标) , l 链接文件
+剩下的 9 个字符 , 可以平均分为三组 , 每组三个字符 , 字符由 rwx- 四个字符组成 , 分别代表是否有读取 , 写入 , 执行 , 无任何权限 ;
+第一组定义了文件所有者对文件所拥有的权限
+第二组为同用户组的用户对文件所拥有的权限
+第三组为其他组用户对文件所拥有的权限
+</code></pre>
+
+<p>第二列是连接信息 ;<br />
+第三列是所有者是哪个用户 ;<br />
+第四列是文件所属用户组 , 一个所有者用户可能会属于多个组 , 这个属性是表面文件属于哪个组 ;<br />
+第五列是文件大小 , 单位默认是Byte ;<br />
+第六列是最后修改日期 , 如要显示完整的时间格式 , 可以用 <code>ls -l --full-time</code> ;<br />
+第七列是目录名或者文件名 , 如果名字前面有个 . 就说明这个是一个隐藏文件 ;</p>
+<h3>3. 修改文件的权限</h3>
+<p>修改文件的权限用命令 <code>chmod</code> 来执行 , 有两种权限定义方式 : <strong>数据方式和符号方式</strong> ;</p>
+<p><strong>数字方式修改文件权限</strong></p>
+<p>像上面说说的 , 用三组 rwx 字符就可以表述出文件的 user , group , others 三种身份的用户所拥有的权限信息 , read 用 4 表示 , writer 用 2 表示 , execute 用 1 表示 , rwx 可以用 [4+2+1]=7 表示。r-x 可以用 [4+1]=5 表示 ;<br />
+那么某一个文件的三个身份的权限信息就可以用三个数字表示 , 例如 : 要将 <code>temp.sh</code> 文件的权限设置为所有者可读可写可以执行 , 同组可读可执行不可写 , 其他组的用户没有权限 , 可以运行如下命令 :</p>
+<pre><code># chmod 750 temp.sh
+</code></pre>
+
+<p><strong>符号类型修改文件权限</strong></p>
+<p><img src="images/71-Linux文件权限体系详解/chmod.png" alt="chmod" /></p>
+<p>将 <code>temp.sh</code> 文件的的其他组用户添加可读权限 :</p>
+<pre><code># chmod o+r temp.sh
+</code></pre>
+
+<p>将 <code>temp.sh</code> 文件的的所有用户添加可执行限 :</p>
+<pre><code># chmod a+x temp.sh
+</code></pre>
+
+<p><strong>修改文件的所有者</strong></p>
+<p>修改文件的所有者和所属组用命令 <code>chown 用户名:用户组 文件/目录</code> :</p>
+<pre><code># chown username file   // 文件所有者为 username
+# chown username:group file   // 文件所有者为 username , 所属组为 group
+# chown -R username:group /usr/local/mydir/    // 将目录所有者设置为该组用户
+</code></pre>
+
+<p>修改文件的所属组命令 <code>chgrp 用户组 文件/目录</code> :</p>
+<pre><code># chgrp group /dir/file
+</code></pre>
+
+
+</body>
+</html>
+<!-- This document was created with MarkdownPad, the Markdown editor for Windows (http://markdownpad.com) -->

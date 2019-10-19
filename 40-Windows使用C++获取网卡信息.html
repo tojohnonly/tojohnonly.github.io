@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Windows使用C++获取网卡信息</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style type="text/css">
+/* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
+/* Author: Nicolas Hery - http://nicolashery.com */
+/* Version: b13fe65ca28d2e568c6ed5d7f06581183df8f2ff */
+/* Source: https://github.com/nicolahery/markdownpad-github */
+
+/* RESET
+=============================================================================*/
+
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+/* BODY
+=============================================================================*/
+
+body {
+  font-family: Microsoft Yahei UI;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #333;
+  background-color: #fff;
+  padding: 20px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+body>*:first-child {
+  margin-top: 0 !important;
+}
+
+body>*:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* BLOCKS
+=============================================================================*/
+
+p, blockquote, ul, ol, dl, table, pre {
+  margin: 15px 0;
+}
+
+/* HEADERS
+=============================================================================*/
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 20px 0 10px;
+  padding: 0;
+  font-weight: bold;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1 tt, h1 code, h2 tt, h2 code, h3 tt, h3 code, h4 tt, h4 code, h5 tt, h5 code, h6 tt, h6 code {
+  font-size: inherit;
+}
+
+h1 {
+  font-size: 28px;
+  color: #000;
+}
+
+h2 {
+  font-size: 24px;
+  border-bottom: 1px solid #ccc;
+  color: #000;
+}
+
+h3 {
+  font-size: 18px;
+}
+
+h4 {
+  font-size: 16px;
+}
+
+h5 {
+  font-size: 14px;
+}
+
+h6 {
+  color: #777;
+  font-size: 14px;
+}
+
+body>h2:first-child, body>h1:first-child, body>h1:first-child+h2, body>h3:first-child, body>h4:first-child, body>h5:first-child, body>h6:first-child {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6 {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+h1+p, h2+p, h3+p, h4+p, h5+p, h6+p {
+  margin-top: 10px;
+}
+
+/* LINKS
+=============================================================================*/
+
+a {
+  color: #4183C4;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* LISTS
+=============================================================================*/
+
+ul, ol {
+  padding-left: 30px;
+}
+
+ul li > :first-child, 
+ol li > :first-child, 
+ul li ul:first-of-type, 
+ol li ol:first-of-type, 
+ul li ol:first-of-type, 
+ol li ul:first-of-type {
+  margin-top: 0px;
+}
+
+ul ul, ul ol, ol ol, ol ul {
+  margin-bottom: 0;
+}
+
+dl {
+  padding: 0;
+}
+
+dl dt {
+  font-size: 14px;
+  font-weight: bold;
+  font-style: italic;
+  padding: 0;
+  margin: 15px 0 5px;
+}
+
+dl dt:first-child {
+  padding: 0;
+}
+
+dl dt>:first-child {
+  margin-top: 0px;
+}
+
+dl dt>:last-child {
+  margin-bottom: 0px;
+}
+
+dl dd {
+  margin: 0 0 15px;
+  padding: 0 15px;
+}
+
+dl dd>:first-child {
+  margin-top: 0px;
+}
+
+dl dd>:last-child {
+  margin-bottom: 0px;
+}
+
+/* CODE
+=============================================================================*/
+
+pre, code, tt {
+  font-size: 12px;
+  font-family: Microsoft Yahei UI;
+}
+
+code, tt {
+  margin: 0 0px;
+  padding: 0px 0px;
+  white-space: nowrap;
+  border: 1px solid #eaeaea;
+  background-color: #f8f8f8;
+  border-radius: 3px;
+}
+
+pre>code {
+  margin: 0;
+  padding: 0;
+  white-space: pre;
+  border: none;
+  background: transparent;
+}
+
+pre {
+  background-color: #f8f8f8;
+  border: 1px solid #ccc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px;
+}
+
+pre code, pre tt {
+  background-color: transparent;
+  border: none;
+}
+
+kbd {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #DDDDDD;
+    background-image: linear-gradient(#F1F1F1, #DDDDDD);
+    background-repeat: repeat-x;
+    border-color: #DDDDDD #CCCCCC #CCCCCC #DDDDDD;
+    border-image: none;
+    border-radius: 2px 2px 2px 2px;
+    border-style: solid;
+    border-width: 1px;
+	font-family: Microsoft Yahei UI;
+    line-height: 10px;
+    padding: 1px 4px;
+}
+
+/* QUOTES
+=============================================================================*/
+
+blockquote {
+  border-left: 4px solid #DDD;
+  padding: 0 15px;
+  color: #777;
+}
+
+blockquote>:first-child {
+  margin-top: 0px;
+}
+
+blockquote>:last-child {
+  margin-bottom: 0px;
+}
+
+/* HORIZONTAL RULES
+=============================================================================*/
+
+hr {
+  clear: both;
+  margin: 15px 0;
+  height: 0px;
+  overflow: hidden;
+  border: none;
+  background: transparent;
+  border-bottom: 4px solid #ddd;
+  padding: 0;
+}
+
+/* TABLES
+=============================================================================*/
+
+table th {
+  font-weight: bold;
+}
+
+table th, table td {
+  border: 1px solid #ccc;
+  padding: 6px 13px;
+}
+
+table tr {
+  border-top: 1px solid #ccc;
+  background-color: #fff;
+}
+
+table tr:nth-child(2n) {
+  background-color: #f8f8f8;
+}
+
+/* IMAGES
+=============================================================================*/
+
+img {
+  max-width: 100%
+}
+</style>
+</head>
+<body>
+<h1>Windows使用C++获取网卡信息</h1>
+<hr />
+<p>使用 Windows sdk 提供的 API 函数 <code>GetAdaptersInfo()</code> 可以获得本机所有网卡的网卡名 , 网卡描述 , 网卡 MAC 地址 , 网卡IP , 网卡类型等信息 , 并用 <code>IP_ADAPTER_INFO</code> 结构体存储 ; 使用 <code>GetIfEntry()</code> 可以获取网卡的状态 , 可有效判断出网卡通讯是否正常 , 是否插入网线等状态 ; 代码如下 :</p>
+<pre><code>#include &quot;stdafx.h&quot;
+#include &lt;WinSock2.h&gt;
+#include &lt;Iphlpapi.h&gt;
+#include &lt;iostream&gt;
+using namespace std;
+#pragma comment(lib,&quot;Iphlpapi.lib&quot;)
+
+// 声明获取网卡状态信息函数
+bool GetAdapterState(DWORD index);
+
+int main()
+{
+    _CrtSetDbgFlag(_CrtSetDbgFlag(_CRTDBG_REPORT_FLAG) | _CRTDBG_LEAK_CHECK_DF);
+    // PIP_ADAPTER_INFO 结构体指针存储本机网卡信息
+    PIP_ADAPTER_INFO pIPAdapterInfo = new IP_ADAPTER_INFO();
+    PIP_ADAPTER_INFO pAdapter = NULL;
+    // 得到结构体大小 , 用于 GetAdaptersInfo 参数
+    unsigned long ulSize = sizeof(IP_ADAPTER_INFO);
+    // 调用 GetAdaptersInfo 函数 , 填充 pIpAdapterInfo 指针变量 , 其中 ulSize 参数既是一个输入量也是一个输出量
+    int nRstCode = GetAdaptersInfo(pIPAdapterInfo, &amp;ulSize);
+    // 记录网卡数量
+    int nNetCardNum = 0;
+    // 记录每张网卡上的 IP 地址数量
+    int nIPNumPerNetCard = 0;
+    if (ERROR_BUFFER_OVERFLOW == nRstCode)
+    {
+        // 如果函数返回的是 ERROR_BUFFER_OVERFLOW
+        // 则说明 GetAdaptersInfo 参数传递的内存空间不够 , 同时其传出 ulSize , 表示需要的空间大小
+        // 这也是说明为什么 ulSize 既是一个输入量也是一个输出量
+        // 释放原来的内存空间
+        delete pIPAdapterInfo;
+        // 重新申请内存空间用来存储所有网卡信息
+        pIPAdapterInfo = (PIP_ADAPTER_INFO)new BYTE[ulSize];
+        // 再次调用 GetAdaptersInfo 函数 , 填充 pIpAdapterInfo 指针变量
+        nRstCode = GetAdaptersInfo(pIPAdapterInfo, &amp;ulSize);    
+    }
+    if (ERROR_SUCCESS == nRstCode)
+    {
+        // 输出网卡信息 , 可能有多网卡 , 因此通过循环去判断
+        pAdapter = pIPAdapterInfo;
+        while (pAdapter)
+        {
+            cout&lt;&lt;&quot;网卡数量 : &quot;&lt;&lt;++nNetCardNum&lt;&lt;endl;
+            cout&lt;&lt;&quot;网卡名称 : &quot;&lt;&lt;pAdapter-&gt;AdapterName&lt;&lt;endl;
+            cout&lt;&lt;&quot;网卡描述 : &quot;&lt;&lt;pAdapter-&gt;Description&lt;&lt;endl;
+            switch(pAdapter-&gt;Type)
+            {
+            case MIB_IF_TYPE_OTHER:
+                cout&lt;&lt;&quot;网卡类型 : &quot;&lt;&lt;&quot;OTHER&quot;&lt;&lt;endl;
+                break;
+            case MIB_IF_TYPE_ETHERNET:
+                cout&lt;&lt;&quot;网卡类型 : &quot;&lt;&lt;&quot;ETHERNET&quot;&lt;&lt;endl;
+                break;
+            case MIB_IF_TYPE_TOKENRING:
+                cout&lt;&lt;&quot;网卡类型 : &quot;&lt;&lt;&quot;TOKENRING&quot;&lt;&lt;endl;
+                break;
+            case MIB_IF_TYPE_FDDI:
+                cout&lt;&lt;&quot;网卡类型 : &quot;&lt;&lt;&quot;FDDI&quot;&lt;&lt;endl;
+                break;
+            case MIB_IF_TYPE_PPP:
+                cout&lt;&lt;&quot;网卡类型 : &quot;&lt;&lt;&quot;PPP&quot;&lt;&lt;endl;
+                break;
+            case MIB_IF_TYPE_LOOPBACK:
+                cout&lt;&lt;&quot;网卡类型 : &quot;&lt;&lt;&quot;LOOPBACK&quot;&lt;&lt;endl;
+                break;
+            case MIB_IF_TYPE_SLIP:
+                cout&lt;&lt;&quot;网卡类型 : &quot;&lt;&lt;&quot;SLIP&quot;&lt;&lt;endl;
+                break;
+            default:
+                break;
+            }
+            cout&lt;&lt;&quot;网卡MAC地址 : &quot;;
+            for (DWORD i=0; i&lt;pAdapter-&gt;AddressLength; i++)
+            {
+                if (i &lt; pAdapter-&gt;AddressLength-1)
+                {
+                    printf(&quot;%02X-&quot;, pAdapter-&gt;Address[i]);
+                }
+                else
+                {
+                    printf(&quot;%02X\n&quot;, pAdapter-&gt;Address[i]);
+                }
+            }
+            cout&lt;&lt;&quot;网卡IP地址如下 : &quot;&lt;&lt;endl;
+            // 可能网卡有多 IP , 因此通过循环去判断
+            IP_ADDR_STRING *pIPAddrString =&amp;(pAdapter-&gt;IpAddressList);
+            nIPNumPerNetCard = 0;
+            while (pIPAddrString)
+            {
+                cout&lt;&lt;&quot;该网卡上的IP数量 : &quot;&lt;&lt;++nIPNumPerNetCard&lt;&lt;endl;
+                cout&lt;&lt;&quot;IP 地址 : &quot;&lt;&lt;pIPAddrString-&gt;IpAddress.String&lt;&lt;endl;
+                cout&lt;&lt;&quot;子网地址 : &quot;&lt;&lt;pIPAddrString-&gt;IpMask.String&lt;&lt;endl;
+                cout&lt;&lt;&quot;网关地址 : &quot;&lt;&lt;pAdapter-&gt;GatewayList.IpAddress.String&lt;&lt;endl;
+                pIPAddrString=pIPAddrString-&gt;Next;
+            }
+            if (GetAdapterState(pAdapter-&gt;Index))
+            {
+                cout&lt;&lt;&quot;网卡工作正常&quot;&lt;&lt;endl;
+            }
+            else
+            {
+                cout&lt;&lt;&quot;网卡工作异常&quot;&lt;&lt;endl;
+            }
+            pAdapter = pAdapter-&gt;Next;
+            cout&lt;&lt;&quot;--------------------------------------------------------------------&quot;&lt;&lt;endl;
+        }
+    }
+    // 释放内存空间
+    if (pIPAdapterInfo != NULL)
+    {
+        delete[] pIPAdapterInfo;
+        pIPAdapterInfo = NULL;
+    }
+    getchar();
+    return 0;
+}
+
+bool GetAdapterState(DWORD nIndex)
+{
+    MIB_IFROW miInfo;   // 存放获取到的 Adapter 参数
+    memset(&amp;miInfo, 0, sizeof(MIB_IFROW)) ; 
+    miInfo.dwIndex = nIndex;   // dwIndex 是需要获取的 Adapter 的索引
+    if(GetIfEntry(&amp;miInfo) != NOERROR)
+    {
+        printf(&quot;ErrorCode = %d\n&quot; ,GetLastError());
+        return false;
+    }
+    if(miInfo.dwOperStatus==IF_OPER_STATUS_NON_OPERATIONAL || miInfo.dwOperStatus==IF_OPER_STATUS_UNREACHABLE
+        || miInfo.dwOperStatus==IF_OPER_STATUS_DISCONNECTED || miInfo.dwOperStatus==IF_OPER_STATUS_CONNECTING)
+    {
+        return false;
+    }
+    else if(miInfo.dwOperStatus==IF_OPER_STATUS_OPERATIONAL || miInfo.dwOperStatus == IF_OPER_STATUS_CONNECTED)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+</code></pre>
+
+
+</body>
+</html>
+<!-- This document was created with MarkdownPad, the Markdown editor for Windows (http://markdownpad.com) -->

@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>DNS原理及解析过程</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style type="text/css">
+/* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
+/* Author: Nicolas Hery - http://nicolashery.com */
+/* Version: b13fe65ca28d2e568c6ed5d7f06581183df8f2ff */
+/* Source: https://github.com/nicolahery/markdownpad-github */
+
+/* RESET
+=============================================================================*/
+
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+/* BODY
+=============================================================================*/
+
+body {
+  font-family: Microsoft Yahei UI;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #333;
+  background-color: #fff;
+  padding: 20px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+body>*:first-child {
+  margin-top: 0 !important;
+}
+
+body>*:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* BLOCKS
+=============================================================================*/
+
+p, blockquote, ul, ol, dl, table, pre {
+  margin: 15px 0;
+}
+
+/* HEADERS
+=============================================================================*/
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 20px 0 10px;
+  padding: 0;
+  font-weight: bold;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1 tt, h1 code, h2 tt, h2 code, h3 tt, h3 code, h4 tt, h4 code, h5 tt, h5 code, h6 tt, h6 code {
+  font-size: inherit;
+}
+
+h1 {
+  font-size: 28px;
+  color: #000;
+}
+
+h2 {
+  font-size: 24px;
+  border-bottom: 1px solid #ccc;
+  color: #000;
+}
+
+h3 {
+  font-size: 18px;
+}
+
+h4 {
+  font-size: 16px;
+}
+
+h5 {
+  font-size: 14px;
+}
+
+h6 {
+  color: #777;
+  font-size: 14px;
+}
+
+body>h2:first-child, body>h1:first-child, body>h1:first-child+h2, body>h3:first-child, body>h4:first-child, body>h5:first-child, body>h6:first-child {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6 {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+h1+p, h2+p, h3+p, h4+p, h5+p, h6+p {
+  margin-top: 10px;
+}
+
+/* LINKS
+=============================================================================*/
+
+a {
+  color: #4183C4;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* LISTS
+=============================================================================*/
+
+ul, ol {
+  padding-left: 30px;
+}
+
+ul li > :first-child, 
+ol li > :first-child, 
+ul li ul:first-of-type, 
+ol li ol:first-of-type, 
+ul li ol:first-of-type, 
+ol li ul:first-of-type {
+  margin-top: 0px;
+}
+
+ul ul, ul ol, ol ol, ol ul {
+  margin-bottom: 0;
+}
+
+dl {
+  padding: 0;
+}
+
+dl dt {
+  font-size: 14px;
+  font-weight: bold;
+  font-style: italic;
+  padding: 0;
+  margin: 15px 0 5px;
+}
+
+dl dt:first-child {
+  padding: 0;
+}
+
+dl dt>:first-child {
+  margin-top: 0px;
+}
+
+dl dt>:last-child {
+  margin-bottom: 0px;
+}
+
+dl dd {
+  margin: 0 0 15px;
+  padding: 0 15px;
+}
+
+dl dd>:first-child {
+  margin-top: 0px;
+}
+
+dl dd>:last-child {
+  margin-bottom: 0px;
+}
+
+/* CODE
+=============================================================================*/
+
+pre, code, tt {
+  font-size: 12px;
+  font-family: Microsoft Yahei UI;
+}
+
+code, tt {
+  margin: 0 0px;
+  padding: 0px 0px;
+  white-space: nowrap;
+  border: 1px solid #eaeaea;
+  background-color: #f8f8f8;
+  border-radius: 3px;
+}
+
+pre>code {
+  margin: 0;
+  padding: 0;
+  white-space: pre;
+  border: none;
+  background: transparent;
+}
+
+pre {
+  background-color: #f8f8f8;
+  border: 1px solid #ccc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px;
+}
+
+pre code, pre tt {
+  background-color: transparent;
+  border: none;
+}
+
+kbd {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #DDDDDD;
+    background-image: linear-gradient(#F1F1F1, #DDDDDD);
+    background-repeat: repeat-x;
+    border-color: #DDDDDD #CCCCCC #CCCCCC #DDDDDD;
+    border-image: none;
+    border-radius: 2px 2px 2px 2px;
+    border-style: solid;
+    border-width: 1px;
+	font-family: Microsoft Yahei UI;
+    line-height: 10px;
+    padding: 1px 4px;
+}
+
+/* QUOTES
+=============================================================================*/
+
+blockquote {
+  border-left: 4px solid #DDD;
+  padding: 0 15px;
+  color: #777;
+}
+
+blockquote>:first-child {
+  margin-top: 0px;
+}
+
+blockquote>:last-child {
+  margin-bottom: 0px;
+}
+
+/* HORIZONTAL RULES
+=============================================================================*/
+
+hr {
+  clear: both;
+  margin: 15px 0;
+  height: 0px;
+  overflow: hidden;
+  border: none;
+  background: transparent;
+  border-bottom: 4px solid #ddd;
+  padding: 0;
+}
+
+/* TABLES
+=============================================================================*/
+
+table th {
+  font-weight: bold;
+}
+
+table th, table td {
+  border: 1px solid #ccc;
+  padding: 6px 13px;
+}
+
+table tr {
+  border-top: 1px solid #ccc;
+  background-color: #fff;
+}
+
+table tr:nth-child(2n) {
+  background-color: #f8f8f8;
+}
+
+/* IMAGES
+=============================================================================*/
+
+img {
+  max-width: 100%;
+  box-shadow: 0px 0px 5px #888888;
+}
+</style>
+</head>
+<body>
+<h1>DNS原理及解析过程</h1>
+<hr />
+<h2>DNS 概述</h2>
+<p>域名系统 DNS (Domain Name System) 是因特网使用的命名系统 , 用来把便于人们使用的机器名字转换成为IP地址 ; 域名系统其实就是名字系统 ; 为什么不叫 &quot;名字&quot; 而叫 &quot;域名&quot; 呢 ? 这是因为在这种因特网的命名系统中使用了许多的 &quot;域 (domain)&quot;  , 因此就出现了 &quot;域名&quot; 这个名词 ; &quot;域名系统&quot; 明确地指明这种系统是应用在因特网中 ;</p>
+<p>我们都知道 , IP 地址是由 32 位的二进制数字组成的 ; 用户与因特网上某台主机通信时 , 显然不愿意使用很难记忆的长达32位的二进制主机地址 ; 即使是点分十进制 IP 地址也并不太容易记忆 ; 相反 , 大家愿意使用比较容易记忆的主机名字 ; 但是 , 机器在处理 IP 数据报时 , 并不是使用域名而是使用 IP 地址 ; 这是因为 IP 地址长度固定 , 而域名的长度不固定 , 机器处理起来比较困难 ;</p>
+<p>因为因特网规模很大 , 所以整个因特网只使用一个域名服务器是不可行的 ; 因此早在 1983 年因特网开始采用层次树状结构的命名方法 , 并使用分布式的域名系统 DNS , 并采用客户服务器方式 ; DNS 使大多数名字都在本地解析 (resolve) , 仅有少量解析需要在因特网上通信 , 因此 DNS 系统的效率很高 ; 由于 DNS 是分布式系统 , 即使单个计算机除了故障 , 也不会妨碍整个 DNS 系统的正常运行 ;</p>
+<p>域名到 IP 地址的解析是由分布在因特网上的许多域名服务器程序共同完成的 ; 域名服务器程序在专设的结点上运行 , 而人们也常把运行域名服务器程序的机器称为域名服务器 ;</p>
+<p>域名到 IP 地址的解析过程的要点如下 :</p>
+<ul>
+<li>当某一个应用需要把主机名解析为 IP 地址时 , 该应用进程就调用解析程序 , 并称为 DNS 的一个客户 , 把待解析的域名放在 DNS 请求报文中 , 以 <strong>UDP 用户数据报</strong> 方式发给本地域名服务器 ; 本地域名服务器在查找域名后 , 把对应的 IP 地址放在回答报文中返回 ; 应用程序获得目的主机的IP地址后即可进行通信 ;</li>
+<li>若本地域名服务器不能回答该请求 , 则此域名服务器就暂时称为 DNS 的另一个客户 , 并向其他域名服务器发出查询请求 ; 这种过程直至找到能够回答该请求的域名服务器为止 , 此过程在后面作进一步讨论 ;</li>
+</ul>
+<p><br /></p>
+<h2>因特网的域名结构</h2>
+<p>由于因特网的用户数量较多 , 所以因特网在命名时采用的是层次树状结构的命名方法 ; 任何一个连接在因特网上的主机或路由器 , 都有一个唯一的层次结构的名字 , 即 域名 (domain name) ; 这里 &quot;域&quot; (domain) 是名字空间中一个可被管理的划分 ; 
+从语法上讲 , 每一个域名都是有标号 (label) 序列组成 , 而各标号之间用点(小数点)隔开 ;</p>
+<p>如下例子所示 :</p>
+<p><img src="images/68-DNS原理及解析过程/dns_lable.png" alt="dns_lable" /></p>
+<p>这是中央电视台用于手法电子邮件的计算机的域名 , 它由三个标号组成 , 其中标号 com 是顶级域名 , 标号 cctv 是二级域名 , 标号 mail 是三级域名 ;</p>
+<p>DNS 规定 , 域名中的标号都有英文和数字组成 , 每一个标号不超过 63 个字符 (为了记忆方便 , 一般不会超过 12 个字符) , 也不区分大小写字母 ; 标号中除连字符 <code>-</code> 外不能使用其他的标点符号 ; 级别最低的域名写在最左边 , 而级别最高的字符写在最右边 ; 由多个标号组成的完整域名总共不超过 255 个字符 ;</p>
+<p>DNS 既不规定一个域名需要包含多少个下级域名 , 也不规定每一级域名代表什么意思 ; 各级域名由其上一级的域名管理机构管理 , 而最高的顶级域名则由 ICANN 进行管理 , 用这种方法可使每一个域名在整个互联网范围内是唯一的 , 并且也容易设计出一种查找域名的机制 ;</p>
+<p>域名只是逻辑概念 , 并不代表计算机所在的物理地点 ; 据 2006 年 12 月统计 , 现在顶级域名 TLD (Top Level Domain) 已有 265 个 , 分为三大类 :</p>
+<ol>
+<li>国家顶级域名 nTLD : 采用 ISO3166 的规定 ; 如 : cn 代表中国 , us 代表美国 , uk 代表英国 , 等等 ; 国家域名又常记为 ccTLD (cc 表示国家代码 contry-code) ;</li>
+<li>通用顶级域名 gTLD : 最常见的通用顶级域名有 7 个 , 即 : com (公司企业) , net (网络服务机构) , org (非营利组织) , int (国际组织) , gov (美国的政府部门) , mil (美国的军事部门) ;</li>
+<li>基础结构域名 (infrastructure domain) : 这种顶级域名只有一个 , 即 arpa , 用于反向域名解析 , 因此称为反向域名 ;</li>
+</ol>
+<p>如下例子所示 :</p>
+<p><img src="images/68-DNS原理及解析过程/dns_domain.png" alt="dns_domain" /></p>
+<p><br /></p>
+<h2>域名服务器</h2>
+<p>如果采用上述的树状结构 , 每一个节点都采用一个域名服务器 , 这样会使得域名服务器的数量太多 , 使域名服务器系统的运行效率降低 , 所以在 DNS 中 , 采用划分区的方法来解决 ;</p>
+<p>一个服务器所负责管辖 (或有权限) 的范围叫做 区 (zone) , 各单位根据具体情况来划分自己管辖范围的区 , 但在一个区中的所有节点必须是能够连通的 ; 每一个区设置相应的权限域名服务器 , 用来保存该区中的所有主机到域名 IP 地址的映射 ; 总之 DNS 服务器的管辖范围不是以 &quot;域&quot; 为单位 , 而是以 &quot;区&quot; 为单位 ; 区是 DNS 服务器实际管辖的范围 , 区 &lt;= 域 ;</p>
+<p>下图是区的不同划分方法的举例 ; 假定 abc 公司有下属部门 x 和 y , 部门 x 下面有分三个分布们 u , v , w , 而 y 下面还有下属部门 t ;<br />
+图 a 表示 abc 公司只设一个区 abc.com ;<br />
+这时 , 区 abc.com 和域 abc.com 指的是同一件事 ; 但图 b 表示 abc 公司划分为两个区 : abc.com 和 y.abc.com ; 这两个区都隶属于域 abc.com ,  都各设置了相应的权限域名服务器 , 不难看出 , 区是域的子集 ;</p>
+<p><img src="images/68-DNS原理及解析过程/dns_server.png" alt="dns_server" /></p>
+<p>下图是以上图 b 中 abc 公司划分的两个区为例 , 给出了 DNS 域名服务器树状结构图 ; 这种 DNS 域名服务器树状结构图可以更准确地反映出 DNS 的分布式结构 ; 图中的每一个域名服务器都能够部分域名到 IP 地址的解析 , 当某个 DNS 服务器不能进行域名到 IP 地址的转换时 , 它就会设法找因特网上别的域名服务器进行解析 ;</p>
+<p>从下图可以看出 , 因特网上的 DNS 服务器也是按照层次安排的 , 每一个域名服务器只对域名体系中的一部分进行管辖 , 根据域名服务器所起的作用 , 可以把域名服务器划分为下面四种不同的类型 :</p>
+<ul>
+<li><strong>根域名服务器</strong> : 最高层次的域名服务器 , 也是最重要的域名服务器 ; 所有的根域名服务器都知道所有的顶级域名服务器的域名和IP地址 ; 不管是哪一个本地域名服务器 , 若要对因特网上任何一个域名进行解析 , 只要自己无法解析 , 就首先求助根域名服务器 ; 所以根域名服务器是最重要的域名服务器 ; 假定所有的根域名服务器都瘫痪了 , 那么整个DNS系统就无法工作 ; 需要注意的是 , 在很多情况下 , 根域名服务器并不直接把待查询的域名直接解析出 IP 地址 , 而是告诉本地域名服务器下一步应当找哪一个顶级域名服务器进行查询 ;</li>
+<li><strong>顶级域名服务器</strong> : 负责管理在该顶级域名服务器注册的二级域名 ;</li>
+<li><strong>权限域名服务器</strong> : 负责一个 &quot;区&quot; 的域名服务器 ;</li>
+<li><strong>本地域名服务器</strong> : 本地服务器不属于下图的域名服务器的层次结构 , 但是它对域名系统非常重要 ; 当一个主机发出 DNS 查询请求时 , 这个查询请求报文就发送给本地域名服务器 ;</li>
+</ul>
+<p><img src="images/68-DNS原理及解析过程/dns_server_type.png" alt="dns_server_type" /></p>
+<p><br /></p>
+<h2>域名的解析过程</h2>
+<ol>
+<li>客户机提出域名解析请求 , 并将该请求发送给本地的域名服务器 ;</li>
+<li>当本地的域名服务器收到请求后 , 就先查询本地的缓存 , 如果有该纪录项 , 则本地的域名服务器就直接把查询的结果返回 ;</li>
+<li>如果本地的缓存中没有该纪录 , 则本地域名服务器就直接把请求发给根域名服务器 , 然后根域名服务器再返回给本地域名服务器一个所查询域 (根的子域) 的主域名服务器的地址 ;</li>
+<li>本地服务器再向上一步返回的域名服务器发送请求 , 然后接受请求的服务器查询自己的缓存 , 如果没有该纪录 , 则返回相关的下级的域名服务器的地址 ;</li>
+<li>重复第四步 , 直到找到正确的纪录 ;</li>
+<li>本地域名服务器把返回的结果保存到缓存 , 以备下一次使用 , 同时还将结果返回给客户机 ;</li>
+</ol>
+<p>如下图所示 :</p>
+<p><img src="images/68-DNS原理及解析过程/dns_resolve.png" alt="dns_resolve" /></p>
+<p>注意 :</p>
+<ul>
+<li>主机向本地域名服务器的查询一般都是采用 <strong>递归查询</strong> ; 所谓递归查询就是 : 如果主机所询问的本地域名服务器不知道被查询的域名的 IP 地址 , 那么本地域名服务器就以 DNS 客户的身份 , 向其它根域名服务器继续发出查询请求报文 (即替主机继续查询) , 而不是让主机自己进行下一步查询 ; 因此 , 递归查询返回的查询结果或者是所要查询的 IP 地址 , 或者是报错 , 表示无法查询到所需的 IP 地址 ;</li>
+<li>本地域名服务器向根域名服务器的查询的 <strong>迭代查询</strong> ; 迭代查询的特点 : 当根域名服务器收到本地域名服务器发出的迭代查询请求报文时 , 要么给出所要查询的IP地址 , 要么告诉本地服务器 : &quot;你下一步应当向哪一个域名服务器进行查询&quot; ; 然后让本地服务器进行后续的查询 ; 根域名服务器通常是把自己知道的顶级域名服务器的 IP 地址告诉本地域名服务器 , 让本地域名服务器再向顶级域名服务器查询 ; 顶级域名服务器在收到本地域名服务器的查询请求后 , 要么给出所要查询的 IP 地址 , 要么告诉本地服务器下一步应当向哪一个权限域名服务器进行查询 ; 最后 , 知道了所要解析的 IP 地址或报错 , 然后把这个结果返回给发起查询的主机 ;</li>
+</ul>
+<p><br /></p>
+<h2>相关术语</h2>
+<ul>
+<li>什么是 A 记录 ?</li>
+</ul>
+<p>A (Address) 记录是用来指定主机名（或域名）对应的 IP 地址记录 , 用户可以将该域名下的网站服务器指向到自己的 web server 上 , 同时也可以设置您域名的二级域名 ;</p>
+<ul>
+<li>什么是 MX 记录 ?</li>
+</ul>
+<p>邮件路由记录 , 用户可以将该域名下的邮件服务器指向到自己的 mail server 上 , 然后即可自行操控所有的邮箱设置 ; 您只需在线填写您服务器的 IP 地址 , 即可将您域名下的邮件全部转到您自己设定相应的邮件服务器上 ;</p>
+<ul>
+<li>什么是CNAME记录 ?</li>
+</ul>
+<p>别名记录 ; 这种记录允许您将多个名字映射到同一台计算机 ; 通常用于同时提供WWW和MAIL服务的计算机 ; 例如 , 有一台计算机名为 <code>host.mydomain.com</code> (A 记录) ;  它同时提供 WWW 和 MAIL 服务 , 为了便于用户访问服务 ; 可以为该计算机设置两个别名 (CNAME) : WWW 和 MAIL ;  这两个别名的全称就 <code>http://www.mydomain.com/</code>和 <code>mail.mydomain.com</code> ; 实际上他们都指向 <code>host.mydomain.com</code> ;</p>
+<ul>
+<li>什么是TTL值 ?</li>
+</ul>
+<p>TTL 值全称是 生存时间 (Time To Live) , 简单的说它表示 DNS 记录在 DNS 服务器上缓存时间 ; 要理解 TTL 值 , 请先看下面的一个例子 :
+假设 , 有这样一个域名 <code>myhost.abc.com</code> (其实 , 这就是一条 DNS 记录 , 通常表示在 abc.com 域中有一台名为 myhost 的主机) 对应 IP 地址为 1.1.1.1 , 它的 TTL 为 10 分钟 ; 这个域名或称这条记录存储在一台名为 dns.abc.com 的 DNS 服务器上 ;</p>
+
+</body>
+</html>
+<!-- This document was created with MarkdownPad, the Markdown editor for Windows (http://markdownpad.com) -->

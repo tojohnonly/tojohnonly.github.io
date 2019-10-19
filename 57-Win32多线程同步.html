@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Win32多线程同步</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style type="text/css">
+/* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
+/* Author: Nicolas Hery - http://nicolashery.com */
+/* Version: b13fe65ca28d2e568c6ed5d7f06581183df8f2ff */
+/* Source: https://github.com/nicolahery/markdownpad-github */
+
+/* RESET
+=============================================================================*/
+
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+/* BODY
+=============================================================================*/
+
+body {
+  font-family: Microsoft YaHei UI;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #333;
+  background-color: #fff;
+  padding: 20px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+body>*:first-child {
+  margin-top: 0 !important;
+}
+
+body>*:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* BLOCKS
+=============================================================================*/
+
+p, blockquote, ul, ol, dl, table, pre {
+  margin: 15px 0;
+}
+
+/* HEADERS
+=============================================================================*/
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 20px 0 10px;
+  padding: 0;
+  font-weight: bold;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1 tt, h1 code, h2 tt, h2 code, h3 tt, h3 code, h4 tt, h4 code, h5 tt, h5 code, h6 tt, h6 code {
+  font-size: inherit;
+}
+
+h1 {
+  font-size: 28px;
+  color: #000;
+}
+
+h2 {
+  font-size: 24px;
+  border-bottom: 1px solid #ccc;
+  color: #000;
+}
+
+h3 {
+  font-size: 18px;
+}
+
+h4 {
+  font-size: 16px;
+}
+
+h5 {
+  font-size: 14px;
+}
+
+h6 {
+  color: #777;
+  font-size: 14px;
+}
+
+body>h2:first-child, body>h1:first-child, body>h1:first-child+h2, body>h3:first-child, body>h4:first-child, body>h5:first-child, body>h6:first-child {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6 {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+h1+p, h2+p, h3+p, h4+p, h5+p, h6+p {
+  margin-top: 10px;
+}
+
+/* LINKS
+=============================================================================*/
+
+a {
+  color: #4183C4;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* LISTS
+=============================================================================*/
+
+ul, ol {
+  padding-left: 30px;
+}
+
+ul li > :first-child, 
+ol li > :first-child, 
+ul li ul:first-of-type, 
+ol li ol:first-of-type, 
+ul li ol:first-of-type, 
+ol li ul:first-of-type {
+  margin-top: 0px;
+}
+
+ul ul, ul ol, ol ol, ol ul {
+  margin-bottom: 0;
+}
+
+dl {
+  padding: 0;
+}
+
+dl dt {
+  font-size: 14px;
+  font-weight: bold;
+  font-style: italic;
+  padding: 0;
+  margin: 15px 0 5px;
+}
+
+dl dt:first-child {
+  padding: 0;
+}
+
+dl dt>:first-child {
+  margin-top: 0px;
+}
+
+dl dt>:last-child {
+  margin-bottom: 0px;
+}
+
+dl dd {
+  margin: 0 0 15px;
+  padding: 0 15px;
+}
+
+dl dd>:first-child {
+  margin-top: 0px;
+}
+
+dl dd>:last-child {
+  margin-bottom: 0px;
+}
+
+/* CODE
+=============================================================================*/
+
+pre, code, tt {
+  font-size: 12px;
+  font-family: Consolas, "Liberation Mono", Courier, monospace;
+}
+
+code, tt {
+  margin: 0 0px;
+  padding: 0px 0px;
+  white-space: nowrap;
+  border: 1px solid #eaeaea;
+  background-color: #f8f8f8;
+  border-radius: 3px;
+}
+
+pre>code {
+  margin: 0;
+  padding: 0;
+  white-space: pre;
+  border: none;
+  background: transparent;
+}
+
+pre {
+  background-color: #f8f8f8;
+  border: 1px solid #ccc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px;
+}
+
+pre code, pre tt {
+  background-color: transparent;
+  border: none;
+}
+
+kbd {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #DDDDDD;
+    background-image: linear-gradient(#F1F1F1, #DDDDDD);
+    background-repeat: repeat-x;
+    border-color: #DDDDDD #CCCCCC #CCCCCC #DDDDDD;
+    border-image: none;
+    border-radius: 2px 2px 2px 2px;
+    border-style: solid;
+    border-width: 1px;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    line-height: 10px;
+    padding: 1px 4px;
+}
+
+/* QUOTES
+=============================================================================*/
+
+blockquote {
+  border-left: 4px solid #DDD;
+  padding: 0 15px;
+  color: #777;
+}
+
+blockquote>:first-child {
+  margin-top: 0px;
+}
+
+blockquote>:last-child {
+  margin-bottom: 0px;
+}
+
+/* HORIZONTAL RULES
+=============================================================================*/
+
+hr {
+  clear: both;
+  margin: 15px 0;
+  height: 0px;
+  overflow: hidden;
+  border: none;
+  background: transparent;
+  border-bottom: 4px solid #ddd;
+  padding: 0;
+}
+
+/* TABLES
+=============================================================================*/
+
+table th {
+  font-weight: bold;
+}
+
+table th, table td {
+  border: 1px solid #ccc;
+  padding: 6px 13px;
+}
+
+table tr {
+  border-top: 1px solid #ccc;
+  background-color: #fff;
+}
+
+table tr:nth-child(2n) {
+  background-color: #f8f8f8;
+}
+
+/* IMAGES
+=============================================================================*/
+
+img {
+  max-width: 100%
+}
+</style>
+</head>
+<body>
+<h1>Win32多线程同步</h1>
+<hr />
+<h2>多线程同步概述</h2>
+<p><strong>线程之间通信的两个基本问题是互斥和同步</strong></p>
+<ul>
+<li>线程同步是指线程之间所具有的一种制约关系 , 一个线程的执行依赖另一个线程的消息 , 当它没有得到另一个线程的消息时应等待 , 直到消息到达时才被唤醒 ;</li>
+<li>线程互斥是指对于共享的操作系统资源 , 在各线程访问时的排它性 ; 当有若干个线程都要使用某一共享资源时 , 任何时刻最多只允许一个线程去使用 , 其它要使用该资源的线程必须等待 , 直到占用资源者释放该资源 ;</li>
+</ul>
+<p><strong>线程互斥是一种特殊的线程同步</strong></p>
+<p>实际上 , 互斥和同步对应着线程间通信发生的两种情况 :</p>
+<ul>
+<li>当有多个线程访问共享资源而不使资源被破坏时 ;</li>
+<li>当一个线程需要将某个任务已经完成的情况通知另外一个或多个线程时 ;</li>
+</ul>
+<p>从大的方面讲 , 线程的同步可分用户模式的线程同步和内核对象的线程同步两大类 ;<br />
+用户模式中线程的同步方法主要有原子访问和临界区等方法 ; 其特点是同步速度特别快 , 适合于对线程运行速度有严格要求的场合 ;<br />
+内核对象的线程同步则主要由事件 , 等待定时器 , 信号量以及信号灯等内核对象构成 ; 由于这种同步机制使用了内核对象 , 使用时必须将线程从用户模式切换到内核模式 , 而这种转换一般要耗费近千个CPU周期 , 因此同步速度较慢 , 但在适用性上却要远优于用户模式的线程同步方式 ;</p>
+<p><strong>在 Win32 中 , 同步机制主要有以下几种 :</strong></p>
+<ul>
+<li>事件 (Event) ;</li>
+<li>信号量 (Semaphore) ;</li>
+<li>互斥量 (Mutex) ;</li>
+<li>临界区 (Critical Section) ;</li>
+</ul>
+<p><br /></p>
+<h2>具体实现</h2>
+<h3>1. 事件</h3>
+<p>事件 (Event) 是 Win32 提供的最灵活的线程间同步方式 , 事件可以处于激发状态 (signaled or true) 或未激发状态 (unsignal or false) ; 根据状态变迁方式的不同 , 事件可分为两类 :</p>
+<ul>
+<li>手动设置 : 这种对象只可能用程序手动设置 , 在需要该事件或者事件发生时 , 采用 SetEvent 及 ResetEvent 来进行设置 ;</li>
+<li>自动恢复 : 一旦事件发生并被处理后 , 自动恢复到没有事件状态 , 不需要再次设置 ;</li>
+</ul>
+<p>使用事件 (Event)机制应注意以下事项 :</p>
+<ul>
+<li>如果跨进程访问事件 , 必须对事件命名 , 在对事件命名的时候 , 要注意不要与系统命名空间中的其它全局命名对象冲突 ;</li>
+<li>事件是否要自动恢复 ;</li>
+<li>事件的初始状态设置 ;</li>
+</ul>
+<p>由于 Event 对象属于内核对象 , 故进程 B 可以调用 OpenEvent 函数通过对象的名字获得进程 A 中 Event 对象的句柄 , 然后将这个句柄用于 ResetEvent , SetEvent 和 WaitForMultipleObjects 等函数中 ;</p>
+<p><strong>相关的函数信息如下 :</strong></p>
+<p>创建 Event</p>
+<pre><code>HANDLE CreateEvent(
+    LPSECURITY_ATTRIBUTES lpEventAttributes,    // SECURITY_ATTRIBUTES结构指针，可为 NULL
+    BOOL bManualReset,    // 手动/自动 , TRUE : 在 WaitForSingleObject 后必须手动调用 ResetEvent 清除信号
+                                                            FALSE：在 WaitForSingleObject 后 , 系统自动清除事件信号
+    BOOL bInitialState,    // 初始状态
+    LPCTSTR lpName    // 事件的名称
+);
+</code></pre>
+
+<p>将 Event 置为发信号</p>
+<pre><code>BOOL SetEvent(HANDLE hEvent);
+</code></pre>
+
+<p>将 Event 置为不发信号</p>
+<pre><code>BOOL ResetEvent(HANDLE hEvent);
+</code></pre>
+
+<p><strong>实现代码如下 :</strong></p>
+<pre><code>#include &quot;stdafx.h&quot;
+#include &lt;Windows.h&gt;
+#include &lt;iostream&gt;
+using namespace std;
+
+DWORD WINAPI ThreadFunc_1(LPVOID lpParmeter);
+DWORD WINAPI ThreadFunc_2(LPVOID lpParmeter);
+HANDLE g_hEvent = INVALID_HANDLE_VALUE;
+int g_nCount = 100;
+
+int main()
+{
+    HANDLE hThreads[2];  
+    hThreads[0] = INVALID_HANDLE_VALUE;
+    hThreads[1] = INVALID_HANDLE_VALUE;
+    g_hEvent = CreateEvent(NULL, false, false, &quot;Event&quot;);
+    if (!g_hEvent)
+    {
+        cout&lt;&lt;&quot;Failed To Create Event&quot;&lt;&lt;endl;
+        return 0;
+    }
+    // 创建两个子线程
+    hThreads[0] = CreateThread(NULL, 0, ThreadFunc_1, NULL, 0, NULL);
+    hThreads[1] = CreateThread(NULL, 0, ThreadFunc_2, NULL, 0, NULL);
+    // 设置全局 Event 为有信号状态
+    SetEvent(g_hEvent);
+    // 阻塞等待两个线程结束
+    WaitForMultipleObjects(2, hThreads, TRUE, INFINITE);  
+    // 关闭句柄
+    CloseHandle(hThreads[0]);
+    CloseHandle(hThreads[1]);
+    return 0;
+}
+
+DWORD WINAPI ThreadFunc_1(LPVOID lpParmeter)
+{
+    while (true)
+    {
+        // 请求事件对象
+        WaitForSingleObject(g_hEvent, INFINITE);    // INFINITE : 无限等待
+        if (g_nCount &gt; 0)
+        {
+            Sleep(20);
+            cout&lt;&lt;&quot;ThreadFunc_1 : &quot;&lt;&lt;g_nCount--&lt;&lt;endl;
+            SetEvent(g_hEvent);
+        }
+        else
+        {
+            SetEvent(g_hEvent);
+            break;
+        }
+    }
+    return 0;
+}
+
+DWORD WINAPI ThreadFunc_2(LPVOID lpParameter)
+{
+    while (true)
+    {
+        WaitForSingleObject(g_hEvent,INFINITE);
+        if (g_nCount &gt; 0)
+        {
+            Sleep(20);
+            cout &lt;&lt; &quot;ThreadFunc_2 : &quot; &lt;&lt; g_nCount-- &lt;&lt; endl;
+            SetEvent(g_hEvent);
+        }
+        else
+        {
+            SetEvent(g_hEvent);
+            break;
+        }
+    }
+    return 0;
+}
+</code></pre>
+
+<h3>2. 信号量</h3>
+<p>信号量是维护 0 到指定最大值之间的同步对象 ; 信号量状态在其计数大于 0 时是有信号的 , 而其计数是 0 时是无信号的 ; 信号量对象在控制上可以支持有限数量共享资源的访问 , 是一个 <code>生产者-消费者模型</code> ;<br />
+信号量的特点和用途可用下列几句话定义：</p>
+<ul>
+<li>如果当前资源的数量大于 0 , 则信号量有效 ;</li>
+<li>如果当前资源数量是 0 , 则信号量无效 ;</li>
+<li>系统决不允许当前资源的数量为负值 ;</li>
+<li>当前资源数量决不能大于最大资源数量 ;</li>
+</ul>
+<p><strong>相关的函数信息如下 :</strong></p>
+<p>创建信号量</p>
+<pre><code>HANDLE CreateSemaphore(
+    LPSECURITY_ATTRIBUTESlpSemaphoreAttributes,    // 指定一个SECURITY_ATTRIBUTES结构，或传递零值
+    LONGlInitialCount,    // 设置信号量的初始计数 , 可设置零到 lMaximumCount 之间的一个值
+    LONGlMaximumCount,    // 设置信号量的最大计数
+    LPCTSTRlpName    // 指定信号量对象的名称
+);
+</code></pre>
+
+<p>释放信号量 , 通过调用ReleaseSemaphore函数 , 线程就能够对信标的当前资源数量进行递增 , 该函数原型为 :</p>
+<pre><code>BOOL WINAPI ReleaseSemaphore(
+    HANDLE hSemaphore,    // 所要操作的信号量对象的句柄
+    LONG lReleaseCount,    // 这个信号量对象在当前基础上所要增加的值 , 这个值必须大于0
+    LPLONG lpPreviousCount    // 指向返回信号量上次值的变量的指针 , 如果不需要可以设置为NULL
+); 　
+</code></pre>
+
+<p>打开信号量 , 和其他核心对象一样 , 信号量也可以通过名字跨进程访问 , 打开信号量的 API 为 :</p>
+<pre><code>HANDLE OpenSemaphore (
+    DWORD fdwAccess,    // 表示访问权限 , 一般传入 `SEMAPHORE_ALL_ACCESS` 来完全访问
+    BOOL bInherithandle,    // 如果允许子进程继承句柄，则设为TRUE
+    PCTSTR pszName    // 指定要打开的对象的名字
+);
+</code></pre>
+
+<p><strong>实现代码如下 :</strong></p>
+<pre><code>#include &quot;stdafx.h&quot;
+#include &lt;Windows.h&gt;
+#include &lt;iostream&gt;
+#include &lt;vector&gt;
+using namespace std;
+
+DWORD WINAPI ThreadFunc_1(LPVOID lpParmeter);
+DWORD WINAPI ThreadFunc_2(LPVOID lpParmeter);
+HANDLE g_hSemaphore = INVALID_HANDLE_VALUE;
+int g_nCount = 100;
+
+int main()
+{
+    HANDLE hThreads[2];  
+    hThreads[0] = INVALID_HANDLE_VALUE;
+    hThreads[1] = INVALID_HANDLE_VALUE;
+    g_hSemaphore = CreateSemaphore(NULL, 1, 1, &quot;Semaphore&quot;);
+    if (g_hSemaphore == INVALID_HANDLE_VALUE)
+    {
+        cout&lt;&lt;&quot;Failed To Create Semaphore&quot;&lt;&lt;endl;
+        return 0;
+    }
+    hThreads[0] = CreateThread(NULL, 0, ThreadFunc_1, NULL, 0, NULL);
+    hThreads[1] = CreateThread(NULL, 0, ThreadFunc_2, NULL, 0, NULL);
+    WaitForMultipleObjects(2, hThreads, TRUE, INFINITE);  
+    CloseHandle(hThreads[0]);
+    CloseHandle(hThreads[1]);
+    return 0;
+}
+
+DWORD WINAPI ThreadFunc_1(LPVOID lpParmeter)
+{
+    while (true)
+    {
+        // 阻塞等待 , 并消耗一个信号量
+        WaitForSingleObject(g_hSemaphore, INFINITE);
+        if (g_nCount &gt; 0)
+        {
+            Sleep(20);
+            cout &lt;&lt;&quot;ThreadFunc_1 : &quot;&lt;&lt; g_nCount--&lt;&lt;endl;
+            // 释放一个信号量
+            ReleaseSemaphore(g_hSemaphore, 1, NULL);
+        }
+        else
+        {
+            ReleaseSemaphore(g_hSemaphore, 1, NULL);
+            break;
+        }
+    }
+    return 0;
+}
+
+DWORD WINAPI ThreadFunc_2(LPVOID lpParameter)
+{
+    while (true)
+    {
+        WaitForSingleObject(g_hSemaphore, INFINITE);
+        if (g_nCount &gt; 0)
+        {
+            Sleep(20);
+            cout&lt;&lt;&quot;ThreadFunc_2 : &quot;&lt;&lt;g_nCount--&lt;&lt;endl;
+            ReleaseSemaphore(g_hSemaphore, 1, NULL);
+        }
+        else
+        {
+            ReleaseSemaphore(g_hSemaphore, 1, NULL);
+            break;
+        }
+    }
+    return 0;
+}
+</code></pre>
+
+<h3>3. 互斥量</h3>
+<p>当两个或更多线程需要同时访问一个共享资源时 , 系统需要使用同步机制来确保一次只有一个线程使用该资源 ; Mutex 是同步基元 , 它只向一个线程授予对共享资源的独占访问权 , 如果一个线程获取了互斥体 , 则要获取该互斥体的第二个线程将被挂起 , 直到第一个线程释放该互斥体 ;</p>
+<p><strong>相关的函数信息如下 :</strong></p>
+<p>创建互斥量</p>
+<pre><code>HANDLE CreateMutex(
+    LPSECURITY_ATTRIBUTESlpMutexAttributes,    // 指定一个 SECURITY_ATTRIBUTES 结构 , 或传递零值
+    BOOLbInitialOwner,    // 初始化互斥对象的所有者 , 如创建进程希望立即拥有互斥体则设为 TRUE , 该互斥体同时只能由一个线程拥有
+    LPCTSTRlpName    // 指定互斥体对象的名字
+);
+</code></pre>
+
+<p>释放互斥对象的控制权</p>
+<pre><code>BOOL WINAPI ReleaseMutex(HANDLE hMutex);
+</code></pre>
+
+<p><strong>实现代码如下 :</strong></p>
+<pre><code>#include &quot;stdafx.h&quot;
+#include &lt;windows.h&gt;
+#include &lt;iostream&gt;
+using namespace std;
+
+DWORD WINAPI ThreadFunc_1(LPVOID lpParmeter);
+DWORD WINAPI ThreadFunc_2(LPVOID lpParmeter);
+HANDLE g_hMutex = INVALID_HANDLE_VALUE;
+int g_nCount = 100;
+
+int main()
+{
+    HANDLE hThreads[2]; 
+    hThreads[0] = INVALID_HANDLE_VALUE;
+    hThreads[1] = INVALID_HANDLE_VALUE;
+    g_hMutex = CreateMutex(NULL, FALSE, &quot;Mutex&quot;);    // 第二个参数 FALSE 表示当前创建进程没有所有权，
+    if (!g_hMutex)
+    {
+        cout&lt;&lt;&quot;Failed to Create Mutex&quot;&lt;&lt;endl;
+        return 0;
+    }
+    hThreads[0] = CreateThread(NULL, 0, ThreadFunc_1, NULL, 0, NULL);
+    hThreads[1] = CreateThread(NULL, 0, ThreadFunc_2, NULL, 0, NULL);
+    WaitForMultipleObjects(2, hThreads, TRUE, INFINITE);
+    CloseHandle(hThreads[0]);
+    CloseHandle(hThreads[1]);
+    return 0;
+}
+
+DWORD WINAPI ThreadFunc_1(LPVOID lpParmeter)
+{
+    while (true)
+    {
+        WaitForSingleObject(g_hMutex, INFINITE);
+        if (g_nCount &gt; 0)
+        {
+            Sleep(20);
+            cout&lt;&lt;&quot;ThreadFunc_1 : &quot;&lt;&lt;g_nCount--&lt;&lt;endl;
+            // 释放互斥量
+            ReleaseMutex(g_hMutex);
+        }
+        else
+        {
+            ReleaseMutex(g_hMutex);
+            break;
+        }
+    }
+    return 0;
+}
+
+DWORD WINAPI ThreadFunc_2(LPVOID lpParameter)
+{
+    while (true)
+    {
+        WaitForSingleObject(g_hMutex,INFINITE);
+        if (g_nCount &gt; 0)
+        {
+            Sleep(20);
+            cout&lt;&lt;&quot;ThreadFunc_2 : &quot;&lt;&lt;g_nCount--&lt;&lt;endl;
+            ReleaseMutex(g_hMutex);
+        }
+        else
+        {
+            ReleaseMutex(g_hMutex);
+            break;
+        }
+    }
+    return 0;
+}
+</code></pre>
+
+<h3>4. 临界区</h3>
+<p>临界区 (Critical Section) 是一段独占对某些共享资源访问的代码 , 在任意时刻只允许一个线程对共享资源进行访问 ; 如果有多个线程试图同时访问临界区 , 那么在有一个线程进入后其他所有试图访问此临界区的线程将被挂起 , 并一直持续到进入临界区的线程离开 ; 临界区在被释放后 , 其他线程可以继续抢占 , 并以此达到用原子方式操作共享资源的目的 ;</p>
+<p>临界区在使用时以 <code>CRITICAL_SECTION</code> 结构对象保护共享资源 , 并分别用 <code>EnterCriticalSection()</code> 和 <code>LeaveCriticalSection()</code> 函数去标识和释放一个临界区 ; 所用到的 <code>CRITICAL_SECTION</code> 结构对象必须经过 <code>InitializeCriticalSection()</code> 的初始化后才能使用 , 而且必须确保所有线程中的任何试图访问此共享资源的代码都处在此临界区的保护之下 ; 否则临界区将不会起到应有的作用 , 共享资源依然有被破坏的可能 ;</p>
+<p><strong>相关的函数信息如下 :</strong></p>
+<p>初始化临界区</p>
+<pre><code>VOID InitializeCriticalSection(LPCRITICAL_SECTION lpCriticalSection);
+</code></pre>
+
+<p>进入临界区</p>
+<pre><code>VOID EnterCriticalSection(LPCRITICAL_SECTION lpCriticalSection);
+</code></pre>
+
+<p>离开临界区</p>
+<pre><code>VOID LeaveCriticalSection(LPCRITICAL_SECTION lpCriticalSection);
+</code></pre>
+
+<p>释放临界区资源</p>
+<pre><code>VOID DeleteCriticalSection(LPCRITICAL_SECTION lpCriticalSection);
+</code></pre>
+
+<p><strong>实现代码如下 :</strong></p>
+<pre><code>#include &quot;stdafx.h&quot;
+#include &lt;windows.h&gt;
+#include &lt;iostream&gt;
+using namespace std;
+
+DWORD WINAPI ThreadFunc_1(LPVOID lpParmeter);
+DWORD WINAPI ThreadFunc_2(LPVOID lpParmeter);
+CRITICAL_SECTION g_csCriticalSection;
+static int g_nCount = 100;
+
+int main()
+{
+    HANDLE hThreads[2]; 
+    hThreads[0] = INVALID_HANDLE_VALUE;
+    hThreads[1] = INVALID_HANDLE_VALUE;
+    // 初始化临界区对象
+    InitializeCriticalSection(&amp;g_csCriticalSection);
+    hThreads[0] = CreateThread(NULL, 0, ThreadFunc_1, NULL, 0, NULL);
+    hThreads[1] = CreateThread(NULL, 0, ThreadFunc_2, NULL, 0, NULL);
+    WaitForMultipleObjects(2, hThreads, TRUE, INFINITE);
+    CloseHandle(hThreads[0]);
+    CloseHandle(hThreads[1]);
+    // 释放临界区资源
+    DeleteCriticalSection(&amp;g_csCriticalSection);
+    return 0;
+}
+
+DWORD WINAPI ThreadFunc_1(LPVOID lpParmeter)
+{
+    while (true)
+    {
+        // 进入临界区 , 获得所有权 , 其他线程就等待
+        EnterCriticalSection(&amp;g_csCriticalSection);
+        if (g_nCount &gt; 0)
+        {
+            Sleep(20);
+            cout&lt;&lt;&quot;ThreadFunc_1 : &quot;&lt;&lt;g_nCount--&lt;&lt;endl;
+            // 离开临界区 , 释放所有权
+            LeaveCriticalSection(&amp;g_csCriticalSection);
+        }
+        else
+        {
+            LeaveCriticalSection(&amp;g_csCriticalSection);
+            break;
+        }
+    }
+    return 0;
+}
+
+DWORD WINAPI ThreadFunc_2(LPVOID lpParameter)
+{
+    while (true)
+    {
+        EnterCriticalSection(&amp;g_csCriticalSection);
+        if (g_nCount &gt; 0)
+        {
+            Sleep(20);
+            cout&lt;&lt;&quot;ThreadFunc_2 : &quot;&lt;&lt;g_nCount--&lt;&lt;endl;
+            LeaveCriticalSection(&amp;g_csCriticalSection);
+        }
+        else
+        {
+            LeaveCriticalSection(&amp;g_csCriticalSection);
+            break;
+        }
+    }
+    return 0;
+}
+</code></pre>
+
+<p><br /></p>
+<h2>总结</h2>
+<ul>
+<li>临界区 : 通过对多线程的串行化来访问公共资源或一段代码 , 速度快 , 适合控制数据访问 ;</li>
+<li>互斥量 : 为协调共同对一个共享资源的单独访问而设计的 ;</li>
+<li>信号量 : 为控制一个具有有限数量用户资源而设计 ;</li>
+<li>事件 : 用来通知线程有一些事件已发生 , 从而启动后继任务的开始 ;</li>
+</ul>
+<p><strong>临界区 Critical Section (同一个进程内 , 实现互斥)</strong><br />
+保证在某一时刻只有一个线程能访问数据的简便办法 ; 在任意时刻只允许一个线程对共享资源进行访问 ; 如果有多个线程试图同时访问临界区 , 那么在有一个线程进入后其他所有试图访问此临界区的线程将被挂起 , 并一直持续到进入临界区的线程离开 ; 临界区在被释放后 , 其他线程可以继续抢占 , 并以此达到用原子方式操作共享资源的目的 ;</p>
+<p><strong>互斥量 Mutex (可以跨进程 , 实现互斥)</strong><br />
+互斥量跟临界区很相似 , 只有拥有互斥对象的线程才具有访问资源的权限 , 由于互斥对象只有一个 , 因此就决定了任何情况下此共享资源都不会同时被多个线程所访问 ; 当前占据资源的线程在任务处理完后应将拥有的互斥对象交出 , 以便其他线程在获得后得以访问资源 ; 互斥量比临界区复杂 ; 因为使用互斥不仅仅能够在同一应用程序不同线程中实现资源的安全共享 , 而且可以在不同应用程序的线程之间实现对资源的安全共享 ;
+互斥量与临界区的作用非常相似 , 但互斥量是可以命名的 , 也就是说它可以跨越进程使用 ; 所以创建互斥量需要的资源更多 , 所以如果只为了在进程内部是用的话使用临界区会带来速度上的优势并能够减少资源占用量 ;</p>
+<p><strong>信号量 Semaphores (主要是实现同步 , 可以跨进程)</strong><br />
+信号量对象对线程的同步方式与前面几种方法不同 , 信号允许多个线程同时使用共享资源 , 这与操作系统中的 PV 操作相同 ; 它指出了同时访问共享资源的线程最大数目 ; 它允许多个线程在同一时刻访问同一资源 , 但是需要限制在同一时刻访问此资源的最大线程数目 ; 一般是将当前可用资源计数设置为最大资源计数 , 每增加一个线程对共享资源的访问 , 当前可用资源计数就会减 1 , 只要当前可用资源计数是大于 0 的 , 就可以发出信号量信号 ; 但是当前可用计数减小到 0 时则说明当前占用资源的线程数已经达到了所允许的最大数目 , 不能在允许其他线程的进入 , 此时的信号量信号将无法发出 ;</p>
+<p><strong>事件 Event (实现同步 , 可以跨进程)</strong><br />
+事件对象也可以通过通知操作的方式来保持线程的同步 ; 并且可以实现不同进程中的线程同步操作 ;</p>
+
+</body>
+</html>
+<!-- This document was created with MarkdownPad, the Markdown editor for Windows (http://markdownpad.com) -->

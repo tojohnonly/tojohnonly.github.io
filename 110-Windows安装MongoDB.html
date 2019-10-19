@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Windows安装MongoDB</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style type="text/css">
+/* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
+/* Author: Nicolas Hery - http://nicolashery.com */
+/* Version: b13fe65ca28d2e568c6ed5d7f06581183df8f2ff */
+/* Source: https://github.com/nicolahery/markdownpad-github */
+
+/* RESET
+=============================================================================*/
+
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+/* BODY
+=============================================================================*/
+
+body {
+  font-family: 'Microsoft YaHei UI', Helvetica, arial, freesans, clean, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #333;
+  background-color: #fff;
+  padding: 20px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+body>*:first-child {
+  margin-top: 0 !important;
+}
+
+body>*:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* BLOCKS
+=============================================================================*/
+
+p, blockquote, ul, ol, dl, table, pre {
+  margin: 15px 0;
+}
+
+/* HEADERS
+=============================================================================*/
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 20px 0 10px;
+  padding: 0;
+  font-weight: bold;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1 tt, h1 code, h2 tt, h2 code, h3 tt, h3 code, h4 tt, h4 code, h5 tt, h5 code, h6 tt, h6 code {
+  font-size: inherit;
+}
+
+h1 {
+  font-size: 28px;
+  color: #000;
+}
+
+h2 {
+  font-size: 24px;
+  border-bottom: 1px solid #ccc;
+  color: #000;
+}
+
+h3 {
+  font-size: 18px;
+}
+
+h4 {
+  font-size: 16px;
+}
+
+h5 {
+  font-size: 14px;
+}
+
+h6 {
+  color: #777;
+  font-size: 14px;
+}
+
+body>h2:first-child, body>h1:first-child, body>h1:first-child+h2, body>h3:first-child, body>h4:first-child, body>h5:first-child, body>h6:first-child {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6 {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+h1+p, h2+p, h3+p, h4+p, h5+p, h6+p {
+  margin-top: 10px;
+}
+
+/* LINKS
+=============================================================================*/
+
+a {
+  color: #4183C4;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* LISTS
+=============================================================================*/
+
+ul, ol {
+  padding-left: 30px;
+}
+
+ul li > :first-child, 
+ol li > :first-child, 
+ul li ul:first-of-type, 
+ol li ol:first-of-type, 
+ul li ol:first-of-type, 
+ol li ul:first-of-type {
+  margin-top: 0px;
+}
+
+ul ul, ul ol, ol ol, ol ul {
+  margin-bottom: 0;
+}
+
+dl {
+  padding: 0;
+}
+
+dl dt {
+  font-size: 14px;
+  font-weight: bold;
+  font-style: italic;
+  padding: 0;
+  margin: 15px 0 5px;
+}
+
+dl dt:first-child {
+  padding: 0;
+}
+
+dl dt>:first-child {
+  margin-top: 0px;
+}
+
+dl dt>:last-child {
+  margin-bottom: 0px;
+}
+
+dl dd {
+  margin: 0 0 15px;
+  padding: 0 15px;
+}
+
+dl dd>:first-child {
+  margin-top: 0px;
+}
+
+dl dd>:last-child {
+  margin-bottom: 0px;
+}
+
+/* CODE
+=============================================================================*/
+
+pre, code, tt {
+  font-size: 12px;
+  font-family: Consolas, "Liberation Mono", Courier, monospace;
+}
+
+code, tt {
+  margin: 0 0px;
+  padding: 0px 0px;
+  white-space: nowrap;
+  border: 1px solid #eaeaea;
+  background-color: #f8f8f8;
+  border-radius: 3px;
+}
+
+pre>code {
+  margin: 0;
+  padding: 0;
+  white-space: pre;
+  border: none;
+  background: transparent;
+}
+
+pre {
+  background-color: #f8f8f8;
+  border: 1px solid #ccc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px;
+}
+
+pre code, pre tt {
+  background-color: transparent;
+  border: none;
+}
+
+kbd {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #DDDDDD;
+    background-image: linear-gradient(#F1F1F1, #DDDDDD);
+    background-repeat: repeat-x;
+    border-color: #DDDDDD #CCCCCC #CCCCCC #DDDDDD;
+    border-image: none;
+    border-radius: 2px 2px 2px 2px;
+    border-style: solid;
+    border-width: 1px;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    line-height: 10px;
+    padding: 1px 4px;
+}
+
+/* QUOTES
+=============================================================================*/
+
+blockquote {
+  border-left: 4px solid #DDD;
+  padding: 0 15px;
+  color: #777;
+}
+
+blockquote>:first-child {
+  margin-top: 0px;
+}
+
+blockquote>:last-child {
+  margin-bottom: 0px;
+}
+
+/* HORIZONTAL RULES
+=============================================================================*/
+
+hr {
+  clear: both;
+  margin: 15px 0;
+  height: 0px;
+  overflow: hidden;
+  border: none;
+  background: transparent;
+  border-bottom: 4px solid #ddd;
+  padding: 0;
+}
+
+/* TABLES
+=============================================================================*/
+
+table th {
+  font-weight: bold;
+}
+
+table th, table td {
+  border: 1px solid #ccc;
+  padding: 6px 13px;
+}
+
+table tr {
+  border-top: 1px solid #ccc;
+  background-color: #fff;
+}
+
+table tr:nth-child(2n) {
+  background-color: #f8f8f8;
+}
+
+/* IMAGES
+=============================================================================*/
+
+img {
+  max-width: 100%
+}
+</style>
+</head>
+<body>
+<h1>Windows 安装 MongoDB</h1>
+<hr />
+<h3>MongoDB 下载与安装</h3>
+<p>MongoDB 提供了可用于 32 位和 64 位系统的预编译二进制包 , 你可以从 MongoDB 官网下载安装 , MongoDB 预编译二进制包下载地址 :
+<a href="https://www.mongodb.com/download-center/community">https://www.mongodb.com/download-center/community</a></p>
+<p>我下载了 <code>mongodb-win32-x86_64-2008plus-ssl-4.0.10.zip</code> , 解压到 <code>D:\Program\MongoDB</code></p>
+<h3>创建数据目录</h3>
+<p>MongoDB 将数据目录存储在 <code>db</code> 目录下 , 但是这个数据目录不会主动创建 , 我们要自己创建它 , <code>D:\Program\MongoDB\data\db</code></p>
+<h3>命令行运行 MongoDB 服务器</h3>
+<p>为了从命令提示符下运行 MongoDB 服务器 , 你必须从 MongoDB 目录的 <code>bin</code> 目录中执行 <code>mongod.exe</code>文件 :</p>
+<pre><code>D:\Program\MongoDB\bin\mongod --dbpath D:\Program\MongoDB\data\db
+</code></pre>
+
+<p>如果执行成功，会输出如下信息 :</p>
+<pre><code>2019-06-04T14:04:48.657+0800 I CONTROL  [initandlisten] MongoDB starting : 
+    pid=7420 port=27017 dbpath=D:\Program\MongoDB\data\db 64-bit host=Home-PC
+2019-06-04T14:04:48.657+0800 I CONTROL  [initandlisten] targetMinOS: Windows 7/Windows Server 2008 R2
+2019-06-04T14:04:48.657+0800 I CONTROL  [initandlisten] db version v4.0.10
+...
+2019-06-04T14:04:49.127+0800 I CONTROL  [initandlisten] ** server with --bind_ip 127.0.0.1 to disable this warning.
+2019-06-04T14:04:49.282+0800 I NETWORK  [initandlisten] waiting for connections on port 27017
+</code></pre>
+
+<p>若启动成功 , 会显示 MongoDB 默认的监听端口 : <strong>27017</strong></p>
+<h3>配置 MongoDB 服务</h3>
+<p>创建一个配置文件 <code>D:\Program\MongoDB\mongod.cfg</code> 指定数据库和日志文件的目录 , 具体配置内容如下 :</p>
+<pre><code>systemLog:
+    destination: file
+    path: D:\Program\MongoDB\data\log\mongod.log
+storage:
+    dbPath: D:\Program\MongoDB\data\db
+</code></pre>
+
+<p>通过配置命令行启动 :</p>
+<pre><code>D:\Program\MongoDB\bin\mongod --config D:\Program\MongoDB\mongod.cfg
+</code></pre>
+
+<h3>连接 MongoDB</h3>
+<p>我们可以在命令窗口中运行 <code>mongo.exe</code> 命令即可连接上 MongoDB , 如下 :</p>
+<pre><code>D:\Program\MongoDB\bin\mongo.exe
+</code></pre>
+
+<p>如果执行成功 , 会输出如下信息 :</p>
+<pre><code>MongoDB shell version v4.0.10
+connecting to: mongodb://127.0.0.1:27017/?gssapiServiceName=mongodb
+Implicit session: session { &quot;id&quot; : UUID(&quot;33e-b313-474e3b3&quot;) }
+MongoDB server version: 4.0.10
+...
+To enable free monitoring, run the following command: db.enableFreeMonitoring()
+To permanently disable this reminder, run the following command: db.disableFreeMonitoring()
+&gt;
+</code></pre>
+
+<h3>安装 MongoDB 到系统服务</h3>
+<p>通过执行 <code>mongod.exe</code> 使用 <code>--install</code> 选项来安装服务 , 使用 <code>--config</code> 选项来指定之前创建的配置文件 , 如下 :</p>
+<pre><code>D:\Program\MongoDB\bin\mongod.exe --config &quot;D:\Program\MongoDB\mongod.cfg&quot; --install
+</code></pre>
+
+<blockquote>
+<p>注意 : 要使用管理员权限来执行<br />
+如果需要 , 您可以安装 <code>mongod.exe</code> 的多个实例的服务 , 只需要通过使用 <code>--serviceName</code> 和 <code>--serviceDisplayName</code> 指定不同的服务实例名</p>
+</blockquote>
+<p>启动 MongoDB 服务 :</p>
+<pre><code>net start MongoDB
+</code></pre>
+
+<p>关闭 MongoDB 服务 :</p>
+<pre><code>net stop MongoDB
+</code></pre>
+
+<p>移除 MongoDB 服务 :</p>
+<pre><code>D:\Program\MongoDB\bin\mongod.exe --remove
+</code></pre>
+
+<h3>配置账号和密码</h3>
+<p>MongoDB 默认安装完成以后 , 只允许本地连接 , 同时不需要使用任何账号密码就可以直接连接 MongoDB (27017) , 且没有认证 , 这样做的好处是 , 用户可以即时上手 , 不用担心被一堆配置弄的心烦意乱 , 然而坏处也是显而易见</p>
+<p>默认情况下 , MongoDB 也是没有管理员账户的 , 因此除非你在 <code>admin</code> 数据库中使用 <code>db.createUser()</code> 命令添加了管理员帐号 , 且使用 <code>--auth</code> 参数启动 MongoDB , 否则在数据库中任何人都可以无需认证执行所有命令 , 包括 <code>delete</code> 和 <code>shutdown</code> , 这样就容易被黑 , 所以我们需要给Mongo设置启用认证 , 启动服务时启用认证</p>
+<p>MongoDB 的用户分为两种 , 一种是 <code>admin</code> 用户 , 另一种是特定数据库用户 , <code>admin</code> 用户拥有最高的权限 , 而特定数据库用户则只能访问特定的数据库 ; 当 MongoDB 的 <code>admin</code> 库里没有任何用户的时候 , 也就是说整个 MongoDB 没有一个户的时候 , 即便 <code>--auth</code> 权限需求打开了 , 用户还是可以通过 <code>localhost</code> 界面进入 MongoDB 进行用户设置 , 否则的话整个 MongoDB 就完全没法访问了 ; 而当这个用户创建完成之后 , 之后的用户登录和操作就需要授权了 , 不是直接登录就能使用的了</p>
+<p>MongoDB 登录授权也必须在 <code>admin</code> 数据库下进行 <code>use admin</code> , 而不能在其他数据库下进行</p>
+<ol>
+<li>
+<p>启动服务时开启认证</p>
+<pre><code>D:\Program\MongoDB\bin\mongod --config D:\Program\MongoDB\mongod.cfg --auth
+</code></pre>
+
+</li>
+<li>
+<p>连接到数据库</p>
+<pre><code>D:\Program\MongoDB\bin\mongo.exe
+</code></pre>
+
+</li>
+<li>
+<p>切换到 admin 数据库创建管理员用户</p>
+<pre><code>&gt; use admin
+switched to db admin
+</code></pre>
+
+<p>创建管理员用户 (创建用户前必须切换到指定的数据库)</p>
+<pre><code>&gt; db.createUser({user:&quot;admin&quot;,pwd:&quot;12345678&quot;,roles:[&quot;root&quot;]})
+Successfully added user: { &quot;user&quot; : &quot;admin&quot;, &quot;roles&quot; : [ &quot;root&quot; ] }
+</code></pre>
+
+</li>
+<li>
+<p>认证登录</p>
+<pre><code>&gt; db.auth(&quot;admin&quot;, &quot;12345678&quot;)
+1
+</code></pre>
+
+<blockquote>
+<p>如果返回 '1'表示验证成功， 如果是 '0' 表示验证失败</p>
+</blockquote>
+</li>
+<li>
+<p>显示当前系统用户</p>
+<pre><code>&gt; db.system.users.find()
+</code></pre>
+
+</li>
+<li>
+<p>删除用户 (必须切换到用户所在的数据库去删除)</p>
+<pre><code>db.dropUser(&quot;flowpp&quot;)
+</code></pre>
+
+</li>
+</ol>
+<h3>MongoDB Role 类型</h3>
+<p>数据库用户角色 (Database User Roles) :</p>
+<pre><code>read : 授予 User 只读数据的权限
+readWrite : 授予 User 读写数据的权限
+</code></pre>
+
+<p>数据库管理角色 (Database Administration Roles) :</p>
+<pre><code>dbAdmin : 在当前 DB 中执行管理操作
+dbOwner : 在当前 DB 中执行任意操作
+userAdmin : 在当前 DB 中管理 User
+</code></pre>
+
+<p>备份和还原角色 (Backup and Restoration Roles) :</p>
+<pre><code>backup
+restore
+</code></pre>
+
+<p>跨库角色 (All-Database Roles) :</p>
+<pre><code>readAnyDatabase : 授予在所有数据库上读取数据的权限
+readWriteAnyDatabase : 授予在所有数据库上读写数据的权限
+userAdminAnyDatabase : 授予在所有数据库上管理 User 的权限
+dbAdminAnyDatabase : 授予管理所有数据库的权限
+</code></pre>
+
+<p>集群管理角色 (Cluster Administration Roles) :</p>
+<pre><code>clusterAdmin : 授予管理集群的最高权限
+clusterManager : 授予管理和监控集群的权限
+clusterMonitor : 授予监控集群的权限 , 对监控工具具有 readonly 的权限
+hostManager : 管理 Server
+</code></pre>
+
+
+</body>
+</html>
+<!-- This document was created with MarkdownPad, the Markdown editor for Windows (http://markdownpad.com) -->

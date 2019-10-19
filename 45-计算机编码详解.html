@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>计算机编码详解</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style type="text/css">
+/* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
+/* Author: Nicolas Hery - http://nicolashery.com */
+/* Version: b13fe65ca28d2e568c6ed5d7f06581183df8f2ff */
+/* Source: https://github.com/nicolahery/markdownpad-github */
+
+/* RESET
+=============================================================================*/
+
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+/* BODY
+=============================================================================*/
+
+body {
+  font-family: Microsoft YaHei UI;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #333;
+  background-color: #fff;
+  padding: 20px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+body>*:first-child {
+  margin-top: 0 !important;
+}
+
+body>*:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* BLOCKS
+=============================================================================*/
+
+p, blockquote, ul, ol, dl, table, pre {
+  margin: 15px 0;
+}
+
+/* HEADERS
+=============================================================================*/
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 20px 0 10px;
+  padding: 0;
+  font-weight: bold;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1 tt, h1 code, h2 tt, h2 code, h3 tt, h3 code, h4 tt, h4 code, h5 tt, h5 code, h6 tt, h6 code {
+  font-size: inherit;
+}
+
+h1 {
+  font-size: 28px;
+  color: #000;
+}
+
+h2 {
+  font-size: 24px;
+  border-bottom: 1px solid #ccc;
+  color: #000;
+}
+
+h3 {
+  font-size: 18px;
+}
+
+h4 {
+  font-size: 16px;
+}
+
+h5 {
+  font-size: 14px;
+}
+
+h6 {
+  color: #777;
+  font-size: 14px;
+}
+
+body>h2:first-child, body>h1:first-child, body>h1:first-child+h2, body>h3:first-child, body>h4:first-child, body>h5:first-child, body>h6:first-child {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6 {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+h1+p, h2+p, h3+p, h4+p, h5+p, h6+p {
+  margin-top: 10px;
+}
+
+/* LINKS
+=============================================================================*/
+
+a {
+  color: #4183C4;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* LISTS
+=============================================================================*/
+
+ul, ol {
+  padding-left: 30px;
+}
+
+ul li > :first-child, 
+ol li > :first-child, 
+ul li ul:first-of-type, 
+ol li ol:first-of-type, 
+ul li ol:first-of-type, 
+ol li ul:first-of-type {
+  margin-top: 0px;
+}
+
+ul ul, ul ol, ol ol, ol ul {
+  margin-bottom: 0;
+}
+
+dl {
+  padding: 0;
+}
+
+dl dt {
+  font-size: 14px;
+  font-weight: bold;
+  font-style: italic;
+  padding: 0;
+  margin: 15px 0 5px;
+}
+
+dl dt:first-child {
+  padding: 0;
+}
+
+dl dt>:first-child {
+  margin-top: 0px;
+}
+
+dl dt>:last-child {
+  margin-bottom: 0px;
+}
+
+dl dd {
+  margin: 0 0 15px;
+  padding: 0 15px;
+}
+
+dl dd>:first-child {
+  margin-top: 0px;
+}
+
+dl dd>:last-child {
+  margin-bottom: 0px;
+}
+
+/* CODE
+=============================================================================*/
+
+pre, code, tt {
+  font-size: 12px;
+  font-family: Consolas, "Liberation Mono", Courier, monospace;
+}
+
+code, tt {
+  margin: 0 0px;
+  padding: 0px 0px;
+  white-space: nowrap;
+  border: 1px solid #eaeaea;
+  background-color: #f8f8f8;
+  border-radius: 3px;
+}
+
+pre>code {
+  margin: 0;
+  padding: 0;
+  white-space: pre;
+  border: none;
+  background: transparent;
+}
+
+pre {
+  background-color: #f8f8f8;
+  border: 1px solid #ccc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px;
+}
+
+pre code, pre tt {
+  background-color: transparent;
+  border: none;
+}
+
+kbd {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #DDDDDD;
+    background-image: linear-gradient(#F1F1F1, #DDDDDD);
+    background-repeat: repeat-x;
+    border-color: #DDDDDD #CCCCCC #CCCCCC #DDDDDD;
+    border-image: none;
+    border-radius: 2px 2px 2px 2px;
+    border-style: solid;
+    border-width: 1px;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    line-height: 10px;
+    padding: 1px 4px;
+}
+
+/* QUOTES
+=============================================================================*/
+
+blockquote {
+  border-left: 4px solid #DDD;
+  padding: 0 15px;
+  color: #777;
+}
+
+blockquote>:first-child {
+  margin-top: 0px;
+}
+
+blockquote>:last-child {
+  margin-bottom: 0px;
+}
+
+/* HORIZONTAL RULES
+=============================================================================*/
+
+hr {
+  clear: both;
+  margin: 15px 0;
+  height: 0px;
+  overflow: hidden;
+  border: none;
+  background: transparent;
+  border-bottom: 4px solid #ddd;
+  padding: 0;
+}
+
+/* TABLES
+=============================================================================*/
+
+table th {
+  font-weight: bold;
+}
+
+table th, table td {
+  border: 1px solid #ccc;
+  padding: 6px 13px;
+}
+
+table tr {
+  border-top: 1px solid #ccc;
+  background-color: #fff;
+}
+
+table tr:nth-child(2n) {
+  background-color: #f8f8f8;
+}
+
+/* IMAGES
+=============================================================================*/
+
+img {
+  max-width: 100%
+}
+</style>
+</head>
+<body>
+<h1>计算机编码详解</h1>
+<hr />
+<p>计算机目前的编码的字符集主要可分为两大类 , 多字节字符集 (ANSI 下的 GB2312 , BIG5 , JIS 等) 与 宽字节字符集 (Unicode 下的 UTF-8 等) , 下面详细讲述这两种编码字符集 :</p>
+<h2>1. ANSI</h2>
+<p>ANSI 中的字符采用 8bit 来存放 (对于字符来说ANSI以单字节存放英文字符 , 以双字节存放中文等字符) ;</p>
+<p>在简体中文系统下 , ANSI 编码代表 GB2312 编码 ;</p>
+<p>开始计算机只在美国用 , 8bit 一共可以组合出256 (2的8次方) 种不同的状态 ; 他们把其中的编号从 0 开始的 32 种状态分别规定了特殊的用途 , 一但终端 , 打印机遇上约定好的这些字节被传过来时 , 就要做一些约定的动作 : 遇上 00×10 , 终端就换行 , 遇上0×07 , 终端就向人们嘟嘟叫 , 例好遇上0x1b , 打印机就打印反白的字 , 或者终端就用彩色显示字母 ; 他们看到这样很好 , 于是就把这些 0×20 以下的字节状态称为 &quot;控制码&quot; ; </p>
+<p>他们又把所有的空格 , 标点符号 , 数字 , 大小写字母分别用连续的字节状态表示 , 一直编到了第127号 , 这样计算机就可以用不同字节来存储英语的文字了 ; 大家看到这样 , 都感觉很好 , 于是大家都把这个方案叫做 ANSI 的 &quot;Ascii&quot; 编码 (American Standard Code for Information Interchange , 美国信息互换标准代码) ; 当时世界上所有的计算机都用同样的 ASCII 方案来保存英文文字 ;</p>
+<p>后来计算机发展越来越广泛 , 世界各国为了可以在计算机保存他们的文字 , 他们决定采用127号之后的空位来表示这些新的字母 , 符号 , 还加入了很多画表格时需要用下到的横线 , 竖线 , 交叉等形状 , 一直把序号编到了最后一个状态255 ; 从 128 到 255 这一页的字符集被称 &quot;扩展字符集&quot; ; 但是原有的编号方法 , 已经再也放不下更多的编码 ; </p>
+<p>等中国人们得到计算机时 , 已经没有可以利用的字节状态来表示汉字 , 况且有 6000 多个常用汉字需要保存呢 ; 于是国人就自主研发 , 把那些 127 号之后的奇异符号们直接取消掉 , 规定一个小于 127 的字符的意义与原来相同 , 但两个大于 127 的字符连在一起时 , 就表示一个汉字 , 前面的一个字节 (他称之为高字节) 从 0xA1 用到 0xF7 , 后面一个字节 (低字节) 从 0xA1 到 0xFE , 这样我们就可以组合出大约7000多个简体汉字了 ; 在这些编码里 , 我们还把数学符号 , 罗马希腊的字母 , 日文的假名们都编进去了 , 连在 ASCII 里本来就有的数字 , 标点 , 字母都统统重新编了两个字节长的编码 , 这就是常说的 &quot;全角&quot; 字符 , 而原来在 127 号以下的那些就叫 &quot;半角&quot; 字符了 ; 后面人们把这种汉字方案叫做  &quot;GB2312&quot; , GB2312 是对 ASCII 的中文扩展 ; </p>
+<p><strong>不同的国家和地区制定了不同的标准 , 由此产生了 GB2312(中文简体规范) , BIG5(中文繁体规范) , JIS(日文编码规范) 等各自的编码标准 ; 这些使用 2 个字节来代表一个字符的各种汉字延伸编码方式 , 称为 ANSI 编码 ; 在简体中文系统下 , ANSI 编码代表 GB2312 编码 , 在日文操作系统下 , ANSI 编码代表 JIS 编码 ; 不同 ANSI 编码之间互不兼容 , 当信息在国际间交流时 , 无法将属于两种语言的文字 , 存储在同一段 ANSI 编码的文本中 ;</strong></p>
+<p>但是中国的汉字太多了 , 编码范围还是不够用 , 于是干脆不再要求高低字节一定是 127 号之后的字符 , 只要第一个字节是大于 127 就固定表示这是一个汉字的开始 , 不管后面跟的是不是扩展字符集里的内容 ; 结果扩展之后的编码方案被称为 GBK 标准 , GBK 包括了 GB2312 的所有内容 , 同时又增加了近 20000 个新的汉字 (包括繁体字) 和符号 , 后来少数民族也要用电脑了 , 于是我们再扩展 , 又加了几千个新的少数民族的字 , GBK 扩成了 GB18030 , 从此之后 , 中华民族的文化就可以在计算机时代中传承了 ;</p>
+<p><br /></p>
+<h2>2. Unicode</h2>
+<p>因为当时各个国家都像中国这样搞出一套自己的编码标准 , 结果互相之间谁也不懂谁的编码 , 谁也不支持别人的编码 ; 当时的中国人想让电脑显示汉字 , 就必须装上一个&quot; 汉字系统&quot; , 专门用来处理汉字的显示 , 输入的问题 , 装错了字符系统 , 显示就会乱了套 ; 这怎么办 ? 就在这时 , 一个叫 ISO (国际标谁化组织) 的国际组织决定着手解决这个问题 ; 他们采用的方法很简单 : 废了所有的地区性编码方案 , 重新搞一个包括了地球上所有文化 , 所有字母和符号的编码 , 他们打算叫它 &quot;Universal Multiple-Octet Coded Character Set&quot; , 简称 UCS , 俗称 &quot;Unicode&quot; ;</p>
+<p>Unicode 开始制订时 , 计算机的存储器容量极大地发展了 , 空间再也不成为问题了 ; 于是 ISO 就直接规定必须用两个字节 , 也就是 16 位来统一表示所有的字符 , 对于 Ascii 里的那些 &quot;半角&quot; 字符 , Unicode 包持其原编码不变 , 只是将其长度由原来的8位扩展为16位 , 而其他文化和语言的字符则全部重新统一编码 ; 由于 &quot;半角&quot; 英文符号只需要用到低 8 位 , 所以其高 8 位永远是 0 , 因此这种大气的方案在保存英文文本时会多浪费一倍的空间 ;</p>
+<p>但是 , Unicode 在制订时没有考虑与任何一种现有的编码方案保持兼容 , 这使得 GBK 与 Unicode 在汉字的内码编排上完全是不一样的 , 没有一种简单的算术方法可以把文本内容从 Unicode 编码和另一种编码进行转换 , 这种转换必须通过查表来进行 ; Unicode 是用两个字节来表示为一个字符 , 他总共可以组合出 65535 不同的字符 , 这大概已经可以覆盖世界上所有文化的符号 ;</p>
+<p>Unicode 来到时 , 一起到来的还有计算机网络的兴起 , Unicode 如何在网络上传输也是一个必须考虑的问题 , 于是面向传输的众多 UTF (UCS Transfer Format) 标准出现了 , 顾名思义 , UTF-8 就是每次 8 个位传输数据 , 而 UTF-16 就是每次 16 个位 , 只不过为了传输时的可靠性 , 从 Unicode 到 UTF 时并不是直接的对应 , 而是要过一些算法和规则来转换 ;</p>
+<p>UTF-8 最大的一个特点 , 就是它是一种变长的编码方式 , 它可以使用 1~4 个字节表示一个符号 , 根据不同的符号而变化字节长度 , 当字符在 ASCII 码的范围时 , 就用一个字节表示 , 保留了 ASCII 字符一个字节的编码做为它的一部分 , 注意的是 Unicode 一个中文字符占 2 个字节 , 而 UTF-8 一个中文字符占 3 个字节 ; 从 Unicod e到 UTF-8 并不是直接的对应 , 而是要过一些算法和规则来转换 ;</p>
+<p>UTF-8 编码是 Unicode 编码在网络之间 (主要是网页) 传输时的一种 &quot;变通&quot; 和 &quot;桥梁&quot; 编码 , UTF-8 在网络之间传输时可以节约数据量 , 如英文字符可以节约一辈的流量 ; 按照 UTF-8 创始人的愿望 : 端 (Unicode) &lt;-&gt; 传输 (UTF-8) &lt;-&gt; 端 (Unicode) , 但是后来许多网站开发者在开发网页时直接使用 UTF-8 编码 , 端 (UTF-8) &lt;-&gt; 传输 (UTF-8) &lt;-&gt; 端 (UTF-8) ;</p>
+<p><strong>Unicode 与 UTF-8 区别 :</strong></p>
+<p>举一个例子 : It's 知乎日报
+你看到的unicode字符集是这样的编码表 :</p>
+<pre><code>I 0049
+t 0074
+' 0027
+s 0073
+  0020
+知 77e5
+乎 4e4e
+日 65e5
+报 62a5
+</code></pre>
+
+<p>每一个字符对应一个十六进制数字 , 计算机只懂二进制 , 因此严格按照 Unicode的方式(UCS-2) , 应该这样存储 :</p>
+<pre><code>I 00000000 01001001
+t 00000000 01110100
+' 00000000 00100111
+s 00000000 01110011
+  00000000 00100000
+知 01110111 11100101
+乎 01001110 01001110
+日 01100101 11100101
+报 01100010 10100101
+</code></pre>
+
+<p>这个字符串总共占用了 18 个字节 , 但是对比中英文的二进制码 , 可以发现 , 英文前 9 位都是 0 , 浪费啊 ! 浪费硬盘 , 浪费流量 ; 怎么办 ? 当然是 : UTF , UTF-8 是这样做的 :</p>
+<ol>
+<li>单字节的字符 , 字节的第一位设为 0 , 对于英语文本 , UTF-8 码只占用一个字节 , 和ASCII码完全相同 ;</li>
+<li>n个字节的字符 (n&gt;1) , 第一个字节的前 n 位设为 1 , 第 n+1 位设为 0 , 后面字节的前两位都设为 10 , 这 n 个字节的其余空位填充该字符 Unicode码 , 高位用 0 补足 ;</li>
+</ol>
+<p>这样就形成了如下的 UTF-8 标记位 :</p>
+<pre><code>0xxxxxxx
+110xxxxx 10xxxxxx
+1110xxxx 10xxxxxx 10xxxxxx
+11110xxx 10xxxxxx 10xxxxxx 10xxxxxx
+111110xx 10xxxxxx 10xxxxxx 10xxxxxx 10xxxxxx
+1111110x 10xxxxxx 10xxxxxx 10xxxxxx 10xxxxxx 10xxxxxx
+... ...
+</code></pre>
+
+<p>于是 , &quot;It's 知乎日报&quot; 就变成了 :</p>
+<pre><code>I 01001001
+t 01110100
+' 00100111
+s 01110011
+  00100000
+知 11100111 10011111 10100101
+乎 11100100 10111001 10001110
+日 11100110 10010111 10100101
+报 11100110 10001010 10100101
+</code></pre>
+
+<p>和上边的方案对比一下 , 英文短了 , 每个中文字符却多用了一个字节 ; 但是整个字符串只用了 17 个字节 , 比上边的 18 个短了一点点 , 这也就可以解释为什么在 Unicode 和 UTF-8 大行其道的同时 , GB2312 和 GBK 仍在广泛使用 , 一切都是为了节省你的硬盘和流量 ;</p>
+<p>参考文档 : <a href="http://blog.jobbole.com/30526/">网页编码就是那点事</a> ,  <a href="https://www.zhihu.com/question/23374078">Unicode 和 UTF-8 有何区别</a></p>
+
+</body>
+</html>
+<!-- This document was created with MarkdownPad, the Markdown editor for Windows (http://markdownpad.com) -->

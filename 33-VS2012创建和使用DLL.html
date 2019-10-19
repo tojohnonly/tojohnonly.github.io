@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>VS2012创建和使用DLL</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style type="text/css">
+/* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
+/* Author: Nicolas Hery - http://nicolashery.com */
+/* Version: b13fe65ca28d2e568c6ed5d7f06581183df8f2ff */
+/* Source: https://github.com/nicolahery/markdownpad-github */
+
+/* RESET
+=============================================================================*/
+
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+/* BODY
+=============================================================================*/
+
+body {
+  font-family: Microsoft Yahei UI;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #333;
+  background-color: #fff;
+  padding: 20px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+body>*:first-child {
+  margin-top: 0 !important;
+}
+
+body>*:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* BLOCKS
+=============================================================================*/
+
+p, blockquote, ul, ol, dl, table, pre {
+  margin: 15px 0;
+}
+
+/* HEADERS
+=============================================================================*/
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 20px 0 10px;
+  padding: 0;
+  font-weight: bold;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1 tt, h1 code, h2 tt, h2 code, h3 tt, h3 code, h4 tt, h4 code, h5 tt, h5 code, h6 tt, h6 code {
+  font-size: inherit;
+}
+
+h1 {
+  font-size: 28px;
+  color: #000;
+}
+
+h2 {
+  font-size: 24px;
+  border-bottom: 1px solid #ccc;
+  color: #000;
+}
+
+h3 {
+  font-size: 18px;
+}
+
+h4 {
+  font-size: 16px;
+}
+
+h5 {
+  font-size: 14px;
+}
+
+h6 {
+  color: #777;
+  font-size: 14px;
+}
+
+body>h2:first-child, body>h1:first-child, body>h1:first-child+h2, body>h3:first-child, body>h4:first-child, body>h5:first-child, body>h6:first-child {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6 {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+h1+p, h2+p, h3+p, h4+p, h5+p, h6+p {
+  margin-top: 10px;
+}
+
+/* LINKS
+=============================================================================*/
+
+a {
+  color: #4183C4;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* LISTS
+=============================================================================*/
+
+ul, ol {
+  padding-left: 30px;
+}
+
+ul li > :first-child, 
+ol li > :first-child, 
+ul li ul:first-of-type, 
+ol li ol:first-of-type, 
+ul li ol:first-of-type, 
+ol li ul:first-of-type {
+  margin-top: 0px;
+}
+
+ul ul, ul ol, ol ol, ol ul {
+  margin-bottom: 0;
+}
+
+dl {
+  padding: 0;
+}
+
+dl dt {
+  font-size: 14px;
+  font-weight: bold;
+  font-style: italic;
+  padding: 0;
+  margin: 15px 0 5px;
+}
+
+dl dt:first-child {
+  padding: 0;
+}
+
+dl dt>:first-child {
+  margin-top: 0px;
+}
+
+dl dt>:last-child {
+  margin-bottom: 0px;
+}
+
+dl dd {
+  margin: 0 0 15px;
+  padding: 0 15px;
+}
+
+dl dd>:first-child {
+  margin-top: 0px;
+}
+
+dl dd>:last-child {
+  margin-bottom: 0px;
+}
+
+/* CODE
+=============================================================================*/
+
+pre, code, tt {
+  font-size: 12px;
+  font-family: Microsoft Yahei UI;
+}
+
+code, tt {
+  margin: 0 0px;
+  padding: 0px 0px;
+  white-space: nowrap;
+  border: 1px solid #eaeaea;
+  background-color: #f8f8f8;
+  border-radius: 3px;
+}
+
+pre>code {
+  margin: 0;
+  padding: 0;
+  white-space: pre;
+  border: none;
+  background: transparent;
+}
+
+pre {
+  background-color: #f8f8f8;
+  border: 1px solid #ccc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px;
+}
+
+pre code, pre tt {
+  background-color: transparent;
+  border: none;
+}
+
+kbd {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #DDDDDD;
+    background-image: linear-gradient(#F1F1F1, #DDDDDD);
+    background-repeat: repeat-x;
+    border-color: #DDDDDD #CCCCCC #CCCCCC #DDDDDD;
+    border-image: none;
+    border-radius: 2px 2px 2px 2px;
+    border-style: solid;
+    border-width: 1px;
+	font-family: Microsoft Yahei UI;
+    line-height: 10px;
+    padding: 1px 4px;
+}
+
+/* QUOTES
+=============================================================================*/
+
+blockquote {
+  border-left: 4px solid #DDD;
+  padding: 0 15px;
+  color: #777;
+}
+
+blockquote>:first-child {
+  margin-top: 0px;
+}
+
+blockquote>:last-child {
+  margin-bottom: 0px;
+}
+
+/* HORIZONTAL RULES
+=============================================================================*/
+
+hr {
+  clear: both;
+  margin: 15px 0;
+  height: 0px;
+  overflow: hidden;
+  border: none;
+  background: transparent;
+  border-bottom: 4px solid #ddd;
+  padding: 0;
+}
+
+/* TABLES
+=============================================================================*/
+
+table th {
+  font-weight: bold;
+}
+
+table th, table td {
+  border: 1px solid #ccc;
+  padding: 6px 13px;
+}
+
+table tr {
+  border-top: 1px solid #ccc;
+  background-color: #fff;
+}
+
+table tr:nth-child(2n) {
+  background-color: #f8f8f8;
+}
+
+/* IMAGES
+=============================================================================*/
+
+img {
+  max-width: 100%;
+  box-shadow: 0px 0px 5px #888888;
+}
+</style>
+</head>
+<body>
+<h1>VS2012创建和使用DLL</h1>
+<hr />
+<h3>1. 创建 DLL 项目</h3>
+<p>点击 <code>新建项目</code> -&gt; <code>Win32项目</code> , 在应用程序向导界面 , 选择 <code>DLL</code> 和 <code>导出符号</code> , 如下图所示 :</p>
+<p><img src="images/33-VS2012创建和使用DLL/navi_new.png" alt="NaviNew" /></p>
+<p>选择 <code>导出符号</code> , 会自动为我们创建生成DLL的模板 : 创建了导出变量 <code>nMakeDLL</code> , 导出函数 <code>fnMakeDLL</code> , 导出类 <code>CMakeDLL</code> , 如下所示 :</p>
+<pre><code>// ExampleDLL.cpp : 定义 DLL 应用程序的导出函数。
+//
+
+#include &quot;stdafx.h&quot;
+#include &quot;ExampleDLL.h&quot;
+
+// 这是导出变量的一个示例
+EXAMPLEDLL_API int nExampleDLL=0;
+
+// 这是导出函数的一个示例。
+EXAMPLEDLL_API int fnExampleDLL(void)
+{
+    return 42;
+}
+
+// 这是已导出类的构造函数。
+// 有关类定义的信息，请参阅 ExampleDLL.h
+CExampleDLL::CExampleDLL()
+{
+    return;
+}
+</code></pre>
+
+<p>如果上面没有点击 <code>导出符号</code> , 将不会生成这些 , 所以为了方便DLL的创建 , 我们最好还是使用导出符号 , 接下来 , 你可以改写上面的类和函数 , 然后生成即可产生 DLL , 如下所示 :</p>
+<pre><code>正在创建库 C:\Users\tojohn\Desktop\ExampleDLL\Debug\ExampleDLL.lib 
+和对象 C:\Users\tojohn\Desktop\ExampleDLL\Debug\ExampleDLL.exp
+ExampleDLL.vcxproj -&gt; C:\Users\tojohn\Desktop\ExampleDLL\Debug\ExampleDLL.dll
+</code></pre>
+
+<p>项目生成了 <code>ExampleDLL.lib</code> , <code>ExampleDLL.dll</code> 两个文件 , 这个在别的项目会用到 ;</p>
+<p><br /></p>
+<h3>2. <code>dllexport</code> 与 <code>dllimport</code> 的介绍</h3>
+<p>先看下面这段代码 :</p>
+<pre><code>#ifdef MAKEDLL_EXPORTS  
+#define MAKEDLL_API __declspec(dllexport)  
+#else  
+#define MAKEDLL_API __declspec(dllimport)  
+#endif
+</code></pre>
+
+<p>如果定义了 <code>MAKEDLL_EXPORTS</code> , 然后我们再定义 <code>MAKEDLL_API</code> 为 <code>__declspec(dllexport)</code> , 否则我们定义 <code>__declspec(dllimport)</code> , 前者主要为生成DLL的项目所使用 , 后者为使用DLL的项目所使用 ; <code>dllexport</code> 和 <code>dllimport</code> 存储类特性是 C/C++ 语言的 Microsoft 专用扩展 ; 可以使用它们从 DLL 中导出或向其中导入函数 , 数据和对象 ; 使用这两个特性 , 将会优化导入导出 ;</p>
+<p>在创建 DLL 项目时 , <code>MAKEDLL_EXPORTS</code> 是默认定义的 ;</p>
+<p><br /></p>
+<h3>3. <code>Lib</code> 与 <code>Dll</code> 的使用</h3>
+<p>而在引用 <code>dll</code> 时 , 需要 dll 的 <code>.h</code> , <code>.lib</code> 和 <code>.dll</code> 三个文件 ;</p>
+<p>我们在新建项目的 <code>属性</code> 中选择 <code>配置属性</code> -&gt; <code>C/C++</code> -&gt; <code>常规</code> -&gt; <code>附加包含目录</code> , 添加 <code>.h</code> 文件的路径 ; </p>
+<p>在 <code>链接器</code> -&gt; <code>常规</code> -&gt; <code>附加库目录</code> 中添加 <code>.lib</code> 文件的路径 ;</p>
+<p>同时还需要添加 <code>.lib</code> 文件的附加依赖项 , 在 <code>链接器</code> -&gt; <code>输入</code> -&gt; <code>附加依赖项</code> , 填写 <code>xxx.lib</code> , 或者直接在代码里面引用 <code>#pragma comment(lib, &quot;xxx.lib&quot;)</code> ;</p>
+<p>然后还需要加载 dll 文件的路径 , 我们直接将 dll 文件放在生成程序文件 <code>.exe</code> 的当前目录下面 ;</p>
+<p>最后在程序代码里面使用 DLL 函数 :</p>
+<pre><code>// 引入头文件
+#include &quot;Include/ExampleDLL.h&quot;
+
+// 引入 Lib 文件 , 在属性设置里面添加了依赖后可忽略
+//#pragma comment(lib, &quot;ExampleDLL.lib&quot;)
+
+// 使用 DLL 函数
+int nDllRst = fnExampleDLL();
+</code></pre>
+
+
+</body>
+</html>
+<!-- This document was created with MarkdownPad, the Markdown editor for Windows (http://markdownpad.com) -->

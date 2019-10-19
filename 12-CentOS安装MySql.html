@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>CentOS安装MySql</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style type="text/css">
+/* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
+/* Author: Nicolas Hery - http://nicolashery.com */
+/* Version: b13fe65ca28d2e568c6ed5d7f06581183df8f2ff */
+/* Source: https://github.com/nicolahery/markdownpad-github */
+
+/* RESET
+=============================================================================*/
+
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+/* BODY
+=============================================================================*/
+
+body {
+  font-family: Microsoft Yahei UI;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #333;
+  background-color: #fff;
+  padding: 20px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+body>*:first-child {
+  margin-top: 0 !important;
+}
+
+body>*:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* BLOCKS
+=============================================================================*/
+
+p, blockquote, ul, ol, dl, table, pre {
+  margin: 15px 0;
+}
+
+/* HEADERS
+=============================================================================*/
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 20px 0 10px;
+  padding: 0;
+  font-weight: bold;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1 tt, h1 code, h2 tt, h2 code, h3 tt, h3 code, h4 tt, h4 code, h5 tt, h5 code, h6 tt, h6 code {
+  font-size: inherit;
+}
+
+h1 {
+  font-size: 28px;
+  color: #000;
+}
+
+h2 {
+  font-size: 24px;
+  border-bottom: 1px solid #ccc;
+  color: #000;
+}
+
+h3 {
+  font-size: 18px;
+}
+
+h4 {
+  font-size: 16px;
+}
+
+h5 {
+  font-size: 14px;
+}
+
+h6 {
+  color: #777;
+  font-size: 14px;
+}
+
+body>h2:first-child, body>h1:first-child, body>h1:first-child+h2, body>h3:first-child, body>h4:first-child, body>h5:first-child, body>h6:first-child {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6 {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+h1+p, h2+p, h3+p, h4+p, h5+p, h6+p {
+  margin-top: 10px;
+}
+
+/* LINKS
+=============================================================================*/
+
+a {
+  color: #4183C4;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* LISTS
+=============================================================================*/
+
+ul, ol {
+  padding-left: 30px;
+}
+
+ul li > :first-child, 
+ol li > :first-child, 
+ul li ul:first-of-type, 
+ol li ol:first-of-type, 
+ul li ol:first-of-type, 
+ol li ul:first-of-type {
+  margin-top: 0px;
+}
+
+ul ul, ul ol, ol ol, ol ul {
+  margin-bottom: 0;
+}
+
+dl {
+  padding: 0;
+}
+
+dl dt {
+  font-size: 14px;
+  font-weight: bold;
+  font-style: italic;
+  padding: 0;
+  margin: 15px 0 5px;
+}
+
+dl dt:first-child {
+  padding: 0;
+}
+
+dl dt>:first-child {
+  margin-top: 0px;
+}
+
+dl dt>:last-child {
+  margin-bottom: 0px;
+}
+
+dl dd {
+  margin: 0 0 15px;
+  padding: 0 15px;
+}
+
+dl dd>:first-child {
+  margin-top: 0px;
+}
+
+dl dd>:last-child {
+  margin-bottom: 0px;
+}
+
+/* CODE
+=============================================================================*/
+
+pre, code, tt {
+  font-size: 12px;
+  font-family: Microsoft Yahei UI;
+}
+
+code, tt {
+  margin: 0 0px;
+  padding: 0px 0px;
+  white-space: nowrap;
+  border: 1px solid #eaeaea;
+  background-color: #f8f8f8;
+  border-radius: 3px;
+}
+
+pre>code {
+  margin: 0;
+  padding: 0;
+  white-space: pre;
+  border: none;
+  background: transparent;
+}
+
+pre {
+  background-color: #f8f8f8;
+  border: 1px solid #ccc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px;
+}
+
+pre code, pre tt {
+  background-color: transparent;
+  border: none;
+}
+
+kbd {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #DDDDDD;
+    background-image: linear-gradient(#F1F1F1, #DDDDDD);
+    background-repeat: repeat-x;
+    border-color: #DDDDDD #CCCCCC #CCCCCC #DDDDDD;
+    border-image: none;
+    border-radius: 2px 2px 2px 2px;
+    border-style: solid;
+    border-width: 1px;
+	font-family: Microsoft Yahei UI;
+    line-height: 10px;
+    padding: 1px 4px;
+}
+
+/* QUOTES
+=============================================================================*/
+
+blockquote {
+  border-left: 4px solid #DDD;
+  padding: 0 15px;
+  color: #777;
+}
+
+blockquote>:first-child {
+  margin-top: 0px;
+}
+
+blockquote>:last-child {
+  margin-bottom: 0px;
+}
+
+/* HORIZONTAL RULES
+=============================================================================*/
+
+hr {
+  clear: both;
+  margin: 15px 0;
+  height: 0px;
+  overflow: hidden;
+  border: none;
+  background: transparent;
+  border-bottom: 4px solid #ddd;
+  padding: 0;
+}
+
+/* TABLES
+=============================================================================*/
+
+table th {
+  font-weight: bold;
+}
+
+table th, table td {
+  border: 1px solid #ccc;
+  padding: 6px 13px;
+}
+
+table tr {
+  border-top: 1px solid #ccc;
+  background-color: #fff;
+}
+
+table tr:nth-child(2n) {
+  background-color: #f8f8f8;
+}
+
+/* IMAGES
+=============================================================================*/
+
+img {
+  max-width: 100%
+}
+</style>
+</head>
+<body>
+<h1>CentOS安装MySql</h1>
+<hr />
+<h3>1. 下载最新的5.7安装</h3>
+<p>CentOS的yum源中MySql版本一般比较低不是最新版本 , 需要用最新版本的话 , 直接在官网下载 , <a href="https://dev.mysql.com/downloads/mysql/">https://dev.mysql.com/downloads/mysql/</a></p>
+<p>根据自己系统选择对应的版本 , 找不到对应的话 , 直接选择通用版本 <code>Linux - Generic</code> </p>
+<p>解压下载好的 <code>mysql-5.7.10-linux-glibc2.5-x86_64.tar.gz</code> , 并更名为 <code>mysql</code> , 再放到 <code>/usr/local</code> 目录下</p>
+<pre><code># tar -zxvf mysql-5.7.17-linux-glibc2.5-x86_64.tar.gz
+</code></pre>
+
+<h1></h1>
+<pre><code># mv mysql-5.7.17-linux-glibc2.5-x86_64 /usr/local/mysql
+</code></pre>
+
+<p>添加 MySql组和用户 :</p>
+<pre><code># groupadd mysql
+</code></pre>
+
+<h1></h1>
+<pre><code># useradd -g mysql mysql
+</code></pre>
+
+<p>安装 MySql :</p>
+<pre><code># cd /usr/local/mysql/bin
+</code></pre>
+
+<h1></h1>
+<pre><code># ./mysql_install_db --user=mysql --basedir=/usr/local/mysql/ --datadir=/usr/local/mysql/data
+</code></pre>
+
+<p>启动 MySql 服务:</p>
+<pre><code># cd /usr/local/mysql/support-files
+</code></pre>
+
+<h1></h1>
+<pre><code># cp -a ./my-default.cnf /etc/my.cnf
+</code></pre>
+
+<p>直接当前目录启动运行 <code># ./mysql.server start</code> , 拷贝到 <code>/etc/init.d</code> 脚本目录方便管理可以运行如下命令 :</p>
+<h1></h1>
+<pre><code># cp -a ./mysql.server  /etc/init.d/mysqld
+</code></pre>
+
+<h1></h1>
+<pre><code># /etc/init.d/mysqld restart
+</code></pre>
+
+<p>设置开机启动 MySQL 服务 :</p>
+<pre><code># chkconfig --add mysqld
+</code></pre>
+
+<p>查看是否设置成功开机启动 :</p>
+<pre><code> # chkconfig --list
+</code></pre>
+
+<p>MySql5.7 会生成一个初始化密码 , 初始密码由 <code>/root/.mysql_secret</code> 保存 , 修改密码运行如下命令 :</p>
+<pre><code># cat /root/.mysql_secret
+</code></pre>
+
+<h1></h1>
+<pre><code># cd /usr/local/mysql/bin
+</code></pre>
+
+<h1></h1>
+<pre><code># ./mysql -u root -p
+</code></pre>
+
+<h1></h1>
+<pre><code># set password =password('new_password');
+</code></pre>
+
+<p>客户端用 <code>your_user</code> 使用 <code>your_password</code> 从任何主机连接到 MySql 服务器 :</p>
+<pre><code># grant all privileges on *.* to 'your_user'@'%' identified by 'your_password' with grant option;
+</code></pre>
+
+<h1></h1>
+<pre><code># flush privileges;   -- 使修改生效
+</code></pre>
+
+<h1></h1>
+<p>查看当前端口号 :</p>
+<pre><code># show global variables like 'port';
+</code></pre>
+
+<p>MySQL-5.7.18 官方的没有 <code>cnf</code> 文件 , 安装教程点击 : <a href="http://blog.csdn.net/acrux1985/article/details/70052392?locationNum=13&amp;fps=1">http://blog.csdn.net/acrux1985/article/details/70052392?locationNum=13&amp;fps=1</a></p>
+<p><br /></p>
+<h3>2. yum安装</h3>
+<p>查看有没有安装过 :</p>
+<pre><code># yum list installed mysql*
+# rpm -qa | grep mysql*
+</code></pre>
+
+<p>查看域名是否有安装包 :</p>
+<pre><code># yum list mysql*
+</code></pre>
+
+<p>安装 MySql 客户端 :</p>
+<pre><code># yum install mysql
+</code></pre>
+
+<p>安装 MySql 服务器端 :</p>
+<pre><code># yum install mysql-server
+# yum install mysql-devel
+</code></pre>
+
+<blockquote>
+<p>CentOS的yum源中 MySql 版本一般比较低不是最新版本 , 如果没有mysql时的mysql-sever文件 , 可以去官网上下载 , 在 <code>CentOS7</code> 上面 : </p>
+<pre><code># wget http://dev.mysql.com/get/mysql-community-release-el7-5.noarch.rpm
+# rpm -ivh mysql-community-release-el7-5.noarch.rpm
+# yum install mysql-community-server
+</code></pre>
+
+</blockquote>
+<p>成功安装之后重启MySql服务 :</p>
+<pre><code># service mysqld restart
+</code></pre>
+
+<blockquote>
+<p>或者 : <code># /etc/init.d/mysqld start</code> , 后面以此类推</p>
+</blockquote>
+<p>启动数据库命令 :</p>
+<pre><code># service mysqld start
+</code></pre>
+
+<p>开机启动数据库命令 :</p>
+<pre><code># chkconfig -add mysqld
+</code></pre>
+
+<p>关闭数据库命令 :</p>
+<pre><code># service mysqld stop
+</code></pre>
+
+<p>初次安装MySql是root账户是没有密码的 , 需要设置密码 :</p>
+<pre><code># mysql -u root
+mysql&gt; set password for 'root'@'localhost' = password('your_passwd');
+mysql&gt; exit
+</code></pre>
+
+<p>下次在登录可以直接用该用户名和密码 :</p>
+<pre><code># mysql -u root -p 
+Enter password: 
+</code></pre>
+
+<blockquote>
+<p>或者 : <code>mysql -uroot -pyour_passwd</code> 直接登录</p>
+</blockquote>
+<p><br /></p>
+<h3>3. yum删除MySql</h3>
+<p>停止 MySQL 服务 , 输入命令 :</p>
+<pre><code># service mysqld stop
+</code></pre>
+
+<p>卸载 MySQL , 输入命令 :</p>
+<pre><code># yum remove mysql mysql-*
+</code></pre>
+
+<p>卸载 MySql , 输入命令 :</p>
+<pre><code># yum remove mysql mysql-server mysql-libs compat-mysql51
+</code></pre>
+
+<p>移除命令执行后 , 可再看看是否有残余的 MySql , 输入命令 :</p>
+<pre><code># yum list installed | grep mysql
+</code></pre>
+
+<p>如果有 , 可输入命令删除 :</p>
+<pre><code># yum remove mysql-xxx
+</code></pre>
+
+
+</body>
+</html>
+<!-- This document was created with MarkdownPad, the Markdown editor for Windows (http://markdownpad.com) -->

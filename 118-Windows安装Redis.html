@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Windows安装Redis</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style type="text/css">
+/* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
+/* Author: Nicolas Hery - http://nicolashery.com */
+/* Version: b13fe65ca28d2e568c6ed5d7f06581183df8f2ff */
+/* Source: https://github.com/nicolahery/markdownpad-github */
+
+/* RESET
+=============================================================================*/
+
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+/* BODY
+=============================================================================*/
+
+body {
+  font-family: 'Microsoft YaHei UI', Helvetica, arial, freesans, clean, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #333;
+  background-color: #fff;
+  padding: 20px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+body>*:first-child {
+  margin-top: 0 !important;
+}
+
+body>*:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* BLOCKS
+=============================================================================*/
+
+p, blockquote, ul, ol, dl, table, pre {
+  margin: 15px 0;
+}
+
+/* HEADERS
+=============================================================================*/
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 20px 0 10px;
+  padding: 0;
+  font-weight: bold;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1 tt, h1 code, h2 tt, h2 code, h3 tt, h3 code, h4 tt, h4 code, h5 tt, h5 code, h6 tt, h6 code {
+  font-size: inherit;
+}
+
+h1 {
+  font-size: 28px;
+  color: #000;
+}
+
+h2 {
+  font-size: 24px;
+  border-bottom: 1px solid #ccc;
+  color: #000;
+}
+
+h3 {
+  font-size: 18px;
+}
+
+h4 {
+  font-size: 16px;
+}
+
+h5 {
+  font-size: 14px;
+}
+
+h6 {
+  color: #777;
+  font-size: 14px;
+}
+
+body>h2:first-child, body>h1:first-child, body>h1:first-child+h2, body>h3:first-child, body>h4:first-child, body>h5:first-child, body>h6:first-child {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6 {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+h1+p, h2+p, h3+p, h4+p, h5+p, h6+p {
+  margin-top: 10px;
+}
+
+/* LINKS
+=============================================================================*/
+
+a {
+  color: #4183C4;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* LISTS
+=============================================================================*/
+
+ul, ol {
+  padding-left: 30px;
+}
+
+ul li > :first-child, 
+ol li > :first-child, 
+ul li ul:first-of-type, 
+ol li ol:first-of-type, 
+ul li ol:first-of-type, 
+ol li ul:first-of-type {
+  margin-top: 0px;
+}
+
+ul ul, ul ol, ol ol, ol ul {
+  margin-bottom: 0;
+}
+
+dl {
+  padding: 0;
+}
+
+dl dt {
+  font-size: 14px;
+  font-weight: bold;
+  font-style: italic;
+  padding: 0;
+  margin: 15px 0 5px;
+}
+
+dl dt:first-child {
+  padding: 0;
+}
+
+dl dt>:first-child {
+  margin-top: 0px;
+}
+
+dl dt>:last-child {
+  margin-bottom: 0px;
+}
+
+dl dd {
+  margin: 0 0 15px;
+  padding: 0 15px;
+}
+
+dl dd>:first-child {
+  margin-top: 0px;
+}
+
+dl dd>:last-child {
+  margin-bottom: 0px;
+}
+
+/* CODE
+=============================================================================*/
+
+pre, code, tt {
+  font-size: 12px;
+  font-family: Consolas, "Liberation Mono", Courier, monospace;
+}
+
+code, tt {
+  margin: 0 0px;
+  padding: 0px 0px;
+  white-space: nowrap;
+  border: 1px solid #eaeaea;
+  background-color: #f8f8f8;
+  border-radius: 3px;
+}
+
+pre>code {
+  margin: 0;
+  padding: 0;
+  white-space: pre;
+  border: none;
+  background: transparent;
+}
+
+pre {
+  background-color: #f8f8f8;
+  border: 1px solid #ccc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px;
+}
+
+pre code, pre tt {
+  background-color: transparent;
+  border: none;
+}
+
+kbd {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #DDDDDD;
+    background-image: linear-gradient(#F1F1F1, #DDDDDD);
+    background-repeat: repeat-x;
+    border-color: #DDDDDD #CCCCCC #CCCCCC #DDDDDD;
+    border-image: none;
+    border-radius: 2px 2px 2px 2px;
+    border-style: solid;
+    border-width: 1px;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    line-height: 10px;
+    padding: 1px 4px;
+}
+
+/* QUOTES
+=============================================================================*/
+
+blockquote {
+  border-left: 4px solid #DDD;
+  padding: 0 15px;
+  color: #777;
+}
+
+blockquote>:first-child {
+  margin-top: 0px;
+}
+
+blockquote>:last-child {
+  margin-bottom: 0px;
+}
+
+/* HORIZONTAL RULES
+=============================================================================*/
+
+hr {
+  clear: both;
+  margin: 15px 0;
+  height: 0px;
+  overflow: hidden;
+  border: none;
+  background: transparent;
+  border-bottom: 4px solid #ddd;
+  padding: 0;
+}
+
+/* TABLES
+=============================================================================*/
+
+table th {
+  font-weight: bold;
+}
+
+table th, table td {
+  border: 1px solid #ccc;
+  padding: 6px 13px;
+}
+
+table tr {
+  border-top: 1px solid #ccc;
+  background-color: #fff;
+}
+
+table tr:nth-child(2n) {
+  background-color: #f8f8f8;
+}
+
+/* IMAGES
+=============================================================================*/
+
+img {
+  max-width: 100%
+}
+</style>
+</head>
+<body>
+<h1>Windows 安装 Redis</h1>
+<hr />
+<h2>1. 基本知识</h2>
+<h4>Redis 的数据类型</h4>
+<p>　　字符串 , 列表 (lists) , 集合 (sets) , 有序集合 (sorts sets) , 哈希表 (hashs) </p>
+<h4>Redis 和 memcache 相比的独特之处</h4>
+<ul>
+<li>redis可以用来做存储 (storge) , 而memcache是来做缓存 (cache) 。这个特点主要是因为其有 &quot;持久化&quot; 功能</li>
+<li>存储的数据有 &quot;结构&quot; , 对于memcache来说 , 存储的数据 , 只有一种类型—— &quot;字符串&quot; , 而redis则可以存储字符串 , 链表 , 集合 , 有序集合 , 哈序结构</li>
+</ul>
+<h4>持久化的两种方式</h4>
+<p>Redis 将数据存储于内存中 , 或被配置为使用虚拟内存 ; 实现数据持久化的两种方式 :</p>
+<ul>
+<li>使用截图的方式 , 将内存中的数据不断写入磁盘 (性能高 , 但可能会引起一定程度的数据丢失) </li>
+<li>使用类似 MySql 的方式 , 记录每次更新的日志</li>
+</ul>
+<h4>Redis 服务端的默认端口是 6379</h4>
+<p><br /></p>
+<h2>2. 安装 Redis</h2>
+<p>先下载 Redis 安装包 <a href="https://github.com/microsoftarchive/redis/releases">https://github.com/microsoftarchive/redis/releases</a><br />
+我下载的是 <code>Redis-x64-3.2.100.zip</code></p>
+<p>解压到 <code>D:\Program\RedisServer</code> 目录下面 , 进入目录 :</p>
+<pre><code># D:
+# cd Program\RedisServer\
+</code></pre>
+
+<p>启动 Redis 服务器 :</p>
+<pre><code># redis-server.exe redis.windows.conf
+</code></pre>
+
+<blockquote>
+<p>这里是用 <code>redis.windows.conf</code> 配置文件启动 Redis</p>
+</blockquote>
+<p>关闭 Redis 服务器 :</p>
+<pre><code># redis-cli shutdown
+</code></pre>
+
+<blockquote>
+<p>或者 <code>Ctrl + C</code></p>
+</blockquote>
+<p>客户端连接 :</p>
+<pre><code># redis-cli
+</code></pre>
+
+<blockquote>
+<p>链接到指定主机时 , 用 <code>redis-cli -h 192.168.22.150 -p 6379</code></p>
+</blockquote>
+<p>设置一个 Redis 键值对 :</p>
+<pre><code>127.0.0.1:6379&gt; set foo bar
+OK
+</code></pre>
+
+<p>根据键获取值 :</p>
+<pre><code>127.0.0.1:6379&gt; get foo
+&quot;bar&quot;
+</code></pre>
+
+<p>设置密码 , 编辑 <code>redis.windows.conf</code> 文件 :<br />
+设置 <code>requirepass 12345678</code> , 即设置密码为 <code>12345678</code><br />
+客户端连接时 ,需要 <code>AUTH</code> :</p>
+<pre><code>127.0.0.1:6379&gt; auth 12345678
+OK
+</code></pre>
+
+<p><br /></p>
+<h2>3. 文件及配置概述</h2>
+<p>安装目录下的几个文件用途 :</p>
+<pre><code>redis-benchmark : Redis 性能测试工具
+redis-check-aof : 检查 aof 日志的工具
+redis-check-dump : 检查 rdb 日志的工具
+redis-cli : 连接用的客户端
+redis-server : Redis 服务进程
+</code></pre>
+
+<p>Redis 的配置项解析 :</p>
+<pre><code>daemonize : 如需要在后台运行 , 把该项的值改为 yes
+pdifile : 把 pid 文件放在 /var/run/redis.pid , 可以配置到其他地址
+bind : 指定 Redis 只接收来自该 IP 的请求 , 如果不设置 , 那么将处理所有请求 , 在生产环节中最好设置该项
+port : 监听端口 , 默认为 6379
+timeout : 设置客户端连接时的超时时间 , 单位为秒
+loglevel : 等级分为 4 级 , debug , revbose , notice 和 warning , 生产环境下一般开启 notice
+logfile : 配置 log 文件地址 , 默认使用标准输出 , 即打印在命令行终端的端口上
+database : 设置数据库的个数 , 默认使用的数据库是 0
+save : 设置 redis 进行数据库镜像的频率
+rdbcompression : 在进行镜像备份时 , 是否进行压缩
+dbfilename : 镜像备份文件的文件名
+dir : 数据库镜像备份的文件放置的路径
+slaveof : 设置该数据库为其他数据库的从数据库
+masterauth : 当主数据库连接需要密码验证时 , 在这里设定
+requirepass : 设置客户端连接后进行任何其他指定前需要使用的密码
+maxclients : 限制同时连接的客户端数量
+maxmemory : 设置redis能够使用的最大内存
+appendonly : 开启 appendonly 模式后 , Redis 会把每一次所接收到的写操作都追加到 appendonly.aof 文件中 , 当 Redis 重新启动时 , 会从该文件恢复出之前的状态
+appendfsync : 设置 appendonly.aof 文件进行同步的频率
+vm_enabled : 是否开启虚拟内存支持
+vm_swap_file : 设置虚拟内存的交换文件的路径
+vm_max_momery : 设置开启虚拟内存后 , Redis 将使用的最大物理内存的大小 , 默认为 0
+vm_page_size : 设置虚拟内存页的大小
+vm_pages : 设置交换文件的总的page数量
+vm_max_thrrads : 设置 vm IO 同时使用的线程数量
+</code></pre>
+
+<h2>4. 错误解决办法</h2>
+<ul>
+<li>
+<p>客户端连接时 , 提示 <code>DENIED Redis is running in protected mode because protected mode is enabled...</code></p>
+<blockquote>
+<p>将配置文件里的 <code>protected mode</code>改为了 <code>no</code> , 原本是 <code>yes</code></p>
+</blockquote>
+</li>
+<li>
+<p>客户端连接时 , 提示 <code>Connection refused...</code></p>
+<blockquote>
+<p>可能是配置文件里面的 bind 字段设置了入口 IP , 将其注释</p>
+</blockquote>
+</li>
+</ul>
+
+</body>
+</html>
+<!-- This document was created with MarkdownPad, the Markdown editor for Windows (http://markdownpad.com) -->

@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>_x_MFC多线程编程</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style type="text/css">
+/* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
+/* Author: Nicolas Hery - http://nicolashery.com */
+/* Version: b13fe65ca28d2e568c6ed5d7f06581183df8f2ff */
+/* Source: https://github.com/nicolahery/markdownpad-github */
+
+/* RESET
+=============================================================================*/
+
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+/* BODY
+=============================================================================*/
+
+body {
+  font-family: Microsoft Yahei UI;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #333;
+  background-color: #fff;
+  padding: 20px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+body>*:first-child {
+  margin-top: 0 !important;
+}
+
+body>*:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* BLOCKS
+=============================================================================*/
+
+p, blockquote, ul, ol, dl, table, pre {
+  margin: 15px 0;
+}
+
+/* HEADERS
+=============================================================================*/
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 20px 0 10px;
+  padding: 0;
+  font-weight: bold;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1 tt, h1 code, h2 tt, h2 code, h3 tt, h3 code, h4 tt, h4 code, h5 tt, h5 code, h6 tt, h6 code {
+  font-size: inherit;
+}
+
+h1 {
+  font-size: 28px;
+  color: #000;
+}
+
+h2 {
+  font-size: 24px;
+  border-bottom: 1px solid #ccc;
+  color: #000;
+}
+
+h3 {
+  font-size: 18px;
+}
+
+h4 {
+  font-size: 16px;
+}
+
+h5 {
+  font-size: 14px;
+}
+
+h6 {
+  color: #777;
+  font-size: 14px;
+}
+
+body>h2:first-child, body>h1:first-child, body>h1:first-child+h2, body>h3:first-child, body>h4:first-child, body>h5:first-child, body>h6:first-child {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6 {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+h1+p, h2+p, h3+p, h4+p, h5+p, h6+p {
+  margin-top: 10px;
+}
+
+/* LINKS
+=============================================================================*/
+
+a {
+  color: #4183C4;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* LISTS
+=============================================================================*/
+
+ul, ol {
+  padding-left: 30px;
+}
+
+ul li > :first-child, 
+ol li > :first-child, 
+ul li ul:first-of-type, 
+ol li ol:first-of-type, 
+ul li ol:first-of-type, 
+ol li ul:first-of-type {
+  margin-top: 0px;
+}
+
+ul ul, ul ol, ol ol, ol ul {
+  margin-bottom: 0;
+}
+
+dl {
+  padding: 0;
+}
+
+dl dt {
+  font-size: 14px;
+  font-weight: bold;
+  font-style: italic;
+  padding: 0;
+  margin: 15px 0 5px;
+}
+
+dl dt:first-child {
+  padding: 0;
+}
+
+dl dt>:first-child {
+  margin-top: 0px;
+}
+
+dl dt>:last-child {
+  margin-bottom: 0px;
+}
+
+dl dd {
+  margin: 0 0 15px;
+  padding: 0 15px;
+}
+
+dl dd>:first-child {
+  margin-top: 0px;
+}
+
+dl dd>:last-child {
+  margin-bottom: 0px;
+}
+
+/* CODE
+=============================================================================*/
+
+pre, code, tt {
+  font-size: 12px;
+  font-family: Microsoft Yahei UI;
+}
+
+code, tt {
+  margin: 0 0px;
+  padding: 0px 0px;
+  white-space: nowrap;
+  border: 1px solid #eaeaea;
+  background-color: #f8f8f8;
+  border-radius: 3px;
+}
+
+pre>code {
+  margin: 0;
+  padding: 0;
+  white-space: pre;
+  border: none;
+  background: transparent;
+}
+
+pre {
+  background-color: #f8f8f8;
+  border: 1px solid #ccc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px;
+}
+
+pre code, pre tt {
+  background-color: transparent;
+  border: none;
+}
+
+kbd {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #DDDDDD;
+    background-image: linear-gradient(#F1F1F1, #DDDDDD);
+    background-repeat: repeat-x;
+    border-color: #DDDDDD #CCCCCC #CCCCCC #DDDDDD;
+    border-image: none;
+    border-radius: 2px 2px 2px 2px;
+    border-style: solid;
+    border-width: 1px;
+	font-family: Microsoft Yahei UI;
+    line-height: 10px;
+    padding: 1px 4px;
+}
+
+/* QUOTES
+=============================================================================*/
+
+blockquote {
+  border-left: 4px solid #DDD;
+  padding: 0 15px;
+  color: #777;
+}
+
+blockquote>:first-child {
+  margin-top: 0px;
+}
+
+blockquote>:last-child {
+  margin-bottom: 0px;
+}
+
+/* HORIZONTAL RULES
+=============================================================================*/
+
+hr {
+  clear: both;
+  margin: 15px 0;
+  height: 0px;
+  overflow: hidden;
+  border: none;
+  background: transparent;
+  border-bottom: 4px solid #ddd;
+  padding: 0;
+}
+
+/* TABLES
+=============================================================================*/
+
+table th {
+  font-weight: bold;
+}
+
+table th, table td {
+  border: 1px solid #ccc;
+  padding: 6px 13px;
+}
+
+table tr {
+  border-top: 1px solid #ccc;
+  background-color: #fff;
+}
+
+table tr:nth-child(2n) {
+  background-color: #f8f8f8;
+}
+
+/* IMAGES
+=============================================================================*/
+
+img {
+  max-width: 100%
+}
+</style>
+</head>
+<body>
+<h1>MFC多线程编程</h1>
+<hr />
+<h2>MFC 多线程概述</h2>
+<p>MFC中有两类线程 , 分别称之为工作者线程和用户界面线程 ;<br />
+二者的主要区别在于 <strong>工作者线程没有消息循环 , 而用户界面线程有自己的消息队列和消息循环</strong> ;</p>
+<ul>
+<li>工作者线程没有消息机制 , 通常用来执行后台计算和维护任务 , 如冗长的计算过程 , 打印机的后台打印等 ;</li>
+<li>用户界面线程一般用于处理独立于其他线程执行之外的用户输入 , 响应用户及系统所产生的事件和消息等 ;</li>
+</ul>
+<p>但对于 Win32 的 API 编程而言 , 这两种线程是没有区别的 , 它们都只需线程的启动地址即可启动线程来执行任务 ;</p>
+<p><br /></p>
+<h2>MFC 多线程 API 支持</h2>
+<p>在MFC中 , 一般用全局函数 <code>AfxBeginThread()</code> 来创建并初始化一个线程的运行 , 该函数有两种重载形式 , 分别用于创建工作者线程和用户界面线程 (UI 线程) ; 两种重载函数原型和参数分别说明如下 :</p>
+<h4>工作者线程</h4>
+<pre><code>CWinThread* AfxBeginThread(AFX_THREADPROC pfnThreadProc,
+    LPVOID pParam,
+    nPriority=THREAD_PRIORITY_NORMAL,
+    UINT nStackSize=0,
+    DWORD dwCreateFlags=0,
+    LPSECURITY_ATTRIBUTES lpSecurityAttrs=NULL);
+</code></pre>
+
+<p>其中各参数说明如下 :</p>
+<p>pfnThreadProc : 指向工作者线程的执行函数的指针 , 线程函数原型必须声明如 : <code>UINT ExecutingFunction(LPVOID pParam);</code> , 请注意 , <code>ExecutingFunction()</code> 应返回一个 UINT 类型的值 , 用以指明该函数结束的原因 , 一般情况下 , 返回 0 表明执行成功 ;<br />
+pParam : 传递给线程函数的一个 32 位参数 , 执行函数将用某种方式解释该值 , 它可以是数值 , 或是指向一个结构的指针 , 甚至可以被忽略 ;<br />
+nPriority : 线程的优先级 , 如果为 0 , 则线程与其父线程具有相同的优先级 ;<br />
+nStackSize : 线程为自己分配堆栈的大小 , 其单位为字节 ; 如果 nStackSize 被设为 0 , 则线程的堆栈被设置成与父线程堆栈相同大小 ;<br />
+dwCreateFlags : 如果为 0 , 则线程在创建后立刻开始执行 ; 如果为 <code>CREATE_SUSPEND</code> , 则线程在创建后立刻被挂起 ;<br />
+lpSecurityAttrs : 线程的安全属性指针 , 一般为 NULL ;</p>
+<h4>用户界面线程</h4>
+<pre><code>CWinThread* AfxBeginThread(CRuntimeClass* pThreadClass,
+    int nPriority=THREAD_PRIORITY_NORMAL,
+    UINT nStackSize=0,
+    DWORD dwCreateFlags=0,
+    LPSECURITY_ATTRIBUTES lpSecurityAttrs=NULL);
+</code></pre>
+
+<p>其中各参数说明如下 :</p>
+<p>pThreadClass : 指向 <code>CWinThread</code> 的一个导出类的运行时类对象的指针 , 该导出类定义了被创建的用户界面线程的启动 , 退出等 ;<br />
+其它参数的意义同工作者线程类似 ;<br />
+使用函数的这个原型生成的线程也有消息机制 , 在以后的例子中我们将发现同主线程的机制几乎一样 ;</p>
+<h4>CWinThread 类</h4>
+<p>CWinThread 类的 <strong>数据成员</strong> 简要说明如下 :</p>
+<pre><code>`m_hThread` : 当前线程的句柄 ;  
+`m_nThreadID` : 当前线程的ID ;  
+`m_pMainWnd` : 指向应用程序主窗口的指针 ;
+</code></pre>
+
+<p>CWinThread 类的 <strong>常用函数</strong> 简要说明如下 :</p>
+<pre><code>BOOL CWinThread::CreateThread(DWORD dwCreateFlags=0,
+    UINT nStackSize=0,
+    LPSECURITY_ATTRIBUTES lpSecurityAttrs=NULL);
+</code></pre>
+
+<p>该函数中的 dwCreateFlags , nStackSize , lpSecurityAttrs 参数和 API 函数 <code>CreateThread</code> 中的对应参数有相同含义 , 该函数执行成功 , 返回非 0 值 , 否则返回 0 ;<br />
+一般情况下 , 调用 <code>AfxBeginThread();</code> 来一次性地创建并启动一个线程 , 但是也可以通过两步法来创建线程 : 首先创建 CWinThread 类的一个对象 , 然后调用该对象的成员函数 <code>CreateThread();</code> 来启动该线程 ; </p>
+<pre><code>virtual BOOL CWinThread::InitInstance();
+</code></pre>
+
+<p>重载该函数以控制用户界面线程实例的初始化 ; 初始化成功则返回非 0 值 , 否则返回 0 ; 用户界面线程经常重载该函数 , 工作者线程一般不使用该函数函数 ;</p>
+<pre><code>virtual int CWinThread::ExitInstance();
+</code></pre>
+
+<p>在线程终结前重载该函数进行一些必要的清理工作 ; 该函数返回线程的退出码 , 0 表示执行成功 , 非 0 值用来标识各种错误 ; 同 <code>InitInstance();</code> 成员函数一样 , 该函数也只适用于用户界面线程 ;</p>
+<p><br /></p>
+<h2>MFC 创建多线程实例</h2>
+<h4>MFC 创建工作者线程代码如下 :</h4>
+<p>新建一个 MFC 对话框项目 , 在对话框头文件定义一个工作者线程函数 , 如下 :</p>
+<pre><code>static UINT WorkerThreadFunc(LPVOID lpParam);
+</code></pre>
+
+<p>源文件实现如下 (这里让工作者线程等待一秒左右时间模拟数据处理) :</p>
+<pre><code>UINT CMFCWorkerThreadDlg::WorkerThreadFunc(LPVOID lpParam)
+{
+    for(int nIndex=0; nIndex&lt;100; nIndex++)
+    {
+        // Do Something
+        Sleep(10);
+    }
+    return 0;
+}
+</code></pre>
+
+<p>创建工作者线程代码如下 :</p>
+<pre><code>void CMFCWorkerThreadDlg::OnBnClickedButtonStart()
+{   
+    CWinThread* pThread;
+    // 启动工作者线程
+    pThread=AfxBeginThread(WorkerThreadFunc, &amp;Info);
+    // 阻塞等待工作者线程结束
+    WaitForSingleObject(pThread-&gt;m_hThread, INFINITE);
+    pThread = NULL;
+}
+</code></pre>
+
+<h4>MFC 创建UI线程代码如下 :</h4>
+<p>创建 CWinThread 的派生类 CUIThread :</p>
+<pre><code>// UIThread.h 文件
+#pragma once
+class CUIThread : public CWinThread
+{
+    DECLARE_DYNCREATE(CUIThread)
+protected:
+    CUIThread();    // 动态创建所使用的受保护的构造函数
+    virtual ~CUIThread();
+public:
+    virtual BOOL InitInstance();
+    virtual int ExitInstance();
+protected:
+    DECLARE_MESSAGE_MAP()
+};
+</code></pre>
+
+<p>重载函数 <code>InitInstance();</code> 和 <code>ExitInstance();</code> :</p>
+<pre><code>// UIThread.cpp 文件
+#include &quot;stdafx.h&quot;
+#include &quot;UIThread.h&quot;
+IMPLEMENT_DYNCREATE(CUIThread, CWinThread)
+CUIThread::CUIThread()
+{
+}
+CUIThread::~CUIThread()
+{
+}
+BOOL CUIThread::InitInstance()
+{
+    CFrameWnd* pWnd=new CFrameWnd;
+    pWnd-&gt;Create(NULL, _T(&quot;UI Thread Window&quot;));
+    pWnd-&gt;ShowWindow(SW_SHOW);
+    pWnd-&gt;UpdateWindow();
+    m_pMainWnd=pWnd;    // 这个语句必须要有
+    return TRUE;
+}
+int CUIThread::ExitInstance()
+{
+    return CWinThread::ExitInstance();
+}
+BEGIN_MESSAGE_MAP(CUIThread, CWinThread)
+END_MESSAGE_MAP()
+</code></pre>
+
+<p>在主对话框启动 UI 线程 :</p>
+<pre><code>void CMainDlg::OnBnClickedStartUI()
+{
+    CWinThread *pUIThread = AfxBeginThread(RUNTIME_CLASS(CUIThread));
+}
+</code></pre>
+
+
+</body>
+</html>
+<!-- This document was created with MarkdownPad, the Markdown editor for Windows (http://markdownpad.com) -->
