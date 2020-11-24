@@ -1,0 +1,208 @@
+<!doctype html>
+<html>
+<head>
+<meta charset='UTF-8'><meta name='viewport' content='width=device-width initial-scale=1'>
+<title>Eureka源码解析</title></head>
+<body><h1>Eureka 源码解析</h1>
+<p>Eureka的依赖如下：</p>
+<pre><code>&lt;dependency&gt;
+	&lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+	&lt;artifactId&gt;spring-cloud-starter-netflix-eureka-server&lt;/artifactId&gt;
+&lt;/dependency&gt;
+</code></pre>
+<p>项目中开启Eureka只需要加一个注解：</p>
+<pre><code>@EnableEurekaServer
+</code></pre>
+<p>进入到注解里面：</p>
+<pre><code>@Target(ElementType.TYPE)
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+@Import(EurekaServerMarkerConfiguration.class)
+public @interface EnableEurekaServer {
+}
+</code></pre>
+<p>里面导入了一个EurekaServerMarkerConfiguration类，进入到里面：</p>
+<pre><code>@Configuration(proxyBeanMethods = false)
+public class EurekaServerMarkerConfiguration {
+
+	@Bean
+	public Marker eurekaServerMarkerBean() {
+		return new Marker();
+	}
+
+	class Marker {
+	}
+}
+</code></pre>
+<p>里面的代码非常简单，就是声明了一个Marker类型的Bean，其实这个类是用来做Eureka的启动开关，查找它的引用类就会发现在 EurekaServerAutoConfiguration 这个类中有引用到：</p>
+<pre><code>@Configuration(proxyBeanMethods = false)
+@Import(EurekaServerInitializerConfiguration.class)
+@ConditionalOnBean(EurekaServerMarkerConfiguration.Marker.class)
+@EnableConfigurationProperties({ EurekaDashboardProperties.class, InstanceRegistryProperties.class })
+@PropertySource(&quot;classpath:/eureka/server.properties&quot;)
+public class EurekaServerAutoConfiguration implements WebMvcConfigurer { …
+</code></pre>
+<p>当 EurekaServerMarkerConfiguration 存在时，就开启自动装配，而且 EurekaServerAutoConfiguration 也是在 spring-cloud-netflix-eureka-server-xxx.RELEASE.jar 里面的 META-INF/spring.factories 有配置：</p>
+<pre><code>org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  org.springframework.cloud.netflix.eureka.server.EurekaServerAutoConfiguration
+</code></pre>
+<p>那相当于程序启动检测到有 EurekaServerMarkerConfiguration 实例，就默认开启Eureka服务。</p>
+<p>接下来进入到 EurekaServerAutoConfiguration 这个配置类：</p>
+<p>可以看到里面有很多方法都用到了eurekaServerConfig：</p>
+<pre><code>@Autowired
+private EurekaServerConfig eurekaServerConfig;
+</code></pre>
+<p>他其实是配置的汇总，初始化代码在：</p>
+<pre><code>@Configuration(proxyBeanMethods = false)
+protected static class EurekaServerConfigBeanConfiguration {
+
+	@Bean
+	@ConditionalOnMissingBean
+	public EurekaServerConfig eurekaServerConfig(EurekaClientConfig clientConfig) {
+		EurekaServerConfigBean server = new EurekaServerConfigBean();
+		if (clientConfig.shouldRegisterWithEureka()) {
+			// Set a sensible default if we are supposed to replicate
+			server.setRegistrySyncRetries(5);
+		}
+		return server;
+	}
+}
+</code></pre>
+<p>返回了一个EurekaServerConfigBean类型的Bean，进入到里面看：</p>
+<pre><code>@ConfigurationProperties(&quot;eureka.server&quot;)
+public class EurekaServerConfigBean implements EurekaServerConfig {
+	public static final String PREFIX = &quot;eureka.server&quot;;
+	private static final int MINUTES = 60000;
+	@Autowired(
+		required = false
+	)
+	PropertyResolver propertyResolver;
+	private String aWSAccessId;
+	private String aWSSecretKey;
+	private int eIPBindRebindRetries = 3;
+	private int eIPBindingRetryIntervalMs = 300000;
+	private int eIPBindingRetryIntervalMsWhenUnbound = 60000;
+	private boolean enableSelfPreservation = true;
+	private double renewalPercentThreshold = 0.85D;
+	…
+</code></pre>
+<p>全是eureka.server打头的配置，这也就是Spring Boot为我们省去了很多配置的地方。</p>
+<p>客户端是如何注册到Eureka的呢，主要是通过类似于Spring MVC的WEB服务Jersey，在 EurekaServerAutoConfiguration 中的：</p>
+<pre><code>@Bean
+public javax.ws.rs.core.Application jerseyApplication(Environment environment,
+		ResourceLoader resourceLoader) {
+		…
+</code></pre>
+<p>方法里初始化了WEB服务会拦截的各种请求资源，服务注册的是在：</p>
+<pre><code>com.netflix.eureka.resources.ApplicationResource
+</code></pre>
+<p>这个类里面的addInstance方法：</p>
+<pre><code>@POST
+@Consumes({&quot;application/json&quot;, &quot;application/xml&quot;})
+public Response addInstance(InstanceInfo info,
+                            @HeaderParam(PeerEurekaNode.HEADER_REPLICATION) String isReplication) {
+    logger.debug(&quot;Registering instance {} (replication={})&quot;, info.getId(), isReplication);
+    // validate that the instanceinfo contains all the necessary required fields
+    if (isBlank(info.getId())) {
+        return Response.status(400).entity(&quot;Missing instanceId&quot;).build();
+    } else if (isBlank(info.getHostName())) {
+        return Response.status(400).entity(&quot;Missing hostname&quot;).build();
+    } else if (isBlank(info.getIPAddr())) {
+        return Response.status(400).entity(&quot;Missing ip address&quot;).build();
+    } else if (isBlank(info.getAppName())) {
+        return Response.status(400).entity(&quot;Missing appName&quot;).build();
+    } else if (!appName.equals(info.getAppName())) {
+        return Response.status(400).entity(&quot;Mismatched appName, expecting &quot; + appName + &quot; but was &quot; + info.getAppName()).build();
+    } else if (info.getDataCenterInfo() == null) {
+        return Response.status(400).entity(&quot;Missing dataCenterInfo&quot;).build();
+    } else if (info.getDataCenterInfo().getName() == null) {
+        return Response.status(400).entity(&quot;Missing dataCenterInfo Name&quot;).build();
+    }
+	…
+</code></pre>
+<p>当有Client注册请求过来的时候，就会走到注册：</p>
+<pre><code>registry.register(info, &quot;true&quot;.equals(isReplication));
+</code></pre>
+<p>注册的实现如下：</p>
+<pre><code>@Override
+public void register(final InstanceInfo info, final boolean isReplication) {
+    int leaseDuration = Lease.DEFAULT_DURATION_IN_SECS;
+    if (info.getLeaseInfo() != null &amp;&amp; info.getLeaseInfo().getDurationInSecs() &gt; 0) {
+        leaseDuration = info.getLeaseInfo().getDurationInSecs();
+    }
+    super.register(info, leaseDuration, isReplication);
+    replicateToPeers(Action.Register, info.getAppName(), info.getId(), info, null, isReplication);
+}
+</code></pre>
+<pre><code>public void register(InstanceInforegistrant,int leaseDuration,boolean isReplication){
+    try{
+        // 获取读锁，即读取操作不受阻塞，写操作会阻塞。
+        read.lock();
+        // gMap是一个CurrentHashMap
+        Map&lt;String,Lease&lt;InstanceInfo&gt;&gt;gMap=registry.get(registrant.getAppName());
+        // EurekaMontior计数器
+        REGISTER.increment(isReplication);
+
+        // InstanceInfo封装成一个Lease对象，存储到registry中。registry结构为ConcurrentHashMap&lt;String,Map&lt;String,Lease&lt;InstanceInfo&gt;&gt;&gt; registry
+        // 注意此处gNewMap并没有添加元素
+        if(gMap==null){
+            final ConcurrentHashMap&lt;String,Lease&lt;InstanceInfo&gt;&gt;gNewMap=new ConcurrentHashMap&lt;String,Lease&lt;InstanceInfo&gt;&gt;();
+            gMap=registry.putIfAbsent(registrant.getAppName(),gNewMap);
+            if(gMap==null){
+                gMap=gNewMap;
+            }
+        }
+        
+        // 判断gMap中是否存在instanceId,如果不存在就设置
+        Lease&lt;InstanceInfo&gt;existingLease=gMap.get(registrant.getId());
+        
+        if(existingLease!=null&amp;&amp;(existingLease.getHolder()!=null)){
+            LongexistingLastDirtyTimestamp=existingLease.getHolder().getLastDirtyTimestamp();
+            LongregistrationLastDirtyTimestamp=registrant.getLastDirtyTimestamp();
+            logger.debug(&quot;Existingleasefound(existing={},provided={}&quot;,existingLastDirtyTimestamp,registrationLastDirtyTimestamp);
+            
+            if(existingLastDirtyTimestamp&gt;registrationLastDirtyTimestamp){
+                logger.warn(&quot;Thereisanexistingleaseandtheexistinglease&#39;sdirtytimestamp{}isgreater&quot;+
+                &quot;thantheonethatisbeingregistered{}&quot;,existingLastDirtyTimestamp,registrationLastDirtyTimestamp);
+                logger.warn(&quot;UsingtheexistinginstanceInfoinsteadofthenewinstanceInfoastheregistrant&quot;);
+                registrant=existingLease.getHolder();
+            }
+        }else{
+            // The lease does not exist and hence  it  is  a  new  registration
+            synchronized(lock){
+                if(this.expectedNumberOfClientsSendingRenews&gt;0){
+                    this.expectedNumberOfClientsSendingRenews=this.expectedNumberOfClientsSendingRenews+1;
+                    updateRenewsPerMinThreshold();
+                }
+            }
+            logger.debug(&quot;Nopreviousleaseinformationfound;itisnewregistration&quot;);
+        }
+        Lease&lt;InstanceInfo&gt; lease = new Lease&lt;InstanceInfo&gt;(registrant,leaseDuration);
+        if(existingLease != null){
+            lease.setServiceUpTimestamp(existingLease.getServiceUpTimestamp());
+        }
+        // 此处进行了添加 instanceId作为key，lease对象作为value写入gMap。
+        gMap.put(registrant.getId(),lease);
+        ………………
+        }finally{
+            read.unlock();
+        }
+}
+</code></pre>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p><img src="Eureka概念与原理解析/EurekaCluster.png" referrerpolicy="no-referrer" alt="EurekaCluster"></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+</body>
+</html>
