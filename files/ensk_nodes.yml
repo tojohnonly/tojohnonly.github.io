@@ -2,18 +2,18 @@
 proxies:
   - { name: ENSKAI-🇯🇵日本-01, type: ss, server: aafrtp.fxr.9qjfo.hasyaf.cn, port: 39001, cipher: aes-128-gcm, password: 7e262b4e-841d-47c5-953b-f25317ab9550, udp: true }
   - { name: ENSKAI-🇯🇵日本-02, type: ss, server: aafrtp.fxr.9qjfo.hasyaf.cn, port: 39002, cipher: aes-128-gcm, password: 7e262b4e-841d-47c5-953b-f25317ab9550, udp: true }
-  - { name: '🇭🇰香港-01 解锁', type: ss, server: aafrtp.fxr.9qjfo.hasyaf.cn, port: 39101, cipher: aes-128-gcm, password: 7e262b4e-841d-47c5-953b-f25317ab9550, udp: true }
-  - { name: '🇭🇰香港-02 解锁', type: ss, server: aafrtp.fxr.9qjfo.hasyaf.cn, port: 39102, cipher: aes-128-gcm, password: 7e262b4e-841d-47c5-953b-f25317ab9550, udp: true }
+  #- { name: '🇭🇰香港-01 解锁', type: ss, server: aafrtp.fxr.9qjfo.hasyaf.cn, port: 39101, cipher: aes-128-gcm, password: 7e262b4e-841d-47c5-953b-f25317ab9550, udp: true }
+  #- { name: '🇭🇰香港-02 解锁', type: ss, server: aafrtp.fxr.9qjfo.hasyaf.cn, port: 39102, cipher: aes-128-gcm, password: 7e262b4e-841d-47c5-953b-f25317ab9550, udp: true }
   - { name: ENSKAI-🇹🇼台湾-01, type: ss, server: aafrtp.fxr.9qjfo.hasyaf.cn, port: 39201, cipher: aes-128-gcm, password: 7e262b4e-841d-47c5-953b-f25317ab9550, udp: true }
   - { name: ENSKAI-🇹🇼台湾-02, type: ss, server: aafrtp.fxr.9qjfo.hasyaf.cn, port: 39202, cipher: aes-128-gcm, password: 7e262b4e-841d-47c5-953b-f25317ab9550, udp: true }
   - { name: ENSKAI-ENSKAI-🇸🇬新加坡-01, type: ss, server: aafrtp.fxr.9qjfo.hasyaf.cn, port: 39301, cipher: aes-128-gcm, password: 7e262b4e-841d-47c5-953b-f25317ab9550, udp: true }
-  - { name: 🇰🇷韩国-01, type: ss, server: aafrtp.fxr.9qjfo.hasyaf.cn, port: 39304, cipher: aes-128-gcm, password: 7e262b4e-841d-47c5-953b-f25317ab9550, udp: true }
+  #- { name: 🇰🇷韩国-01, type: ss, server: aafrtp.fxr.9qjfo.hasyaf.cn, port: 39304, cipher: aes-128-gcm, password: 7e262b4e-841d-47c5-953b-f25317ab9550, udp: true }
   - { name: 'ENSKAI-🇺🇸美国-01 Disney+ 解锁', type: ss, server: aafrtp.fxr.9qjfo.hasyaf.cn, port: 39401, cipher: aes-128-gcm, password: 7e262b4e-841d-47c5-953b-f25317ab9550, udp: true }
   - { name: 'ENSKAI-🇺🇸美国-02 Disney+ 解锁', type: ss, server: aafrtp.fxr.9qjfo.hasyaf.cn, port: 39402, cipher: aes-128-gcm, password: 7e262b4e-841d-47c5-953b-f25317ab9550, udp: true }
   - { name: 'ENSKAI-🇬🇧英国-01 TikTok', type: ss, server: aafrtp.fxr.9qjfo.hasyaf.cn, port: 39404, cipher: aes-128-gcm, password: 7e262b4e-841d-47c5-953b-f25317ab9550, udp: true }
-  - { name: 🇷🇺俄罗斯-01, type: ss, server: aafrtp.fxr.9qjfo.hasyaf.cn, port: 39501, cipher: aes-128-gcm, password: 7e262b4e-841d-47c5-953b-f25317ab9550, udp: true }
-  - { name: 🇦🇷阿根廷-01, type: ss, server: aafrtp.fxr.9qjfo.hasyaf.cn, port: 39701, cipher: aes-128-gcm, password: 7e262b4e-841d-47c5-953b-f25317ab9550, udp: true }
-  - { name: 🇹🇷土耳其-01, type: ss, server: aafrtp.fxr.9qjfo.hasyaf.cn, port: 39703, cipher: aes-128-gcm, password: 7e262b4e-841d-47c5-953b-f25317ab9550, udp: true }
+  #- { name: 🇷🇺俄罗斯-01, type: ss, server: aafrtp.fxr.9qjfo.hasyaf.cn, port: 39501, cipher: aes-128-gcm, password: 7e262b4e-841d-47c5-953b-f25317ab9550, udp: true }
+  #- { name: 🇦🇷阿根廷-01, type: ss, server: aafrtp.fxr.9qjfo.hasyaf.cn, port: 39701, cipher: aes-128-gcm, password: 7e262b4e-841d-47c5-953b-f25317ab9550, udp: true }
+  #- { name: 🇹🇷土耳其-01, type: ss, server: aafrtp.fxr.9qjfo.hasyaf.cn, port: 39703, cipher: aes-128-gcm, password: 7e262b4e-841d-47c5-953b-f25317ab9550, udp: true }
 
   - { name: 日本JP-T, type: trojan, server: jp.mjt001.com, port: 443, password: c8c7f42b-3dac-479b-b22a-e41134483b37, udp: true, sni: jp.mjt001.com }
   - { name: 新加坡SG-T, type: trojan, server: sg.mjt001.com, port: 443, password: c8c7f42b-3dac-479b-b22a-e41134483b37, udp: true, sni: sg.mjt001.com }
