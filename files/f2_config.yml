@@ -1,0 +1,76 @@
+###############################################################
+# ENSK ONLY
+###############################################################
+
+port: 7890
+socks-port: 7891
+redir-port: 7892
+tproxy-port: 7893
+mixed-port: 7890
+allow-lan: false
+mode: rule
+log-level: silent
+# external-controller: 127.0.0.1:7891
+
+
+
+proxy-providers:
+  EnskNodeProvider:
+    type: http
+    path: ./ensk_nodes.yml
+    url: https://tojohnonly.github.io/files/f2_nodes.yml
+    interval: 3600
+    health-check:
+      enable: true
+      url: http://www.gstatic.com/generate_204
+      interval: 300
+
+proxy-groups:
+  - name: EnskNodes
+    type: select
+    use:
+      - EnskNodeProvider
+
+  - name: AutoSelect
+    type: url-test
+    filter: '^(?=.*(?:香港|HK|日本|JP|新加坡|SG|台湾|TW))(?=.*(?:1x|1X)).*$'
+    url: 'http://www.gstatic.com/generate_204'
+    interval: 300
+    tolerance: 50
+    use:
+      - EnskNodeProvider
+
+  - name: AiNodes
+    type: url-test
+    filter: '美国|US|英国|UK'
+    url: 'http://www.gstatic.com/generate_204'
+    interval: 300
+    tolerance: 50
+    use:
+      - EnskNodeProvider
+
+  - name: Fallback
+    type: fallback
+    filter: '^(?=.*(?:香港|HK|日本|JP|新加坡|SG|台湾|TW))(?=.*(?:1x|1X)).*$'
+    url: 'http://www.gstatic.com/generate_204'
+    interval: 300
+    use:
+      - EnskNodeProvider
+
+
+
+rules:
+  - DOMAIN-SUFFIX, bard.google.com, AiNodes
+  - DOMAIN-SUFFIX, openai.com, AiNodes
+  - DOMAIN-KEYWORD, youtube, AutoSelect
+  - DOMAIN-KEYWORD, google, AutoSelect
+  - DOMAIN-KEYWORD, goog, AutoSelect
+  - DOMAIN-KEYWORD, spotify, AutoSelect
+  - DOMAIN-KEYWORD, v2ex, AutoSelect
+  - DOMAIN-KEYWORD, duolingo, AutoSelect
+  - DOMAIN-KEYWORD, bilibili, DIRECT
+  - DOMAIN, clash.razord.top, DIRECT
+  - DOMAIN, yacd.haishan.me, DIRECT
+  - GEOIP, LAN, DIRECT
+  - GEOIP, CN, DIRECT
+  - MATCH, AutoSelect
