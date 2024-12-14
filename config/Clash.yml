@@ -1,0 +1,234 @@
+###############################################################
+# ENSK ONLY
+###############################################################
+port: 7890
+socks-port: 7891
+redir-port: 7892
+tproxy-port: 7893
+mixed-port: 7890
+allow-lan: false
+mode: rule
+log-level: silent
+
+
+
+##################################
+# Proxy Providers
+##################################
+proxy-providers:
+
+  Yeshayun:
+    type: http
+    url: https://api.dler.io/sub?target=clash&url=https%3A%2F%2Fsu.iplcnetwork.com%3A8888%2Fapi%2Fv1%2Fclient%2Fsubscribe%3Ftoken%3Dfbe47bdca47d56a54223f2ba58766b78
+    path: ./tmpYeshayun.yml
+    interval: 86400
+    health-check:
+      enable: true
+      url: http://www.gstatic.com/generate_204
+      interval: 900
+
+  Leiting:
+    type: http
+    url: https://api.dler.io/sub?target=clash&url=https%3A%2F%2Fnn8qozmu.nn8qozmu.top%2Fapi%2Fv1%2Fclient%2Fsubscribe%3Ftoken%3De0b19f5081ef19710909b4c647348427
+    path: ./tmpLeiting.yml
+    interval: 86400
+    health-check:
+      enable: true
+      url: http://www.gstatic.com/generate_204
+      interval: 900
+
+
+
+##################################
+# Proxy Groups
+##################################
+proxy-groups:
+  - name: Default
+    type: select
+    proxies:
+      - AutoSelect
+      - Japan
+    use:
+      - Yeshayun
+
+  - name: AutoSelect
+    type: url-test
+    filter: 香港|HK|Hong Kong|日本|JP|Japan|新加坡|SG|Singapore|美国|US|United States
+    url: 'http://www.gstatic.com/generate_204'
+    interval: 300
+    tolerance: 75
+    use:
+      - Yeshayun
+
+  - name: Japan
+    type: url-test
+    filter: 日本|JP|Japan
+    url: 'http://www.gstatic.com/generate_204'
+    interval: 300
+    tolerance: 75
+    use:
+      - Yeshayun
+
+  - name: Netflix
+    type: select
+    proxies:
+      - AutoSelect
+      - Japan
+    use:
+      - Yeshayun
+
+  - name: OpenAI
+    type: select
+    filter: 日本|JP|Japan|新加坡|SG|Singapore|美国|US|United States
+    proxies:
+      - Japan
+    use:
+      - Yeshayun
+
+
+
+##################################
+# Rules
+##################################
+rules:
+# Gemini
+  - DOMAIN, ai.google.dev, OpenAI
+  - DOMAIN,alkalimakersuite-pa.clients6.google.com, OpenAI
+  - DOMAIN,makersuite.google.com, OpenAI
+  - DOMAIN-suffix,bard.google.com, OpenAI
+  - DOMAIN-suffix, deepmind.com, OpenAI
+  - DOMAIN-SUFFIX, deepmind.google, OpenAI
+  - DOMAIN-SUFFIX, gemini.google.com, OpenAI
+  - DOMAIN-SUFFIX, generativeai.google, OpenAI
+  - DOMAIN-SUFFIX, proactivebackend-pa.googleapis.com, OpenAI
+  - DOMAIN-SUFFIX, apis.google.com, OpenAI
+  - DOMAIN-KEYWORD, colab, OpenAI
+  - DOMAIN-KEYWORD, gemini, OpenAI
+  - DOMAIN-KEYWORD, developerprofiles, OpenAI
+  - DOMAIN-KEYWORD, generativelanguage, OpenAI
+  # Claude
+  - DOMAIN, cdn.usefathom.com, OpenAI
+  - DOMAIN-SUFFIX, anthropic.com, OpenAI
+  - DOMAIN-SUFFIX, claude.ai, OpenAI
+  - DOMAIN-KEYWORD, claude, OpenAI
+  - DOMAIN-KEYWORD, anthropic, OpenAI
+  # OpenAI
+  - DOMAIN, browser-intake-datadoghq.com, OpenAI
+  - DOMAIN, chat.openai.com.cdn.cloudflare.net, OpenAI
+  - DOMAIN, openai-api.arkoselabs.com, OpenAI
+  - DOMAIN, openaicom-api-bdcpf8c6d2e9atf6.z01.azurefd.net, OpenAI
+  - DOMAIN, openaicomproductionae4b.blob.core.windows.net, OpenAI
+  - DOMAIN, production-openaicom-storage.azureedge.net, OpenAI
+  - DOMAIN,static.cloudflareinsights.com, OpenAI
+  - DOMAIN-SUFFIX, ai.com, OpenAI
+  - DOMAIN-SUFFIX, algolia.net, OpenAI
+  - DOMAIN-SUFFIX, api.statsig.com, OpenAI
+  - DOMAIN-SUFFIX, auth0.com, OpenAI
+  - DOMAIN-SUFFIX, chatgpt.com, OpenAI
+  - DOMAIN-SUFFIX, chatgpt.livekit.cloud, OpenAI
+  - DOMAIN-SUFFIX, client-api.arkoselabs.com, OpenAI
+  - DOMAIN-SUFFIX, events.statsigapi.net, OpenAI
+  - DOMAIN-SUFFIX, featuregates.org, OpenAI
+  - DOMAIN-SUFFIX, host.livekit.cloud, OpenAI
+  - DOMAIN-SUFFIX, identrust.com, OpenAI
+  - DOMAIN-SUFFIX, intercom.io, OpenAI
+  - DOMAIN-SUFFIX, intercomcdn.com, OpenAI
+  - DOMAIN-SUFFIX, launchdarkly.com, OpenAI
+  - DOMAIN-SUFFIX, oaistatic.com, OpenAI
+  - DOMAIN-SUFFIX, oaiusercontent.com, OpenAI
+  - DOMAIN-SUFFIX, observeit.net, OpenAI
+  - DOMAIN-SUFFIX, openai.com, OpenAI
+  - DOMAIN-SUFFIX, openaiapi-site.azureedge.net, OpenAI
+  - DOMAIN-SUFFIX, openaicom.imgix.net, OpenAI
+  - DOMAIN-SUFFIX, segment.io, OpenAI
+  - DOMAIN-SUFFIX, sentry.io, OpenAI
+  - DOMAIN-SUFFIX, stripe.com, OpenAI
+  - DOMAIN-SUFFIX, turn.livekit.cloud, OpenAI
+  - DOMAIN-KEYWORD,openai, OpenAI
+  - IP-CIDR, 24.199.123.28/32, OpenAI
+  - IP-CIDR, 64.23.132.171/32, OpenAI
+  - IP-ASN, 20473, OpenAI
+  # Telegram
+  - DOMAIN-KEYWORD, telegram, Default
+  - DOMAIN-KEYWORD, tele, Default
+  - DOMAIN-SUFFIX, t.me , Default
+  # Google
+  - DOMAIN-KEYWORD, goog, Default
+  - DOMAIN-KEYWORD, google, Default
+  - DOMAIN-KEYWORD, gmail, Default
+  - DOMAIN-KEYWORD, gvt, Default
+  - DOMAIN-KEYWORD, chrome, Default
+  - DOMAIN-KEYWORD, appspot, Default
+  - DOMAIN-KEYWORD, blogspot, Default
+  - DOMAIN-KEYWORD, recaptcha, Default
+  # Youtube
+  - DOMAIN-KEYWORD, youtube, Default
+  - DOMAIN-KEYWORD, youtu, Default
+  - DOMAIN-KEYWORD, ytimg, Default
+  - DOMAIN-KEYWORD, ggpht, Default
+  - DOMAIN-SUFFIX, yt.be, Default
+  # Netflix
+  - DOMAIN-KEYWORD, netflix, Netflix
+  - DOMAIN-KEYWORD, nflx, Netflix
+  # TikTok
+  - DOMAIN-KEYWORD, tiktok, Japan
+  - DOMAIN-KEYWORD, musical.ly, Japan
+  - DOMAIN-SUFFIX, lf16-effectcdn.byteeffecttos-g.com, Japan
+  - DOMAIN-SUFFIX, lf16-pkgcdn.pitaya-clientai.com, Japan
+  - DOMAIN-SUFFIX, p16-tiktokcdn-com.akamaized.net, Japan
+  - DOMAIN-SUFFIX, bytedapm.com, Japan
+  - DOMAIN-SUFFIX, bytegecko-i18n.com, Japan
+  - DOMAIN-SUFFIX, byteoversea.com, Japan
+  - DOMAIN-SUFFIX, capcut.com, Japan
+  - DOMAIN-SUFFIX, ibytedtos.com, Japan
+  - DOMAIN-SUFFIX, ibyteimg.com, Japan
+  - DOMAIN-SUFFIX, ipstatp.com, Japan
+  - DOMAIN-SUFFIX, isnssdk.com, Japan
+  - DOMAIN-SUFFIX, muscdn.com, Japan
+  - DOMAIN-SUFFIX, sgpstatp.com, Japan
+  - DOMAIN-SUFFIX, snssdk.com, Japan
+  - DOMAIN-SUFFIX, tik-tokapi.com, Japan
+  # Reddit
+  - DOMAIN-KEYWORD, redd, Default
+  - DOMAIN-KEYWORD, reddit, Default
+  # Duolingo
+  - DOMAIN-SUFFIX, duolingo.com, Default
+  - DOMAIN-SUFFIX, duolingo.cn, DIRECT
+  # Twitter
+  - DOMAIN-KEYWORD, twitter, Default
+  - DOMAIN-KEYWORD, tweet, Default
+  - DOMAIN-KEYWORD, twimg, Default
+  - DOMAIN-KEYWORD, twitpic, Default
+  - DOMAIN-KEYWORD, twtrdns, Default
+  - DOMAIN-KEYWORD, twttr, Default
+  - DOMAIN-KEYWORD, twvid, Default
+  - DOMAIN-KEYWORD, twdigitalassets, Default
+  - DOMAIN-SUFFIX, vine.co , Default
+  - DOMAIN-SUFFIX, x.com , Default
+  - DOMAIN-SUFFIX, periscope.tv, Default
+  - DOMAIN-SUFFIX, pscp.tv, Default
+  - DOMAIN-SUFFIX, t.co, Default
+  # Proxy
+  - DOMAIN-KEYWORD, v2ex, Default
+  - DOMAIN-KEYWORD, spotify, Default
+  - DOMAIN-KEYWORD, telegram, Default
+  - DOMAIN-KEYWORD, reddit, Default
+  - DOMAIN-KEYWORD, twitch, Default
+  # China
+  - DOMAIN-KEYWORD, xiaomi, DIRECT
+  - DOMAIN-KEYWORD, miot, DIRECT
+  - DOMAIN-SUFFIX, mi.com, DIRECT
+  - DOMAIN-SUFFIX, miui.com, DIRECT
+  - DOMAIN-SUFFIX, qq.com, DIRECT
+  - DOMAIN-SUFFIX, jd.com, DIRECT
+  - DOMAIN-SUFFIX, 360buy.com, DIRECT
+  - DOMAIN-KEYWORD, jdcloud, DIRECT
+  - DOMAIN-KEYWORD, meituan, DIRECT
+  - DOMAIN-KEYWORD, aliyun, DIRECT
+  - DOMAIN-KEYWORD, alipan, DIRECT
+  - DOMAIN-KEYWORD, baidu, DIRECT
+  - DOMAIN-KEYWORD, bili, DIRECT
+  - GEOIP, LAN, DIRECT
+  - GEOIP, CN, DIRECT
+  # Final
+  - MATCH, Default
