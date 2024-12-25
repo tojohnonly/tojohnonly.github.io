@@ -95,8 +95,8 @@ rules:
   - DOMAIN, ai.google.dev, OpenAI
   - DOMAIN,alkalimakersuite-pa.clients6.google.com, OpenAI
   - DOMAIN,makersuite.google.com, OpenAI
-  - DOMAIN-suffix,bard.google.com, OpenAI
-  - DOMAIN-suffix, deepmind.com, OpenAI
+  - DOMAIN-SUFFIX, bard.google.com, OpenAI
+  - DOMAIN-SUFFIX, deepmind.com, OpenAI
   - DOMAIN-SUFFIX, deepmind.google, OpenAI
   - DOMAIN-SUFFIX, gemini.google.com, OpenAI
   - DOMAIN-SUFFIX, generativeai.google, OpenAI
