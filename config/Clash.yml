@@ -210,12 +210,22 @@ rules:
   - DOMAIN-SUFFIX, periscope.tv, Default
   - DOMAIN-SUFFIX, pscp.tv, Default
   - DOMAIN-SUFFIX, t.co, Default
+  # Twitch
+  - DOMAIN-KEYWORD, twitch, Default
+  - DOMAIN-KEYWORD, ttvnw, Default
+  - DOMAIN-SUFFIX, ext-twitch.tv, Default
+  - DOMAIN-SUFFIX, jtvnw.net, Default
+  - DOMAIN-SUFFIX, live-video.net, Default
+  - DOMAIN-SUFFIX, ttvnw.net, Default
+  - DOMAIN-SUFFIX, twitch-ext.rootonline.de, Default
+  - DOMAIN-SUFFIX, twitch.tv, Default
+  - DOMAIN-SUFFIX, twitchcdn.net, Default
+  - DOMAIN-SUFFIX, twitchsvc.net, Default
   # Proxy
   - DOMAIN-KEYWORD, v2ex, Default
   - DOMAIN-KEYWORD, spotify, Default
   - DOMAIN-KEYWORD, telegram, Default
   - DOMAIN-KEYWORD, reddit, Default
-  - DOMAIN-KEYWORD, twitch, Default
   # China
   - DOMAIN-KEYWORD, xiaomi, DIRECT
   - DOMAIN-KEYWORD, miot, DIRECT
