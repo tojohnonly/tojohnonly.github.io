@@ -91,6 +91,8 @@ proxy-groups:
 # Rules
 ##################################
 rules:
+# NHK
+  - DOMAIN-KEYWORD, nhk, Japan
 # Gemini
   - DOMAIN, ai.google.dev, OpenAI
   - DOMAIN,alkalimakersuite-pa.clients6.google.com, OpenAI
