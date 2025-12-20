@@ -4,7 +4,8 @@ const urls = [
 ];
 
 urls.forEach(url => {
-  $httpClient.head(url, () => {});
+  const u = url + '?t=' + Date.now();
+  $httpClient.head(u, () => {});
 });
 
 $done();
