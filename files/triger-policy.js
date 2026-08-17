@@ -25,5 +25,7 @@ urls.forEach((url) => {
   });
 });
 
-console.log('脚本结束');
-$done();
+setTimeout(() => {
+  console.log('脚本结束');
+  $done();
+}, 5000);
