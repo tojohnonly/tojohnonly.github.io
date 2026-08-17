@@ -1,0 +1,14 @@
+files/triger-policy.js
+  h_b7fd8a6dfac302 21
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.22",
+  "base_commit_sha": "ba63ddb257f84ca482b8e345985f5ca18c2222f4",
+  "prompts": {},
+  "humans": {
+    "h_b7fd8a6dfac302": {
+      "author": "魏大义 <tojohnonly@gmail.com>"
+    }
+  }
+}
