@@ -1,6 +1,9 @@
 const urls = [
   'https://www.google.com',
-  'https://www.tiktok.com'
+  'https://www.youtube.com',
+  'https://www.tiktok.com',
+  'https://openai.com',
+  'https://telegram.org'
 ];
 
 const timestamp = Date.now();
@@ -22,6 +25,5 @@ urls.forEach((url) => {
   });
 });
 
-setTimeout(() => {
-  $done();
-}, 5000);
+console.log('脚本结束');
+$done();
