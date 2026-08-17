@@ -18,7 +18,7 @@ urls.forEach((url) => {
       : '无';
 
     console.log(
-      'URL: ' + url +
+      'URL: ' + requestUrl +
       '，错误: ' + (error || '无') +
       '，状态码: ' + statusCode
     );
