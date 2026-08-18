@@ -28,4 +28,4 @@ urls.forEach((url) => {
 setTimeout(() => {
   console.log('脚本结束');
   $done();
-}, 9000);
+}, 7000);
