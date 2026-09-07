@@ -1,0 +1,17 @@
+port: 7890
+socks-port: 7891
+allow-lan: false
+mode: Rule
+log-level: info
+proxies:
+  - {name: 测试-日本, server: mqbxk.entry.fr0528.art, port: 21581, type: vmess, uuid: 1852e68f8e9539c6475ea, alterId: 1, cipher: auto, tls: true, skip-cert-verify: false, udp: true}
+proxy-groups:
+  - name: 选择节点
+    type: select
+    proxies:
+      - 测试-日本
+      - DIRECT
+rules:
+ - DOMAIN,app.biliapi.net,选择节点
+ - GEOIP,CN,DIRECT
+ - MATCH,选择节点
