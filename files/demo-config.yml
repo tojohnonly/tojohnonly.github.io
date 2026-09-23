@@ -1,3 +1,5 @@
+# subscription-userinfo: upload=123456789; download=987654321; total=64424509440; expire=1735689600
+
 port: 7890
 socks-port: 7891
 allow-lan: false
